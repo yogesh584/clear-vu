@@ -103,7 +103,7 @@ const Sidebar = () => {
       >
         <div className="brand flex-column-auto " id="kt_brand">
           <Link to="/" className="brand-logo">
-            <img alt="Logo" src="./logo.png" style={{ width: "120px" }} />
+            <img alt="Logo" src="./assets/img/logo.png" style={{ width: "120px" }} />
           </Link>
 
           <button

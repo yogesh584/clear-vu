@@ -1,0 +1,267 @@
+[class*="bg-"] .symbol.statsCount .symbol-label {
+  background-color: rgba(255, 255, 255, 0.278);
+  color: #fff;
+}
+
+.symbol.statsCount .symbol-label {
+  background-color: rgba(24, 28, 50, 0.171);
+  color: rgba(24, 28, 50, 0.588);
+}
+
+.symbol.statsCount {
+  position: absolute;
+  right: 2.5rem;
+  top: 2rem;
+}
+
+/* *** new overflow style  */
+
+.aside-menu .menu-nav {
+  margin: 0;
+  list-style: none;
+  padding: 15px 0;
+  overflow: auto;
+  max-height: calc(100vh - 75px);
+}
+
+.aside-menu .menu-nav::-webkit-scrollbar {
+  width: 0;
+}
+
+.ReactModal__Overlay {
+  overflow: auto;
+  z-index: 999;
+}
+
+body.ReactModal__Body--open {
+  overflow: hidden;
+}
+
+.modal-dialog:focus-visible,
+.ReactModal__Content.ReactModal__Content--after-open.model_block:focus-visible {
+  outline: none;
+}
+
+.aside-menu .menu-nav > .menu-item > .menu-heading .menu-icon svg,
+.aside-menu .menu-nav > .menu-item > .menu-link .menu-icon svg {
+  fill: #494b74;
+}
+
+.aside-menu .menu-nav > .menu-item:hover > .menu-heading .menu-icon svg,
+.aside-menu .menu-nav > .menu-item:hover > .menu-link .menu-icon svg {
+  fill: #3699ff;
+}
+.aside-menu
+  .menu-nav
+  > .menu-item.menu-item-active
+  > .menu-heading
+  .menu-icon
+  svg,
+.aside-menu
+  .menu-nav
+  > .menu-item.menu-item-active
+  > .menu-link
+  .menu-icon
+  svg {
+  fill: #3699ff;
+}
+
+.remove-icon {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  border: #333 solid 1px;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  background: #fff;
+  text-align: center;
+  cursor: pointer;
+}
+.remove-icon i {
+  color: #333;
+}
+
+.walletBlock {
+  background: #f3f3f3;
+  box-shadow: inset 2px 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  padding: 20px 30px;
+  display: flex;
+  align-items: center;
+  max-width: 375px;
+}
+
+.walletBlock_head {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 21px;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.walletBlock_head svg {
+  margin-right: 15px;
+}
+
+.walletBalBlock {
+  background: #cacaca;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  letter-spacing: 0.02em;
+  color: #000000;
+  padding: 13px 25px;
+  margin-left: auto;
+}
+
+.completeTxt {
+  color: #4cd964;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.dueTxt {
+  color: #ff3d00;
+  font-weight: 700;
+}
+
+.typeTxt {
+  color: #000;
+}
+
+.faq-table.dataTables_wrapper .dataTable th,
+.faq-table.dataTables_wrapper .dataTable td {
+  vertical-align: text-top;
+}
+
+.editDel_eventBtn {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #000;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  border: #333 solid 1px;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.dataTables_wrapper .dataTable thead th.ActionText {
+  color: #3699ff !important;
+}
+
+.true_text {
+  background: #198754;
+  padding: 2px 6px;
+  color: #fff;
+}
+
+.False_text {
+  background: #f64e60;
+  padding: 2px 6px;
+  color: #fff;
+}
+
+.dataTables_wrapper .table.dataTable .btn.btn-success:hover {
+  color: #fff;
+  background-color: #09683c;
+  border-color: #09683c;
+}
+
+.dataTables_wrapper .table.dataTable .btn.btn-success {
+  color: #fff;
+  background-color: #198754;
+  border-color: #198754;
+}
+
+
+
+.select_imageprefix {
+  padding-bottom: 20px;
+}
+
+.select_imageprefix img{cursor: pointer;
+  max-width: 150px;
+  max-height: 150px;}
+
+  .ReactTags__remove{
+        color: white;
+          background: red;
+          margin-right: 10px;
+          padding: 0px 10px 0px 10px;
+            margin-left: 3px;
+            border: none;
+            border-radius: 50px;
+  }
+
+   .ReactTags__tag{
+        margin-left: 10px;
+   }
+   .ReactTags__selected{
+    margin-top: 20px;
+   }
+
+   .aside-menu-wrapper .aside-menu .menu-nav > .menu-item > .menu-heading .menu-icon svg, .aside-menu-wrapper .aside-menu .menu-nav > .menu-item > .menu-link .menu-icon svg path{
+    fill: #fff;
+  }
+
+  .aside-menu-wrapper .aside-menu .menu-nav > .menu-item > .menu-heading .menu-icon svg, .aside-menu-wrapper .aside-menu .menu-nav > .menu-item > .menu-link:hover .menu-icon svg path{
+    fill: #fff !important;
+  }
+  .aside-menu-wrapper .aside-menu .menu-nav > .menu-item > .menu-heading .menu-icon svg, .aside-menu-wrapper .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link .menu-icon svg path{
+    fill: #fff !important;
+  }
+  .aside-menu-wrapper .aside-menu .menu-nav > .menu-item > .menu-heading .menu-icon svg, .aside-menu-wrapper .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link .menu-icon svg path{
+    fill: #fff !important;
+  }
+
+  .tag-wrapper.ReactTags__tag {
+    display: inline-block;
+    background-color: #3699ff;
+    padding: 8px 19px;
+    border-radius: 8px;
+    color: #fff;
+    position: relative;
+    padding-right: 46px;
+    margin-bottom: 15px;
+}
+.ReactTags__remove {
+  background-color: transparent;
+  width: max-content;
+  /* margin-right: auto; */
+  position: absolute;
+  right: -6px;
+  top: 8px;
+}
+.ReactTags__tagInputField {
+  background-color: #F3F6F9;
+  color: #3F4254;
+  height: 45px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  min-width: 100%;
+  border: none;
+}
+.ReactTags__tagInputField:focus-visible{
+  border: 0;
+}
+.reactTags_box {
+  flex-direction: column;
+  display: inline-flex !important;
+}
+.Extra_skills {
+  color: red;
+}
+.formUpdate{
+  padding: 8px 30px !important;
+}

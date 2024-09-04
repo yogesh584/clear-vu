@@ -16,14 +16,14 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { store } from "./store";
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </Provider>,
-  </React.StrictMode>,
-  document.getElementById("root")
+    </Provider>
+  </React.StrictMode>
 );
 

@@ -45,11 +45,11 @@ const App = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (token) {
-      request("POST", "admin/verify", { token });
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     request("POST", "admin/verify", { token });
+  //   }
+  // }, [token]);
 
   useEffect(() => {
     // if (response) {
