@@ -3,13 +3,11 @@ import {
   AUTH_LOGOUT,
   SIDEBAR_TOGGLE,
   LOADING,
-  UPDATE_TOKEN,
-  ACCOUNT_CREATED
 } from "./actionTypes";
 
 const initialState = {
   loggedIn: null,
-  adminToken: null,
+  token: null,
   userId: null,
   email: null,
   name: null,
@@ -25,11 +23,6 @@ const authReducer = (state = initialState, action) => {
         loggedIn: true,
         ...action.updates,
       };
-    case ACCOUNT_CREATED:
-      return {
-        ...state,
-        ...action.updates,
-      };
     case AUTH_LOGOUT:
       return {
         ...initialState,
@@ -41,11 +34,6 @@ const authReducer = (state = initialState, action) => {
         ...action.updates,
       };
     case LOADING:
-      return {
-        ...state,
-        ...action.updates,
-      };
-    case UPDATE_TOKEN:
       return {
         ...state,
         ...action.updates,

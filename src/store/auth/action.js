@@ -3,8 +3,6 @@ import {
   AUTH_LOGOUT,
   SIDEBAR_TOGGLE,
   LOADING,
-  UPDATE_TOKEN,
-  ACCOUNT_CREATED,
 } from "./actionTypes";
 import { toast } from "react-toastify";
 
@@ -18,16 +16,6 @@ export const authSuccess = (updates) => {
   };
 };
 
-export const accountCreated = (updates) => {
-  if (updates.token) {
-    localStorage.setItem("token", updateToken);
-  }
-  return {
-    type: ACCOUNT_CREATED,
-    updates
-  }
-}
-
 export const sidebarToggle = (updates) => {
   return {
     type: SIDEBAR_TOGGLE,
@@ -37,13 +25,7 @@ export const sidebarToggle = (updates) => {
 
 export const logout = () => {
   localStorage.removeItem("token");
-  //   toast.success("You are now logged out!");
-  //   var testObject = {
-  //     url:window.location.href,
-  //     time:25
-  //   };
-  // // Put the object into storage
-  //   localStorage.setItem('testObject', JSON.stringify(testObject));
+  toast.success("You are now logged out!");
   return {
     type: AUTH_LOGOUT,
   };
@@ -52,14 +34,6 @@ export const logout = () => {
 export const updateLoading = (updates) => {
   return {
     type: LOADING,
-    updates,
-  };
-};
-
-export const updateToken = (updates) => {
-  localStorage.setItem("token", updates.token);
-  return {
-    type: UPDATE_TOKEN,
     updates,
   };
 };

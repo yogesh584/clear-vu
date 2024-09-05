@@ -1,8 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-// import { CKEditor } from "@ckeditor/ckeditor5-react";
-// import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-// import ClassicEditor from "../../ckeditor5/build/ckeditor";
-// import { CKEditor } from "ckeditor4-react";
+import IonRangeSlider from "react-ion-slider";
 
 let currDate = new Date();
 currDate = currDate.toISOString().split("T")[0];
@@ -128,236 +125,146 @@ export const Input = ({
   );
 };
 
-// export const RangeInput = ({
-//   colClass,
-//   label,
-//   type,
-//   tooltip,
-//   name,
-//   min,
-//   errors,
-//   register,
-//   registerFields,
-//   inputData,
-//   otherRegisterFields,
-//   registerFieldsFeedback,
-//   children,
-//   isArray,
-//   index,
-//   setValue,
-//   getValues,
-//   sliderData,
-//   payExpectationRangeFrom, setPayExpectationRangeFrom, payExpectationRangeTo, setPayExpectationRangeTo
-// }) => {
-//   const [payExceptError, setPayExceptError] = useState(0);
+export const RangeInput = ({
+  colClass,
+  label,
+  type,
+  tooltip,
+  name,
+  min,
+  errors,
+  register,
+  registerFields,
+  inputData,
+  otherRegisterFields,
+  registerFieldsFeedback,
+  children,
+  isArray,
+  index,
+  setValue,
+  getValues,
+  sliderData,
+}) => {
+  let [k, v] = name.split(".");
+  let isKey = v ? (errors[k] ? errors[k][v] : errors[name]) : errors[name];
 
-//   console.log("payExpectationRangeFrom",payExpectationRangeFrom);
-//   console.log("payExpectationRangeTo",payExpectationRangeTo);
+  // console.log('isArray', isArray, name)
+  // console.log('kv', k, v, index)
 
-//   useEffect(() => {
-//     let max = "300";
-//     let $range1 = window.$("#budget_slider3");
-//     $range1.ionRangeSlider({
-//       type: "double",
-//       grid: false,
-//       min: 0,
-//       max: max,
+  // console.log(errors['new_education']?.[0])
 
-//       postfix: "k",
-//       max_postfix: "+",
+  if (isArray) {
+    k = k.split("[")[0];
+    isKey = v ? (errors[k] ? errors[k][index][v] : errors[name]) : errors[name];
+  }
 
-//       from: payExpectationRangeFrom || 0,
-//       to: payExpectationRangeTo || 1000,
-//       prefix: "$",
-//       extra_classes: "remuneration_slider",
-//       onChange: function (data) {
-//         if (data.from == 0 && data.to == 0) {
-//           setPayExceptError(1);
-//         } else {
-//           setPayExceptError(0);
-//         }
+  // new_experience[0].job_title
 
-//          if(payExpectationRangeFrom)
-//               { setPayExpectationRangeFrom(data.from)}
-//               if(payExpectationRangeTo)
-//               { setPayExpectationRangeTo(data.to)}
-//       },
-//     });
-//   }, []);
+  // console.log(name, errors, isKey)
 
-//   let [k, v] = name.split(".");
-//   let isKey = v ? (errors[k] ? errors[k][v] : errors[name]) : errors[name];
+  return (
+    <div className={`${colClass ? colClass : "col-xl-4"}`}>
+      <div className="form-group">
+        <label>
+          {label}{" "}
+          {registerFields.required ? (
+            <span className="text-danger">*</span>
+          ) : (
+            ""
+          )}
+          {tooltip?.show ? (
+            <i className="fa fa-question-circle fa-1x" title={tooltip?.title} />
+          ) : (
+            ""
+          )}
+        </label>
 
-//   // console.log('isArray', isArray, name)
-//   // console.log('kv', k, v, index)
+        {/* <input
+          type={type}
+          className={`form-control form-control-solid form-control-lg ${
+            isKey && "is-invalid"
+          }`}
+          name={name}
+          min={min}
+          placeholder={label}
+          {...register(name, registerFields)}
+          {...inputData}
+        /> */}
 
-//   // console.log(errors['new_education']?.[0])
+        <IonRangeSlider
+          className="form-control form-control-solid form-control-lg"
+          {...sliderData}
+          // onChange={(data)=>{
+          //   setValue(`${name}`, data);
 
-//   if (isArray) {
-//     k = k.split("[")[0];
-//     isKey = v ? (errors[k] ? errors[k][index][v] : errors[name]) : errors[name];
-//   }
+          // }}
+          onFinish={(data) => {
+            console.log(data.from, data.to);
+            setValue(`${name}.from`, data.from);
+            setValue(`${name}.to`, data.to);
+          }}
+          // type="double"
+          // min="0"
+          // max="300"
+          // from="0"
+          // to="350"
+          // skin="flat"
+          // prefix="$"
+          // postfix="k"
+          // max_postfix="+"
+          // //step=""
+          // //values=""
+          // keyboard="true"
+        />
 
-//   // new_experience[0].job_title
+        {registerFields?.required && isKey?.type === "required" && (
+          <div className="invalid-feedback">
+            The {label.toLowerCase()} field is required.
+          </div>
+        )}
+        {registerFields?.minLength && isKey?.type === "minLength" && (
+          <div className="invalid-feedback">
+            The {label.toLowerCase()} field is invalid.
+          </div>
+        )}
+        {registerFields?.maxLength && isKey?.type === "maxLength" && (
+          <div className="invalid-feedback">
+            The {label.toLowerCase()} field is invalid.
+          </div>
+        )}
+        {registerFields?.min >= 0 && isKey?.type === "min" && (
+          <div className="invalid-feedback">
+            The {label.toLowerCase()} field is invalid.
+          </div>
+        )}
+        {registerFields?.pattern && isKey?.type === "pattern" && (
+          <div className="invalid-feedback">
+            {registerFieldsFeedback?.pattern}
+          </div>
+        )}
+        {otherRegisterFields?.manual && isKey?.type === "manual" && (
+          <div className="invalid-feedback">{otherRegisterFields.feedback}</div>
+        )}
+        {/* {errors?.[name] &&
+          errors[name].type ===
+            "manual_company_logo"(
+              <div className="invalid-feedback">
+                Image size cannot be more then 3 MB
+              </div>
+            )} */}
+        {name == "company_logo" && (
+          <div
+          // className="invalid-feedback"
+          >
+            Image size cannot be more then 3 MB
+          </div>
+        )}
+      </div>
+      {children}
+    </div>
+  );
+};
 
-//   // console.log(name, errors, isKey)
-
-//   return (
-//     <div className={`${colClass ? colClass : "col-xl-4"}`}>
-//       <div className="form-group">
-//         <label>
-//           {label}{" "}
-//           {registerFields.required ? (
-//             <span className="text-danger">*</span>
-//           ) : (
-//             ""
-//           )}
-//           {tooltip?.show ? (
-//             <i className="fa fa-question-circle fa-1x" title={tooltip?.title} />
-//           ) : (
-//             ""
-//           )}
-//         </label>
-
-//         <input
-//         type="text"
-//         id="budget_slider3"
-//         name="budget_slider3"
-//         />
-
-//         {registerFields?.required && isKey?.type === "required" && (
-//           <div className="invalid-feedback">
-//             The {label.toLowerCase()} field is required.
-//           </div>
-//         )}
-//         {registerFields?.minLength && isKey?.type === "minLength" && (
-//           <div className="invalid-feedback">
-//             The {label.toLowerCase()} field is invalid.
-//           </div>
-//         )}
-//         {registerFields?.maxLength && isKey?.type === "maxLength" && (
-//           <div className="invalid-feedback">
-//             The {label.toLowerCase()} field is invalid.
-//           </div>
-//         )}
-//         {registerFields?.min >= 0 && isKey?.type === "min" && (
-//           <div className="invalid-feedback">
-//             The {label.toLowerCase()} field is invalid.
-//           </div>
-//         )}
-//         {registerFields?.pattern && isKey?.type === "pattern" && (
-//           <div className="invalid-feedback">
-//             {registerFieldsFeedback?.pattern}
-//           </div>
-//         )}
-//         {otherRegisterFields?.manual && isKey?.type === "manual" && (
-//           <div className="invalid-feedback">{otherRegisterFields.feedback}</div>
-//         )}
-//         {/* {errors?.[name] &&
-//           errors[name].type ===
-//             "manual_company_logo"(
-//               <div className="invalid-feedback">
-//                 Image size cannot be more then 3 MB
-//               </div>
-//             )} */}
-//         {name == "company_logo" && (
-//           <div
-//           // className="invalid-feedback"
-//           >
-//             Image size cannot be more then 3 MB
-//           </div>
-//         )}
-//       </div>
-//       {children}
-//     </div>
-//   );
-// };
-
-// export const CKEditorInput = ({
-//   colClass,
-//   label,
-//   name,
-//   errors,
-//   registerFields,
-//   getValues,
-//   setValue,
-//   trigger,
-//   inputData,
-//   otherRegisterFields,
-//   clearErrors,
-//   isEdit,
-//   isDataFetched
-// }) => {
-//   return (
-//     <div className={`${colClass ? colClass : "col-xl-6"}`}>
-//       <div className="form-group">
-//         <label>
-//           {label}{" "}
-//           {registerFields?.required ? (
-//             <span className="text-danger">*</span>
-//           ) : (
-//             ""
-//           )}
-//         </label>
-//         <div className={`${errors[name] && "is-invalid"}`}>
-//           {console.log("isDataFetched", isDataFetched)}
-//           {console.log("getValues", getValues(name))}
-//           {isEdit && isDataFetched && (
-//             <CKEditor
-//               editorUrl="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"
-//               initData={getValues(name)}
-//               config={{
-//                 versionCheck: false,
-//                 extraAllowedContent:
-//                   "p(*)[*]{*};div(*)[*]{*};li(*)[*]{*};ul(*)[*]{*};i(*)[*]{*}",
-//                 allowedContent: true,
-//                 protectedSource: [/<i[^>]*><\/i>/g],
-//                 // removeEmpty: { i: false },
-//               }}
-//               onChange={({ editor }) => {
-//                 const data = editor.getData();
-//                 setValue(name, data);
-//                 trigger(name);
-//                 clearErrors(name);
-//               }}
-//               {...inputData}
-//             />
-//           )}
-//           {!isEdit && (
-//             <CKEditor
-//               editorUrl="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"
-//               initData={getValues(name)}
-//               config={{
-//                 versionCheck: false,
-//                 extraAllowedContent:
-//                   "p(*)[*]{*};div(*)[*]{*};li(*)[*]{*};ul(*)[*]{*};i(*)[*]{*}",
-//                 allowedContent: true,
-//                 protectedSource: [/<i[^>]*><\/i>/g],
-//                 // removeEmpty: { i: false },
-//               }}
-//               onChange={({ editor }) => {
-//                 const data = editor.getData();
-//                 setValue(name, data);
-//                 trigger(name);
-//                 clearErrors(name);
-//               }}
-//               {...inputData}
-//             />
-//           )}
-//         </div>
-
-//         {registerFields?.required && errors[name]?.type === "required" && (
-//           <div className="invalid-feedback">
-//             The {label.toLowerCase()} field is required.
-//           </div>
-//         )}
-//         {otherRegisterFields?.manual && errors[name]?.type === "manual" && (
-//           <div className="invalid-feedback">{otherRegisterFields.feedback}</div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// };
 
 export const SelectInput = ({
   colClass,

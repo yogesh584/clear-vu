@@ -8,23 +8,20 @@ import { menu } from "../../util/data";
 import { Arrow } from "../../util/Svg";
 import { sidebarToggle } from "../../store/auth/action";
 
-const Sidebar = () => {
+const Sidebar = ({toggleSidebar}) => {
   const [fullSidebar, setFullSidebar] = useState(true);
   const { isMobileSidebarOpen, permissions, user_role_id } = useSelector(
     (state) => state.auth
   );
 
-  console.log("menu : ", menu);
-  
-
-  const [filteredMenu, setFilteredMenu] = useState(menu);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(isMobileSidebarOpen);
 
   useEffect(()=>{
-    setFilteredMenu(menu)
-  },[menu])
+    setIsSidebarOpen(isMobileSidebarOpen)
+  },[isMobileSidebarOpen])
 
-  console.log("filteredMenu",filteredMenu);
-  
+
+  const [filteredMenu, setFilteredMenu] = useState(menu);
 
   useEffect(() => {
     if (user_role_id != 1) {
@@ -41,12 +38,14 @@ const Sidebar = () => {
         });
         menu.subMenu = filteredSubMenu;
 
-        let menuExist = true
-        // menu.key.forEach((v) => {
-        //   // if (!!permissions[v]) {
-        //   //   menuExist = true;
-        //   // }
-        // });
+        console.log(menu.key)
+
+        let menuExist = false
+        menu.key.forEach((v) => {
+          if (!!permissions[v]) {
+            menuExist = true;
+          }
+        });
 
         if (menuExist) {
           return menu;
@@ -60,6 +59,10 @@ const Sidebar = () => {
     }
   }, []);
 
+  useEffect(()=>{
+    onClickSidebarHandler()
+  },[toggleSidebar])
+
   const { pathname } = useLocation();
   const dispatch = useDispatch();
 
@@ -68,9 +71,11 @@ const Sidebar = () => {
     if (fullSidebar) {
       document.body.classList.add("aside-minimize");
       document.querySelector("#kt_aside_toggle").classList.add("active");
+      setIsSidebarOpen(false);
     } else {
       document.body.classList.remove("aside-minimize");
       document.querySelector("#kt_aside_toggle").classList.remove("active");
+    setIsSidebarOpen(true)
     }
 
     setFullSidebar((prev) => !prev);
@@ -81,6 +86,7 @@ const Sidebar = () => {
     if (!fullSidebar) {
       document.body.classList.remove("aside-minimize");
       document.body.classList.add("aside-minimize-hover");
+      setIsSidebarOpen(true);
     }
   };
 
@@ -88,6 +94,7 @@ const Sidebar = () => {
     if (!fullSidebar) {
       document.body.classList.add("aside-minimize");
       document.body.classList.remove("aside-minimize-hover");
+      setIsSidebarOpen(false);
     }
   };
 
@@ -103,21 +110,17 @@ const Sidebar = () => {
       >
         <div className="brand flex-column-auto " id="kt_brand">
           <Link to="/" className="brand-logo">
-            <img alt="Logo" src="./assets/img/logo.png" style={{ width: "120px" }} />
+            <img alt="Logo" src="./logo.png" style={{ width: "100%" }} />
           </Link>
-
-          <button
+        {!isSidebarOpen && <button
             onClick={onClickSidebarHandler}
-            // className={`brand-toggle btn btn-sm px-0 ${
-            //   fullSidebar ? "" : "active"
-            // }`}
             className={`brand-toggle btn btn-sm px-0`}
             id="kt_aside_toggle"
           >
-            <span className="svg-icon svg-icon svg-icon-xl">
-              <Arrow />
-            </span>{" "}
-          </button>
+            <span >
+              <img src="./logo_without_text.png"/>
+            </span>
+          </button>}
         </div>
 
         <div

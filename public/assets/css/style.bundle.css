@@ -60956,12 +60956,12 @@ body {
           .header-menu-mobile .menu-nav .menu-item > .menu-heading .menu-arrow:before,
           .header-menu-mobile .menu-nav .menu-item > .menu-link .menu-arrow:before {
             -webkit-transform: translate3d(0, 0, 0); }
-      .header-menu-mobile .menu-nav .menu-item.menu-item-open > .menu-heading > .menu-arrow:before,
-      .header-menu-mobile .menu-nav .menu-item.menu-item-open > .menu-link > .menu-arrow:before {
+      .header-menu-mobile .menu-nav .menu-item.menu-item-open  .menu-heading  .menu-arrow:before,
+      .header-menu-mobile .menu-nav .menu-item.menu-item-open  .menu-link  .menu-arrow:before {
         -webkit-transform: rotateZ(90deg)/*rtl:ignore*/;
         transform: rotateZ(90deg)/*rtl:ignore*/; }
-        [direction="rtl"] .header-menu-mobile .menu-nav .menu-item.menu-item-open > .menu-heading > .menu-arrow:before, [direction="rtl"]
-        .header-menu-mobile .menu-nav .menu-item.menu-item-open > .menu-link > .menu-arrow:before {
+        [direction="rtl"] .header-menu-mobile .menu-nav .menu-item.menu-item-open .menu-heading > .menu-arrow:before, [direction="rtl"]
+        .header-menu-mobile .menu-nav .menu-item.menu-item-open  .menu-link  .menu-arrow:before {
           -webkit-transform: rotateZ(-90deg)/*rtl:ignore*/;
           transform: rotateZ(-90deg)/*rtl:ignore*/; }
       .header-menu-mobile .menu-nav .menu-item.menu-item-open > .menu-submenu,
@@ -61080,6 +61080,9 @@ body {
         .header-menu-mobile .menu-nav > .menu-item > .menu-heading .menu-item-here,
         .header-menu-mobile .menu-nav > .menu-item > .menu-link .menu-item-here {
           display: none; }
+          .menu-item-open svg path{
+            fill: #39D9A7;
+          }
       .header-menu-mobile .menu-nav > .menu-item.menu-item-open > .menu-heading .menu-arrow:before,
       .header-menu-mobile .menu-nav > .menu-item.menu-item-open > .menu-link .menu-arrow:before {
         -webkit-transition: all 0.3s ease;
@@ -61454,7 +61457,13 @@ body {
   .header-fixed.aside-static .aside {
     padding-top: 65px; }
   .aside-minimize .aside {
-    width: 70px; }
+    width: 70px;
+    
+  }
+  .aside-minimize .aside .aside-menu-wrapper .menu-link{
+    margin-left: 0px !important;
+  }
+
   .aside.ps > .ps__rail-y {
     width: 4px; }
     .aside.ps > .ps__rail-y:hover, .aside.ps > .ps__rail-y:focus {

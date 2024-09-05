@@ -3,8 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { logout, sidebarToggle } from "../../store/auth/action";
+import { Arrow } from "../../util/Svg";
 
-const Header = () => {
+const Header = ({setToggleSidebar}) => {
   const dispatch = useDispatch();
   const { name, isMobileSidebarOpen } = useSelector((state) => state.auth);
 
@@ -40,14 +41,12 @@ const Header = () => {
         <Link to="/">
           <img
             alt="Logo"
-            src="./logo-light.png"
-            style={{ width: "108px", margin: "17px 24px 18px 31px" }}
+            src="./logo.png"
+            style={{ width: "108px" }}
           />
         </Link>
 
         <div className="d-flex align-items-center">
-          {/* btn p-0 burger-icon burger-icon-left mobile-toggle-active */}
-          {/* data-offcanvas-aside="on" */}
           <button
             onClick={openSidebarHandler}
             className={`btn p-0 burger-icon burger-icon-left ${
@@ -91,546 +90,19 @@ const Header = () => {
         </div>
       </div>
       <div id="kt_header" className="header  header-fixed ">
-        <div className=" container-fluid  d-flex align-items-stretch justify-content-between">
-          <div className="topbar ml-auto">
-            {/* <div className="dropdown ml-3">
-            <div
-              className="topbar-item"
-              data-toggle="dropdown"
-              data-offset="10px,0px"
-            >
-              <div className="btn btn-icon btn-dropdown btn-lg mr-1 pulse pulse-primary">
-                <span className="svg-icon svg-icon-xl svg-icon-primary">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    //
-                    //xmlns:xlink="http://www.w3.org/1999/xlink"
-                    width="24px"
-                    height="24px"
-                    viewBox="0 0 24 24"
-                    version="1.1"
-                  >
-                    <g
-                      stroke="none"
-                      strokeWidth="1"
-                      fill="none"
-                      fillRule="evenodd"
-                    >
-                      <rect x="0" y="0" width="24" height="24" />
-                      <path
-                        d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z"
-                        fill="#000000"
-                      />
-                      <circle
-                        fill="#000000"
-                        opacity="0.3"
-                        cx="19.5"
-                        cy="17.5"
-                        r="2.5"
-                      />
-                    </g>
-                  </svg>
-                </span>
-                <span className="pulse-ring"></span>
-              </div>
-            </div>
-            <div className="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg">
-              <form>
-                <div
-                  className="d-flex flex-column py-10 bgi-size-cover bgi-no-repeat rounded-top"
-                  style={{
-                    backgroundImage: `url("./assets/img/bg-1.jpg")`,
-                  }}
-                >
-                  <h4 className="d-flex flex-center rounded-top mb-0">
-                    <span className="text-white">User Notifications</span>
-                  </h4>
-                </div>
-                <div className="tab-content">
-                  <div className="tab-pane active show pt-8 px-3 pb-3 pr-7">
-                    <div
-                      className="scroll pr-7 mr-n7"
-                      data-scroll="true"
-                      data-height="300"
-                      data-mobile-height="200"
-                    >
-                      <div className="d-flex align-items-center mb-6">
-                        <div className="symbol symbol-40 symbol-light-primary mr-5">
-                          <div className="symbol-label">
-                            <span className="svg-icon svg-icon-primary svg-icon-2x">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                //
-                                //xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px"
-                                height="24px"
-                                viewBox="0 0 24 24"
-                                version="1.1"
-                              >
-                                <g
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
-                                  <rect x="0" y="0" width="24" height="24" />
-                                  <circle
-                                    fill="#000000"
-                                    opacity="0.3"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="10"
-                                    width="2"
-                                    height="7"
-                                    rx="1"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="7"
-                                    width="2"
-                                    height="2"
-                                    rx="1"
-                                  />
-                                </g>
-                              </svg>
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex flex-column font-weight-bold">
-                          <a
-                            
-                            className="text-muted text-hover-primary mb-1 font-size-md"
-                          >
-                            New payment
-                          </a>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center mb-6">
-                        <div className="symbol symbol-40 symbol-light-primary mr-5">
-                          <div className="symbol-label">
-                            <span className="svg-icon svg-icon-primary svg-icon-2x">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                //
-                                //xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px"
-                                height="24px"
-                                viewBox="0 0 24 24"
-                                version="1.1"
-                              >
-                                <g
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
-                                  <rect x="0" y="0" width="24" height="24" />
-                                  <circle
-                                    fill="#000000"
-                                    opacity="0.3"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="10"
-                                    width="2"
-                                    height="7"
-                                    rx="1"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="7"
-                                    width="2"
-                                    height="2"
-                                    rx="1"
-                                  />
-                                </g>
-                              </svg>
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex flex-column font-weight-bold">
-                          <a
-                           
-                            className="text-muted text-hover-primary mb-1 font-size-md"
-                          >
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit.
-                          </a>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center mb-6">
-                        <div className="symbol symbol-40 symbol-light-primary mr-5">
-                          <div className="symbol-label">
-                            <span className="svg-icon svg-icon-primary svg-icon-2x">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                //
-                                //xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px"
-                                height="24px"
-                                viewBox="0 0 24 24"
-                                version="1.1"
-                              >
-                                <g
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
-                                  <rect x="0" y="0" width="24" height="24" />
-                                  <circle
-                                    fill="#000000"
-                                    opacity="0.3"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="10"
-                                    width="2"
-                                    height="7"
-                                    rx="1"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="7"
-                                    width="2"
-                                    height="2"
-                                    rx="1"
-                                  />
-                                </g>
-                              </svg>
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex flex-column font-weight-bold">
-                          <a
-                            
-                            className="text-muted text-hover-primary mb-1 font-size-md"
-                          >
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit.
-                          </a>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center mb-6">
-                        <div className="symbol symbol-40 symbol-light-primary mr-5">
-                          <div className="symbol-label">
-                            <span className="svg-icon svg-icon-primary svg-icon-2x">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                //
-                                //xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px"
-                                height="24px"
-                                viewBox="0 0 24 24"
-                                version="1.1"
-                              >
-                                <g
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
-                                  <rect x="0" y="0" width="24" height="24" />
-                                  <circle
-                                    fill="#000000"
-                                    opacity="0.3"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="10"
-                                    width="2"
-                                    height="7"
-                                    rx="1"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="7"
-                                    width="2"
-                                    height="2"
-                                    rx="1"
-                                  />
-                                </g>
-                              </svg>
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex flex-column font-weight-bold">
-                          <a
-                           
-                            className="text-muted text-hover-primary mb-1 font-size-md"
-                          >
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit.
-                          </a>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center mb-6">
-                        <div className="symbol symbol-40 symbol-light-primary mr-5">
-                          <div className="symbol-label">
-                            <span className="svg-icon svg-icon-primary svg-icon-2x">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                //
-                                //xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px"
-                                height="24px"
-                                viewBox="0 0 24 24"
-                                version="1.1"
-                              >
-                                <g
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
-                                  <rect x="0" y="0" width="24" height="24" />
-                                  <circle
-                                    fill="#000000"
-                                    opacity="0.3"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="10"
-                                    width="2"
-                                    height="7"
-                                    rx="1"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="7"
-                                    width="2"
-                                    height="2"
-                                    rx="1"
-                                  />
-                                </g>
-                              </svg>
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex flex-column font-weight-bold">
-                          <a
-                            
-                            className="text-muted text-hover-primary mb-1 font-size-md"
-                          >
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit.
-                          </a>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center mb-6">
-                        <div className="symbol symbol-40 symbol-light-primary mr-5">
-                          <div className="symbol-label">
-                            <span className="svg-icon svg-icon-primary svg-icon-2x">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                //
-                                //xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px"
-                                height="24px"
-                                viewBox="0 0 24 24"
-                                version="1.1"
-                              >
-                                <g
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
-                                  <rect x="0" y="0" width="24" height="24" />
-                                  <circle
-                                    fill="#000000"
-                                    opacity="0.3"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="10"
-                                    width="2"
-                                    height="7"
-                                    rx="1"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="7"
-                                    width="2"
-                                    height="2"
-                                    rx="1"
-                                  />
-                                </g>
-                              </svg>
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex flex-column font-weight-bold">
-                          <a
-                            
-                            className="text-muted text-hover-primary mb-1 font-size-md"
-                          >
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit.
-                          </a>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center mb-6">
-                        <div className="symbol symbol-40 symbol-light-primary mr-5">
-                          <div className="symbol-label">
-                            <span className="svg-icon svg-icon-primary svg-icon-2x">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                //
-                                //xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px"
-                                height="24px"
-                                viewBox="0 0 24 24"
-                                version="1.1"
-                              >
-                                <g
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
-                                  <rect x="0" y="0" width="24" height="24" />
-                                  <circle
-                                    fill="#000000"
-                                    opacity="0.3"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="10"
-                                    width="2"
-                                    height="7"
-                                    rx="1"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="7"
-                                    width="2"
-                                    height="2"
-                                    rx="1"
-                                  />
-                                </g>
-                              </svg>
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex flex-column font-weight-bold">
-                          <a
-                            
-                            className="text-muted text-hover-primary mb-1 font-size-md"
-                          >
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit.
-                          </a>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center mb-6">
-                        <div className="symbol symbol-40 symbol-light-primary mr-5">
-                          <div className="symbol-label">
-                            <span className="svg-icon svg-icon-primary svg-icon-2x">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                //
-                                //xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px"
-                                height="24px"
-                                viewBox="0 0 24 24"
-                                version="1.1"
-                              >
-                                <g
-                                  stroke="none"
-                                  strokeWidth="1"
-                                  fill="none"
-                                  fillRule="evenodd"
-                                >
-                                  <rect x="0" y="0" width="24" height="24" />
-                                  <circle
-                                    fill="#000000"
-                                    opacity="0.3"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="10"
-                                    width="2"
-                                    height="7"
-                                    rx="1"
-                                  />
-                                  <rect
-                                    fill="#000000"
-                                    x="11"
-                                    y="7"
-                                    width="2"
-                                    height="2"
-                                    rx="1"
-                                  />
-                                </g>
-                              </svg>
-                            </span>
-                          </div>
-                        </div>
-                        <div className="d-flex flex-column font-weight-bold">
-                          <a
-                            
-                            className="text-muted text-hover-primary mb-1 font-size-md"
-                          >
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit.
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="d-flex flex-center pt-3">
-                      <a
-                        
-                        className="btn btn-light-primary font-weight-bold text-center"
-                      >
-                        See All
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div> */}
+        <div className=" container-fluid  d-flex align-items-stretch justify-content-between align-items-center">
+          <div className="d-flex">
+          <button
+            // onClick={}
+            className={`brand-toggle btn btn-sm px-0`}
+            id="kt_aside_toggle"
+          >
+            <span className="">
+              <Arrow onClickFunc={()=> setToggleSidebar(prev => !prev)}/>
+            </span>{" "}
+          </button>
+          </div>
+          {/* <div className="topbar ml-auto">
             <div className="dropdown ml-3">
               <div
                 className="topbar-item"
@@ -638,7 +110,7 @@ const Header = () => {
                 data-offset="10px,0px"
                 style={{cursor : "pointer"}}
               >
-                <a /*href="#!"*/ className="d-flex align-items-center">
+                <a  className="d-flex align-items-center">
                   <div className="symbol symbol-30 symbol-circle symbol-primary mr-2">
                     <span className="symbol-label">
                       {name[0].toUpperCase()}
@@ -713,7 +185,6 @@ const Header = () => {
                   <div className="col-6">
                     <Link
                       to="/change-password"
-                      /*href="#!"*/
                       className="d-block py-6 px-5 text-center bg-hover-light border-right border-bottom"
                     >
                       <span className="svg-icon svg-icon-3x svg-icon-success">
@@ -754,7 +225,6 @@ const Header = () => {
                   <div className="col-12">
                     <a
                       onClick={() => dispatch(logout())}
-                      /*href="#!"*/
                       className="d-block py-6 px-5 text-center bg-hover-light border-bottom"
                     >
                       <span className="svg-icon svg-icon-3x svg-icon-success">
@@ -808,7 +278,7 @@ const Header = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import useRequest from "../../hooks/useRequest";
@@ -19,10 +19,10 @@ const ResetPassword = (props) => {
   const { request, response } = useRequest();
   const { request: verifyTokenReq, response: verifyTokenRes } = useRequest();
 
-  const history = useNavigate();
+  const history = useHistory();
 
   useEffect(() => {
-    document.title = "Reset Password - Native";
+    document.title = "Reset Password - Clear vu";
     if (!token) {
       history.push("/login");
     }

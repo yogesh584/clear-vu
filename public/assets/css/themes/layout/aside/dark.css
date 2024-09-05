@@ -132,11 +132,11 @@
 }
 .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-heading,
 .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link {
-  background-color: #119dfb;
+  background-color: #effffa
 }
 .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-heading .menu-text,
 .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link .menu-text {
-  color: #ffffff;
+  color: #39D9A7;
 }
 .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-heading .menu-icon,
 .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link .menu-icon {
@@ -211,7 +211,7 @@
 }
 .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-heading .menu-arrow,
 .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link .menu-arrow {
-  color: #ffffff;
+  color: #39D9A7;
 }
 .aside-menu .menu-nav > .menu-item.menu-item-here {
   -webkit-transition: background-color 0.3s;
@@ -307,7 +307,7 @@
 .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading,
 .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link,
 .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link:hover {
-  background-color: #119dfb;
+  background-color: #effffa;
 }
 .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading .menu-text,
 .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link .menu-text {
@@ -408,7 +408,7 @@
     .menu-item-here
   ):not(.menu-item-active):hover
   > .menu-link {
-  background-color: #119dfb;
+  background-color: #effffa;
 }
 .aside-menu
   .menu-nav
@@ -439,7 +439,7 @@
   ):not(.menu-item-active):hover
   > .menu-link
   .menu-text {
-  color: #ffffff;
+  color: #39D9A7;
 }
 .aside-menu
   .menu-nav
@@ -554,7 +554,7 @@
   ):not(.menu-item-active):hover
   > .menu-link
   .menu-arrow {
-  color: #ffffff;
+  color: #39D9A7;
 }
 .aside-menu .menu-nav > .menu-item > .menu-arrow {
   color: #1e1e2d;
@@ -1156,8 +1156,28 @@
     .menu-item-here
   ):not(.menu-item-active):hover
   > .menu-link {
-  background-color: #119dfb;
+  background-color: #effffa;
 }
+
+.aside-menu
+  .menu-nav
+  > .menu-item
+  .menu-submenu
+  .menu-item:not(.menu-item-parent):not(.menu-item-open):not(
+    .menu-item-here
+  ):not(.menu-item-active):hover
+  > .menu-heading,
+.aside-menu
+  .menu-nav
+  > .menu-item
+  .menu-submenu
+  .menu-item:not(.menu-item-parent):not(.menu-item-open):not(
+    .menu-item-here
+  ):not(.menu-item-active):hover
+  > .menu-link svg path {
+  fill: #39D9A7;
+}
+
 .aside-menu
   .menu-nav
   > .menu-item
@@ -1176,7 +1196,7 @@
   ):not(.menu-item-active):hover
   > .menu-link
   .menu-text {
-  color: #ffffff;
+  color: #39D9A7;
 }
 .aside-menu
   .menu-nav
@@ -3035,7 +3055,7 @@
 }
 
 .menu-link.menu-toggle:hover {
-  background-color: #119dfb !important;
+  background-color: #effffa !important;1
 }
 .menu-link.menu-toggle:hover .svg-icon svg {
   color: #fff;
@@ -3043,5 +3063,5 @@
 }
 .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item:hover {
   margin: 0;
-  background-color: yellow;
+  /* background-color: yellow; */
 }
