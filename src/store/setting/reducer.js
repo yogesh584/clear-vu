@@ -5,10 +5,12 @@ const initialState = {
   date_format: null,
   date_time_format: null,
   title: null,
-  languages: [],
+  copyright : null,
+  gst_percentage : null,
+  gst_number : null,
 };
 
-const settingReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_SETTING:
       return {
@@ -20,4 +22,4 @@ const settingReducer = (state = initialState, action) => {
   }
 };
 
-export default settingReducer;
+export default authReducer;

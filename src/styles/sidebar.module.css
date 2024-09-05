@@ -1,0 +1,26 @@
+.sidebar_link {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar_span_link{
+    font-family: Lexend;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0.03em;
+    text-align: left;
+    font-weight: bold;
+}
+
+.active_sidebar_arrow:before{
+    transform: rotateZ(90deg) !important;
+}
+
+.active_menu_item {
+    background-color: #39D9A7;
+}
+
+.sidebar_svg_style {
+    
+}

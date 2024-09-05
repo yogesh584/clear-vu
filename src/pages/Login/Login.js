@@ -23,7 +23,7 @@ const Login = () => {
   const { response, request } = useRequest();
 
   useEffect(() => {
-    document.title = "Login - Native";
+    document.title = "Login - Clear vu";
   }, []);
 
   useEffect(() => {

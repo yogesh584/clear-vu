@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 import useRequest from "../../hooks/useRequest";
-// import { OtherInput } from "../../components/Form/Form";
+import { OtherInput } from "../../components/Form/Form";
 
 const ForgotPassword = () => {
   const {
@@ -16,10 +16,10 @@ const ForgotPassword = () => {
 
   const { request, response } = useRequest();
 
-  const history = useNavigate();
+  const history = useHistory();
 
   useEffect(() => {
-    document.title = "Forgot Password - Native";
+    document.title = "Forgot Password - Clear vu";
   }, []);
 
   useEffect(() => {
@@ -78,14 +78,14 @@ const ForgotPassword = () => {
                 </p>
               </div>
 
-              {/* {InputFields.map((input, index) => (
+              {InputFields.map((input, index) => (
                 <OtherInput
                   key={index}
                   {...input}
                   errors={errors}
                   register={register}
                 />
-              ))} */}
+              ))}
 
               <div className="form-group d-flex flex-wrap">
                 <button

@@ -1,328 +1,583 @@
-export const PERMISSION = [
-  {
-    name: "Dashboard",
-    key: "1",
-    children: [
-      {
-        name: "View Dashboard",
-        key: "1_1",
-        children: [],
-      },
-    ],
-  },
-  {
-    name: "Customer Management",
-    key: "2",
-    children: [
-      {
-        name: "View All",
-        key: "2_1",
-        children: [],
-      },
-      {
-        name: "Add",
-        key: "2_2",
-        children: [],
-      },
-      {
-        name: "Change Status",
-        key: "2_3",
-        children: [],
-      },
-      {
-        name: "View One",
-        key: "2_4",
-        children: [],
-      },
-      {
-        name: "Edit",
-        key: "2_5",
-        children: [],
-      },
-      {
-        name: "Delete",
-        key: "2_6",
-        children: [],
-      },
-      {
-        name: "Change Password",
-        key: "2_7",
-        children: [],
-      },
-      {
-        name: "Send Credentials",
-        key: "2_8",
-        children: [],
-      },
-    ],
-  },
 
-  {
-    name: "Sub Admin Management",
-    key: "4",
-    children: [
-      {
-        name: "View All Sub Admin",
-        key: "4_1",
-        children: [],
-      },
-      {
-        name: "Add Sub Admin",
-        key: "4_2",
-        children: [],
-      },
-      {
-        name: "Edit Sub Admin",
-        key: "4_3",
-        children: [],
-      },
-      {
-        name: "Change Password Sub Admin",
-        key: "4_4",
-        children: [],
-      },
-      {
-        name: "Send Credential Sub Admin",
-        key: "4_5",
-        children: [],
-      },
-      {
-        name: "Change Status Sub Admin",
-        key: "4_6",
-        children: [],
-      },
-      {
-        name: "Delete Sub Admin",
-        key: "4_7",
-        children: [],
-      },
-      {
-        name: "View One Sub Admin",
-        key: "4_8",
-        children: [],
-      },
-      {
-        name: "View All Admin Role",
-        key: "4_20",
-        children: [],
-      },
-      {
-        name: "Add Admin Role",
-        key: "4_21",
-        children: [],
-      },
-      {
-        name: "Edit Admin Role",
-        key: "4_22",
-        children: [],
-      },
-      {
-        name: "Change Status Admin Role",
-        key: "4_23",
-        children: [],
-      },
-      {
-        name: "Delete Admin Role",
-        key: "4_24",
-        children: [],
-      },
-    ],
-  },
+export const permissions = [
+    {
+        name: 'Candidates',
+        key: '10',
+        permissions: [
+            {
+                name: "View",
+                key: "10_1",
+            },
+            {
+                name: "View One",
+                key: "10_2",
+            },
+            {
+                name: "Add User",
+                key: "10_3"
+            },
+            {
+                name: "Edit User",
+                key: "10_4"
+            },            
+            {
+                name: "Delete User",
+                key: "10_5",
+            },
+            {
+                name: "Change Password",
+                key: "10_6",
+            },
+            {
+                name: "Send Credentials",
+                key: "10_7"
+            },
+            {
+                name: "Change status",
+                key: "10_8"
+            },
+            {
+                name: "Download CV",
+                key: "10_9"
+            }, 
+            {
+                name: "verified",
+                key: "10_10"
+            },
 
-  {
-    name: "System Management",
-    key: "12",
-    children: [
-      {
-        name: "Cms Pages - View All",
-        key: "12_1",
-        children: [],
-      },
-      {
-        name: "Cms Pages - View One",
-        key: "12_2",
-        children: [],
-      },
-      {
-        name: "Cms Pages - Edit",
-        key: "12_3",
-        children: [],
-      },
-      {
-        name: "Seo Pages - View All",
-        key: "12_10",
-        children: [],
-      },
-      {
-        name: "Seo Pages - Edit",
-        key: "12_11",
-        children: [],
-      },
-      {
-        name: "Seo Pages - Delete",
-        key: "12_12",
-        children: [],
-      },
-      {
-        name: "Email Templates - View All",
-        key: "12_20",
-        children: [],
-      },
-      {
-        name: "Email Templates - Edit",
-        key: "12_21",
-        children: [],
-      },
-      {
-        name: "Email Logs - View All",
-        key: "12_30",
-        children: [],
-      },
-      {
-        name: "Email Logs - View One",
-        key: "12_31",
-        children: [],
-      },
-      {
-        name: "FAQs - View All",
-        key: "12_40",
-        children: [],
-      },
-      {
-        name: "FAQs - Add",
-        key: "12_41",
-        children: [],
-      },
-      {
-        name: "FAQs - Change Status",
-        key: "12_42",
-        children: [],
-      },
-      {
-        name: "FAQs - Edit",
-        key: "12_43",
-        children: [],
-      },
-      {
-        name: "FAQs - Delete",
-        key: "12_44",
-        children: [],
-      },
+        ]
+    },    
+    {
+        name: 'Sub Admins',
+        key: '20',
+        permissions: [
+            {
+                name: "View",
+                key: "20_1",
+            },
+            {
+                name: "View One",
+                key: "20_2",
+            },
+            {
+                name: "Add Sub Admin",
+                key: "20_3"
+            },
+            {
+                name: "Edit Sub Admin",
+                key: "20_4"
+            },            
+            {
+                name: "Delete Sub Admin",
+                key: "20_5",
+            },
+            {
+                name: "Change Password",
+                key: "20_6",
+            },
+            {
+                name: "Send Credentials",
+                key: "20_7"
+            },
+            {
+                name: "Change status",
+                key: "20_8"
+            },         
+        ]
+    },    
+    {
+        name: 'Sub Admin Roles',
+        key: '30',
+        permissions: [
+            {
+                name: "View",
+                key: "30_1",
+            },
+            {
+                name: "Add",
+                key: "30_2"
+            },
+            {
+                name: "Edit",
+                key: "30_3"
+            },
+            {
+                name: "Change Status",
+                key: "30_4"
+            },
+            {
+                name: "Delete",
+                key: "30_5"
+            }
+        ]
+    },   
+    {
+        name: 'CMS Pages',
+        key: '40',
+        permissions: [
+            {
+                name: "View",
+                key: "40_1",
+            },
+            {
+                name: "View One",
+                key: "40_2",
+            },
+            {
+                name: "Add",
+                key: "40_3",
+            },
+            {
+                name: "Edit",
+                key: "40_4"
+            },
+        ]
+    }, 
+    {
+        name: 'Email Templates',
+        key: '50',
+        permissions: [
+            {
+                name: "View",
+                key: "50_1",
+            },
+            {
+                name: "Add",
+                key: "50_2",
+            },
+            {
+                name: "Edit",
+                key: "50_3"
+            },
+        ]
+    },
+    {
+        name: 'Email Logs',
+        key: '60',
+        permissions: [
+            {
+                name: "View",
+                key: "60_1",
+            },
+            {
+                name: "View One",
+                key: "60_2"
+            }
+        ]
+    },   
+    {
+        name: 'Contact Queries',
+        key: '71',
+        permissions: [
+            {
+                name: "View",
+                key: "71_1",
+            },
+            {
+                name: "View One",
+                key: "71_2"
+            },            
+        ]
+    },  
+    {
+        name: 'Newsletter Subscribers',
+        key: '72',
+        permissions: [
+            {
+                name: "View",
+                key: "72_1",
+            },                    
+        ]
+    },    
+    {
+        name: "Settings",
+        key: '80',
+        permissions: [
+            {
+                name: 'Setting list (master)',
+                key: '80_1',
+            },
+            {
+                name: 'Add Setting (master)',
+                key: '80_2',
+            },
+            {
+                name: 'Edit Settings (master)',
+                key: '80_3',
+            },
+            {
+                name: 'Site Settings',
+                key: '80_4',
+            },
+            {
+                name: 'Reading Settings',
+                key: '80_5',
+            },
+            {
+                name: 'Social Settings',
+                key: '80_6',
+            },
+            {
+                name: 'Contact Settings',
+                key: '80_7',
+            },          
+        ]
+    },   
+    {
+        name: "Blocks",
+        key: '90',
+        permissions: [
+            {
+                name: "View",
+                key: "90_1",
+            }, 
+            {
+                name: "View One",
+                key: "90_2",
+            }, 
+            {
+                name: "Add",
+                key: "90_3",
+            },  
+            {
+                name: "Edit",
+                key: "90_4",
+            },             
+        ]
+    },
+    {
+        name: "Testimonials",
+        key: '100',
+        permissions: [
+            {
+                name: "View",
+                key: "100_1",
+            }, 
+            {
+                name: "View One",
+                key: "100_2",
+            }, 
+            {
+                name: "Add",
+                key: "100_3",
+            },  
+            {
+                name: "Edit",
+                key: "100_4",
+            }, 
+            {
+                name: "Delete",
+                key: "100_5",
+            },             
+        ]
+    },
+    {
+        name: "Job Industries",
+        key: '110',
+        permissions: [
+            {
+                name: "View",
+                key: "110_1",
+            },             
+            {
+                name: "Add",
+                key: "110_3",
+            },  
+            {
+                name: "Edit",
+                key: "110_4",
+            }, 
+            {
+                name: "Delete",
+                key: "110_5",
+            },             
+        ]
+    },
+    {
+        name: "Job Category",
+        key: '120',
+        permissions: [
+            {
+                name: "View",
+                key: "120_1",
+            },             
+            {
+                name: "Add",
+                key: "120_3",
+            },  
+            {
+                name: "Edit",
+                key: "120_4",
+            }, 
+            {
+                name: "Delete",
+                key: "120_5",
+            },             
+        ]
+    },
+    {
+        name: "Job Type",
+        key: '130',
+        permissions: [
+            {
+                name: "View",
+                key: "130_1",
+            },             
+            {
+                name: "Add",
+                key: "130_3",
+            },  
+            {
+                name: "Edit",
+                key: "130_4",
+            }, 
+            {
+                name: "Delete",
+                key: "130_5",
+            },             
+        ]
+    },
+    {
+        name: "Study Topic",
+        key: '140',
+        permissions: [
+            {
+                name: "View",
+                key: "140_1",
+            },             
+            {
+                name: "Add",
+                key: "140_3",
+            },  
+            {
+                name: "Edit",
+                key: "140_4",
+            }, 
+            {
+                name: "Delete",
+                key: "140_5",
+            },             
+        ]
+    },
+    {
+        name: "Study Field",
+        key: '150',
+        permissions: [
+            {
+                name: "View",
+                key: "150_1",
+            },             
+            {
+                name: "Add",
+                key: "150_3",
+            },  
+            {
+                name: "Edit",
+                key: "150_4",
+            }, 
+            {
+                name: "Delete",
+                key: "150_5",
+            },             
+        ]
+    },
+    {
+        name: "Grade",
+        key: '160',
+        permissions: [
+            {
+                name: "View",
+                key: "160_1",
+            },             
+            {
+                name: "Add",
+                key: "160_3",
+            },  
+            {
+                name: "Edit",
+                key: "160_4",
+            }, 
+            {
+                name: "Delete",
+                key: "160_5",
+            },             
+        ]
+    },
+    {
+        name: "Graduation Certificate",
+        key: '170',
+        permissions: [
+            {
+                name: "View",
+                key: "170_1",
+            },             
+            {
+                name: "Add",
+                key: "170_3",
+            },  
+            {
+                name: "Edit",
+                key: "170_4",
+            }, 
+            {
+                name: "Delete",
+                key: "170_5",
+            },             
+        ]
+    },
+    {
+        name: "Degree Level",
+        key: '180',
+        permissions: [
+            {
+                name: "View",
+                key: "180_1",
+            },             
+            {
+                name: "Add",
+                key: "180_2",
+            },  
+            {
+                name: "Edit",
+                key: "180_3",
+            }, 
+            {
+                name: "Delete",
+                key: "180_5",
+            },             
+        ]
+    },
+    {
+        name: "Skill",
+        key: '190',
+        permissions: [
+            {
+                name: "View",
+                key: "190_1",
+            },             
+            {
+                name: "Add",
+                key: "190_2",
+            },  
+            {
+                name: "Edit",
+                key: "190_3",
+            }, 
+            {
+                name: "Delete",
+                key: "190_5",
+            },             
+        ]
+    },
+    {
+        name: "Languages",
+        key: '200',
+        permissions: [
+            {
+                name: "View",
+                key: "200_1",
+            },             
+            {
+                name: "Add",
+                key: "200_2",
+            },  
+            {
+                name: "Edit",
+                key: "200_3",
+            }, 
+            {
+                name: "Delete",
+                key: "200_5",
+            },             
+        ]
+    },
+    {
+        name: "Career Level",
+        key: '210',
+        permissions: [
+            {
+                name: "View",
+                key: "210_1",
+            },             
+            {
+                name: "Add",
+                key: "210_2",
+            },  
+            {
+                name: "Edit",
+                key: "210_3",
+            }, 
+            {
+                name: "Delete",
+                key: "210_5",
+            },             
+        ]
+    },
+    {
+        name: "Status",
+        key: '220',
+        permissions: [
+            {
+                name: "View",
+                key: "220_1",
+            },             
+            {
+                name: "Add",
+                key: "220_2",
+            },  
+            {
+                name: "Edit",
+                key: "220_3",
+            }, 
+            {
+                name: "Delete",
+                key: "220_5",
+            },             
+        ]
+    },
+    {
+        name: "Lives In",
+        key: '230',
+        permissions: [
+            {
+                name: "View",
+                key: "230_1",
+            },             
+            {
+                name: "Add",
+                key: "230_2",
+            },  
+            {
+                name: "Edit",
+                key: "230_3",
+            }, 
+            {
+                name: "Delete",
+                key: "230_5",
+            },             
+        ]
+    },
+    {
+        name: "Post-Graduation Degree Level",
+        key: '240',
+        permissions: [
+            {
+                name: "View",
+                key: "240_1",
+            },             
+            {
+                name: "Add",
+                key: "240_2",
+            },  
+            {
+                name: "Edit",
+                key: "240_3",
+            }, 
+            {
+                name: "Delete",
+                key: "240_5",
+            },             
+        ]
+    },
+]
 
-      {
-        name: "Notifications - View All",
-        key: "12_100",
-        children: [],
-      },
-      {
-        name: "Notifications - Send",
-        key: "12_101",
-        children: [],
-      },
-
-      // {
-      //   name: "Languages - View All",
-      //   key: "12_140",
-      //   children: [],
-      // },
-      // {
-      //   name: "Languages - Change Status",
-      //   key: "12_141",
-      //   children: [],
-      // },
-
-      {
-        name: "Contact Us - View All",
-        key: "12_200",
-        children: [],
-      },
-      // {
-      //   name: "Newsletter Subscriptions - View All",
-      //   key: "12_201",
-      //   children: [],
-      // },
-    ],
-  },
-  {
-    name: "Settings",
-    key: "13",
-    children: [
-      {
-        name: "View Settings",
-        key: "13_1",
-        children: [],
-      },
-      {
-        name: "Site Settings",
-        key: "13_2",
-        children: [],
-      },
-      {
-        name: "Reading Settings",
-        key: "13_3",
-        children: [],
-      },
-      {
-        name: "Social Settings",
-        key: "13_4",
-        children: [],
-      },
-      {
-        name: "Contact Settings",
-        key: "13_5",
-        children: [],
-      },
-    ],
-  },
-];
-
-// functions -----------------
-
-const defaultPermissions = {
-  changePass: true,
-  profile: true,
-};
-
-export const getFilteredRoutes = (routes, permission) => {
-  permission = { ...permission, ...defaultPermissions };
-  routes = routes.filter((route) => !!permission[route.key]);
-  return routes;
-};
-
-export const getFilteredLinks = (links, permission) => {
-  permission = { ...permission, ...defaultPermissions };
-  return links.filter((link) => !!permission[link.key]);
-};
-
-export const getFilteredData = (datas, permission) => {
-  permission = { ...permission, ...defaultPermissions };
-  const filterArray = (arr) => {
-    return (arr = arr.filter((ele) => {
-      if (ele.subMenu && ele.subMenu.length > 0) {
-        ele.subMenu = filterArray(ele.subMenu);
-      }
-      return !!permission[ele.key];
-    }));
-  };
-  return filterArray(datas);
-};
-
-export const hasAccess = (key, permission) => {
-  return !!permission[key];
-};
-
-export const getParent = (key) => {
-  let lastNumDigits = key.split("_");
-  lastNumDigits = lastNumDigits[lastNumDigits.length - 1].length;
-  return key.substring(0, key.length - (lastNumDigits + 1));
-};
-
-export const permissionObj = (arr) => {
-  let obj = {};
-  arr.forEach((val) => {
-    obj[val] = true;
-  });
-  return obj;
-};
-
-export const permissions = {};

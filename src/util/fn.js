@@ -88,3 +88,20 @@ export const timeGapYearMonth = (start, end) => {
   return str;
 };
 
+
+// export const getLatestCompany = (list = []) => {
+//   let latest = {};
+
+//   for (let i = 0; i < list.length; i++) {
+//     let elem = list[i];
+//     if (elem?.is_currently_working == 1) {
+//       latest = elem;
+//       break;
+//     }
+//     if (moment(elem.end_date) > moment(latest.end_date)) {
+//       latest = elem;
+//     }
+//   }
+
+//   return latest;
+// };

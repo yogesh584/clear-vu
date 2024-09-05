@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import styles from "../../styles/sidebar.module.css"
 
 const ZeroLevel = ({ menu, pathname }) => {
   const [active, setActive] = useState(false);
@@ -25,14 +26,16 @@ const ZeroLevel = ({ menu, pathname }) => {
   return (
     <li
       onClick={updateActive}
-      className={`menu-item ${active ? "menu-item-active" : ""}`}
+      className={`menu-item`}
     >
-      <Link to={path} className={`menu-link`}>
-        <span className="svg-icon menu-icon">
-          <Svg />
-        </span>
-        <span className="menu-text">{name}</span>
-      </Link>
+      <div className={`menu-link`} style={{margin: "9px 15px", padding: "0px 25px",borderRadius: "10px"}}>
+        <Link to={path} className={`${styles.sidebar_link}`}>
+          <span className="svg-icon menu-icon">
+            <Svg />
+          </span>
+          <span className={`menu-text ${styles.sidebar_span_link}`}>{name}</span>
+        </Link>
+      </div>
     </li>
   );
 };
