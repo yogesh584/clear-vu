@@ -61457,7 +61457,13 @@ body {
   .header-fixed.aside-static .aside {
     padding-top: 65px; }
   .aside-minimize .aside {
-    width: 70px; }
+    width: 70px;
+    
+  }
+  .aside-minimize .aside .aside-menu-wrapper .menu-link{
+    margin-left: 0px !important;
+  }
+
   .aside.ps > .ps__rail-y {
     width: 4px; }
     .aside.ps > .ps__rail-y:hover, .aside.ps > .ps__rail-y:focus {

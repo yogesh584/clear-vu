@@ -14,6 +14,13 @@ const Sidebar = ({toggleSidebar}) => {
     (state) => state.auth
   );
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(isMobileSidebarOpen);
+
+  useEffect(()=>{
+    setIsSidebarOpen(isMobileSidebarOpen)
+  },[isMobileSidebarOpen])
+
+
   const [filteredMenu, setFilteredMenu] = useState(menu);
 
   useEffect(() => {
@@ -53,7 +60,7 @@ const Sidebar = ({toggleSidebar}) => {
   }, []);
 
   useEffect(()=>{
-    // onClickSidebarHandler()
+    onClickSidebarHandler()
   },[toggleSidebar])
 
   const { pathname } = useLocation();
@@ -64,9 +71,11 @@ const Sidebar = ({toggleSidebar}) => {
     if (fullSidebar) {
       document.body.classList.add("aside-minimize");
       document.querySelector("#kt_aside_toggle").classList.add("active");
+      setIsSidebarOpen(false);
     } else {
       document.body.classList.remove("aside-minimize");
       document.querySelector("#kt_aside_toggle").classList.remove("active");
+    setIsSidebarOpen(true)
     }
 
     setFullSidebar((prev) => !prev);
@@ -77,6 +86,7 @@ const Sidebar = ({toggleSidebar}) => {
     if (!fullSidebar) {
       document.body.classList.remove("aside-minimize");
       document.body.classList.add("aside-minimize-hover");
+      setIsSidebarOpen(true);
     }
   };
 
@@ -84,6 +94,7 @@ const Sidebar = ({toggleSidebar}) => {
     if (!fullSidebar) {
       document.body.classList.add("aside-minimize");
       document.body.classList.remove("aside-minimize-hover");
+      setIsSidebarOpen(false);
     }
   };
 
@@ -101,16 +112,15 @@ const Sidebar = ({toggleSidebar}) => {
           <Link to="/" className="brand-logo">
             <img alt="Logo" src="./logo.png" style={{ width: "100%" }} />
           </Link>
-
-          {/* <button
+        {!isSidebarOpen && <button
             onClick={onClickSidebarHandler}
             className={`brand-toggle btn btn-sm px-0`}
             id="kt_aside_toggle"
           >
-            <span className="svg-icon svg-icon svg-icon-xl">
-              <Arrow />
-            </span>{" "}
-          </button> */}
+            <span >
+              <img src="./logo_without_text.png"/>
+            </span>
+          </button>}
         </div>
 
         <div

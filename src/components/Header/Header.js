@@ -41,14 +41,12 @@ const Header = ({setToggleSidebar}) => {
         <Link to="/">
           <img
             alt="Logo"
-            src="./logo-light.png"
-            style={{ width: "108px", margin: "17px 24px 18px 31px" }}
+            src="./logo.png"
+            style={{ width: "108px" }}
           />
         </Link>
 
         <div className="d-flex align-items-center">
-          {/* btn p-0 burger-icon burger-icon-left mobile-toggle-active */}
-          {/* data-offcanvas-aside="on" */}
           <button
             onClick={openSidebarHandler}
             className={`btn p-0 burger-icon burger-icon-left ${
