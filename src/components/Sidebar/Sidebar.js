@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -8,17 +8,17 @@ import { menu } from "../../util/data";
 import { Arrow } from "../../util/Svg";
 import { sidebarToggle } from "../../store/auth/action";
 
-const Sidebar = ({toggleSidebar}) => {
-  const [fullSidebar, setFullSidebar] = useState(true);
+const Sidebar = ({ toggleSidebar }) => {
+  const [fullSidebar, setFullSidebar] = useState(false);
   const { isMobileSidebarOpen, permissions, user_role_id } = useSelector(
     (state) => state.auth
   );
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(isMobileSidebarOpen);
 
-  useEffect(()=>{
+  useEffect(() => {
     setIsSidebarOpen(isMobileSidebarOpen)
-  },[isMobileSidebarOpen])
+  }, [isMobileSidebarOpen])
 
 
   const [filteredMenu, setFilteredMenu] = useState(menu);
@@ -59,9 +59,9 @@ const Sidebar = ({toggleSidebar}) => {
     }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     onClickSidebarHandler()
-  },[toggleSidebar])
+  }, [toggleSidebar])
 
   const { pathname } = useLocation();
   const dispatch = useDispatch();
@@ -75,7 +75,7 @@ const Sidebar = ({toggleSidebar}) => {
     } else {
       document.body.classList.remove("aside-minimize");
       document.querySelector("#kt_aside_toggle").classList.remove("active");
-    setIsSidebarOpen(true)
+      setIsSidebarOpen(true)
     }
 
     setFullSidebar((prev) => !prev);
@@ -101,9 +101,8 @@ const Sidebar = ({toggleSidebar}) => {
   return (
     <>
       <div
-        className={`aside aside-left  aside-fixed  d-flex flex-column flex-row-auto ${
-          isMobileSidebarOpen ? "aside-on" : ""
-        }`}
+        className={`aside aside-left  aside-fixed  d-flex flex-column flex-row-auto ${isMobileSidebarOpen ? "aside-on" : ""
+          }`}
         id="kt_aside"
         onMouseOver={onHoverSidebarHandler}
         onMouseLeave={onMouseLeaveHandler}
@@ -112,13 +111,13 @@ const Sidebar = ({toggleSidebar}) => {
           <Link to="/" className="brand-logo">
             <img alt="Logo" src="./logo.png" style={{ width: "100%" }} />
           </Link>
-        {!isSidebarOpen && <button
+          {!isSidebarOpen && <button
             onClick={onClickSidebarHandler}
             className={`brand-toggle btn btn-sm px-0`}
             id="kt_aside_toggle"
           >
             <span >
-              <img src="./logo_without_text.png"/>
+              <img src="./logo_without_text.png" />
             </span>
           </button>}
         </div>

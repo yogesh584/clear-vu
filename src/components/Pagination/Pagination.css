@@ -1,7 +1,33 @@
 #container {
-    margin: 1rem;
-  }
-  
-  .items {
-    margin-bottom: 1rem;
-  }
+  margin: 1rem;
+}
+
+.items {
+  margin-bottom: 1rem;
+}
+
+.pagination_button {
+  border: 1px solid #c6c9ce;
+  border-radius: 13px;
+  color: #c6c9ce;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: #fff;
+}
+
+.pagination_button svg path {
+  fill: #c6c9ce;
+}
+
+.pagination_button:hover svg path {
+  fill: #39D9A7;
+}
+
+.pagination_button:hover {
+  border: 1px solid #39D9A7;
+  color: #39D9A7;
+  background: #effffa;
+}

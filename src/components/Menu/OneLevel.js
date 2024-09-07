@@ -31,7 +31,7 @@ const OneLevelMenu = ({ menu, pathname }) => {
       data-menu-toggle="hover"
       onClick={() => setActive((prev) => !prev)}
     >
-      <div className={`menu-link`} style={{ margin: "9px 15px", padding: "0px 25px",borderRadius: "10px" }}>
+      <div className={`menu-link`} style={{ margin: "9px 15px", padding: "0px 25px", borderRadius: "10px" }}>
         <a className={`${styles.sidebar_link} menu-toggle`}>
           <span className="svg-icon menu-icon">
             <Svg />
@@ -60,9 +60,9 @@ const OneLevelMenu = ({ menu, pathname }) => {
                 "menu-item-open"
                 }`}
             >
-              <div className={`menu-link`} style={{ margin: "9px 15px", padding: "0px 25px",paddingLeft: "40px", borderRadius: "10px" }}>
-                <Link to={menu.path} className={`${styles.sidebar_link}`} style={{ alignItems: "center", gap: "10px" }}>
-                  {isActive ? <MenuBulletRadio svgStyle={{ height: "13px", width: "13px" }} customClass={styles.sidebar_svg_style}/> : <CircleIcon svgStyle={{ height: "12px", width: "12px" }}/>}
+              <div className={`menu-link`} style={{ margin: "9px 15px", padding: "0px 25px", paddingLeft: "40px", borderRadius: "10px" }}>
+                <Link to={menu.path} className={`${styles.sidebar_link} `} style={{ alignItems: "center", gap: "10px" }}>
+                  {isActive ? <MenuBulletRadio svgStyle={{ height: "13px", width: "13px" }} customClass={styles.sidebar_svg_style} /> : <CircleIcon svgStyle={{ height: "12px", width: "12px" }} />}
                   <span className={`menu-text ${styles.sidebar_span_link}`}>{menu.name}</span>
                 </Link>
               </div>
