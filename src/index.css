@@ -22,3 +22,18 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+* {
+  font-family: Lexend !important;
+}
+
+p,
+span {
+  font-family: Lexend;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: 0.03em;
+  text-align: left;
+  font-weight: bold;
+}

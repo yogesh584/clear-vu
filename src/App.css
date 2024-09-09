@@ -9,10 +9,6 @@
   }
 }
 
-.dataTables_wrapper .dataTable a.no_sort {
-  color: #3699ff !important;
-}
-
 input[type="checkbox"][readonly] {
   pointer-events: none;
 }

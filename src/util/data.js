@@ -22,9 +22,9 @@ export const menu = [
     subMenu: [
       {
         name: "Management",
-        path: "/inventory-management",
+        path: "/inventory-managment",
         highlight: ["/inventory-management/add"],
-        subHighlight: ["/inventory-management/view", "/inventory-management/edit"],
+        subHighlight: ["/inventory-managment/view", "/inventory-managment/edit"],
         key: ["1_1"],
       },
       {

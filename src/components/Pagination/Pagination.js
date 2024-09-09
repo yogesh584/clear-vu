@@ -2,6 +2,7 @@ import React from "react";
 import ReactPaginate from "react-paginate";
 
 import "./Pagination.css";
+import { HorizontalArrow } from "../../util/Svg";
 
 const Pagination = ({
   page,
@@ -14,27 +15,15 @@ const Pagination = ({
 }) => {
   return (
     <div className="row">
-      <div className="col-sm-12 col-md-5">
-        <div className="dataTables_info">
-          {/* Showing {1 + perPage * (page - 1)} to{" "}
-          {currentDocLength < perPage ? totalDocuments : perPage * page} of{" "}
-          {totalDocuments} entries */}
-          Showing {totalDocuments > 0 ? 1 + perPage * (page - 1) : 0} to{" "}
-          {currentDocLength < perPage ? totalDocuments : perPage * page} of{" "}
-          {totalDocuments} entries
-        </div>
-      </div>
-
-      <div className="col-sm-12 col-md-7">
-        <div className="d-flex justify-content-end align-items-center">
+      <div className="col-xl-12 px-8">
+        <div className="d-flex align-items-center" style={{ justifyContent: "space-between" }}>
           <div className="dataTables_length mr-4">
             <label className="mb-0">
-              Show &nbsp; &nbsp;
+              Rows per page: &nbsp; &nbsp;
               <select
                 onChange={perPageChangeHandler}
-                className="custom-select custom-select-sm form-control form-control-sm"
+                className="custom-select custom-select-sm form-control form-control-sm border-0"
               >
-                <option value={defaultPerPage}>Default</option>
                 <option value="15">15</option>
                 <option value="20">20</option>
                 <option value="30">30</option>
@@ -50,8 +39,8 @@ const Pagination = ({
               pageCount={Math.ceil(totalDocuments / perPage)}
               pageRangeDisplayed={2}
               marginPagesDisplayed={1}
-              previousLabel={"<"}
-              nextLabel={">"}
+              previousLabel={""}
+              nextLabel={""}
               breakLabel={"..."}
               onPageChange={getNewData}
               pageClassName="page-item"
@@ -66,6 +55,17 @@ const Pagination = ({
               activeClassName="active"
               renderOnZeroPageCount={null}
             />
+          </div>
+
+          <div className="d-flex">
+            <button className="pagination_button previous_button mr-3">
+              <HorizontalArrow dir={"left"} />
+              <span className="ml-4">Previous</span>
+            </button>
+            <button className="pagination_button next_button">
+              <span className="mr-4">Next</span>
+              <HorizontalArrow dir={"right"} />
+            </button>
           </div>
         </div>
       </div>

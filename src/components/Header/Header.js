@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { logout, sidebarToggle } from "../../store/auth/action";
-import { Arrow } from "../../util/Svg";
+import { Arrow, HamburgerMenu, HeaderSearchIcon, HeaderNotificationIcon } from "../../util/Svg";
 
-const Header = ({setToggleSidebar}) => {
+const Header = ({ setToggleSidebar }) => {
   const dispatch = useDispatch();
   const { name, isMobileSidebarOpen } = useSelector((state) => state.auth);
 
@@ -49,9 +49,8 @@ const Header = ({setToggleSidebar}) => {
         <div className="d-flex align-items-center">
           <button
             onClick={openSidebarHandler}
-            className={`btn p-0 burger-icon burger-icon-left ${
-              isSidebarOpen ? "mobile-toggle-active" : ""
-            }`}
+            className={`btn p-0 burger-icon burger-icon-left ${isSidebarOpen ? "mobile-toggle-active" : ""
+              }`}
             id="kt_aside_mobile_toggle"
           >
             <span></span>
@@ -92,35 +91,47 @@ const Header = ({setToggleSidebar}) => {
       <div id="kt_header" className="header  header-fixed ">
         <div className=" container-fluid  d-flex align-items-stretch justify-content-between align-items-center">
           <div className="d-flex">
-          <button
-            // onClick={}
-            className={`brand-toggle btn btn-sm px-0`}
-            id="kt_aside_toggle"
-          >
-            <span className="">
-              <Arrow onClickFunc={()=> setToggleSidebar(prev => !prev)}/>
-            </span>{" "}
-          </button>
+            <button
+              // onClick={}
+              className={`brand-toggle btn btn-sm px-0`}
+              id="kt_aside_toggle"
+            >
+              <span className="">
+                <HamburgerMenu onClickFunc={() => setToggleSidebar(prev => !prev)} />
+              </span>{" "}
+            </button>
           </div>
-          {/* <div className="topbar ml-auto">
+          <div className="topbar ml-auto">
+            <div className="d-flex align-items-center">
+              <div className="mr-4">
+                <HeaderSearchIcon />
+              </div>
+              <div className="mr-4">
+                <HeaderNotificationIcon />
+              </div>
+              <div>
+                <div style={{ height: "30px", width: "2px", background: "#e6e8ee" }}></div>
+              </div>
+            </div>
             <div className="dropdown ml-3">
               <div
                 className="topbar-item"
-                data-toggle="dropdown"
-                data-offset="10px,0px"
-                style={{cursor : "pointer"}}
               >
-                <a  className="d-flex align-items-center">
-                  <div className="symbol symbol-30 symbol-circle symbol-primary mr-2">
+                <a className="d-flex align-items-center">
+                  <div className="symbol symbol-30 symbol-circle symbol-primary mr-3">
                     <span className="symbol-label">
-                      {name[0].toUpperCase()}
+                      {name[0].toUpperCase()}{String(name).split(" ").length > 1 ? String(name).split(" ")[1][0].toUpperCase() : ""}
                     </span>
                   </div>
                   <div className="d-flex flex-column text-left">
-                    <span className="text-muted font-weight-bold">Welcome</span>
-                    <span className="text-primary font-weight-bold">
+                    <span className="font-weight-bold">
                       {name}
                     </span>
+                  </div>
+                  <div className="ml-3"
+                    data-toggle="dropdown"
+                    data-offset="10px,0px" style={{ cursor: "pointer" }}>
+                    <Arrow />
                   </div>
                 </a>
               </div>
@@ -278,7 +289,7 @@ const Header = ({setToggleSidebar}) => {
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </>

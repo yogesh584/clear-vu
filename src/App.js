@@ -64,8 +64,8 @@ const App = () => {
         loggedIn: true,
         token : "",
         userId: 1,
-        name: "ksjdf",
-        email: "ksjf",
+        name: "John Tomas",
+        email: "jthomas@mailinator.com",
         user_role_id: 1,
         permissions: {},
       })
