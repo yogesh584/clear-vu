@@ -1,5 +1,7 @@
 import Login from "../pages/Login/Login";
+import Login2FA from "../pages/Login2FA/Login2FA";
 import ForgotPassword from "../pages/ForgotPassword/ForgotPassword";
+import ForgotPasswordCode from "../pages/ForgotPassword/ForgotPasswordCode";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
 // import SetPassword from "../pages/SetPassword/SetPassword.js";
 
@@ -15,6 +17,8 @@ export const privateRoutes = [
 
 export const notPrivateRoutes = [
   { path: "/login", component: Login },
+  { path: "/login/2fa", component: Login2FA },
   { path: "/forgot-password", component: ForgotPassword },
-  { path: "/reset-password/:token", component: ResetPassword },
+  { path: "/forgot-password/code", component: ForgotPasswordCode },
+  { path: "/reset-password/", component: ResetPassword },
 ];

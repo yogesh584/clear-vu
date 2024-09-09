@@ -61,7 +61,7 @@ const App = () => {
   useEffect(()=>{
     dispatch(
       authSuccess({
-        loggedIn: true,
+        loggedIn: false,
         token : "",
         userId: 1,
         name: "John Tomas",

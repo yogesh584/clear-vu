@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link,useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-import "./Login.css";
+import "../Login/Login.css";
+import { authSuccess } from "../../store/auth/action";
 import { HorizontalArrow } from "../../util/Svg";
-const Login = () => {
-  const history = useHistory();
+const Login2FA = () => {
+    const dispatch = useDispatch()
+    const history = useHistory()
   const {
     register,
     handleSubmit,
@@ -13,12 +16,22 @@ const Login = () => {
   } = useForm();
 
   useEffect(() => {
-    document.title = "Login - Clear vu";
+    document.title = "Login 2FA - Clear vu";
   }, []);
 
   const onSubmit = (data) => {
     const { email, password } = data;
-    history.push("/login/2fa")
+    dispatch(
+        authSuccess({
+          loggedIn: true,
+          token : "",
+          userId: 1,
+          name: "John Tomas",
+          email: "jthomas@mailinator.com",
+          user_role_id: 1,
+          permissions: {},
+        })
+      )
   };
 
   return (
@@ -28,9 +41,12 @@ const Login = () => {
           <img src="Logo1.svg" className="h-100"/>
         </div>
         <div className="login-content d-flex flex-column p-5 p-md-10 border-0 bg-transparent align-items-start mr-18" >
-          <a href="#!" className="login-logo pb-8 text-center">
+            <button className="bg-transparent border-0" onClick={()=> history.push("/login")}>
+                <HorizontalArrow dir={"left"}/>
+            </button>
+          <Link href="/" className="login-logo pb-8 text-center mt-2">
             <img src="./logo.png" className="max-h-80px" alt="" />
-          </a>
+          </Link>
 
           <div className="login-form w-100">
             <form
@@ -40,9 +56,9 @@ const Login = () => {
             >
               <div className="pb-5 pb-lg-15">
                 <h2 className="font-weight-bolder font-size-h1 font-size-h1-lg mb-2" style={{letterSpacing: "0.03em"}}>
-                  Login to your account
+                    Two-factor Authentication
                 </h2>
-                <span style={{color: "#aaabad", fontWeight: "normal"}}>Enter your login credentials to continue</span>
+                <span style={{color: "#aaabad", fontWeight: "normal"}}>Enter the alphanumeric code sent to your email</span>
               </div>
 
               <div className="form-group mb-3">
@@ -55,11 +71,8 @@ const Login = () => {
                   name="username"
                   autoComplete="off"
                   placeholder="Enter Your Email"
-                  {...register("email", {
-                    required: true,
-                    pattern:
-                      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                  })}
+                  value={"Jason_angelo14@email.com"}
+                  disabled={true}
                 />
                 {errors.email?.type === "required" && (
                   <div className="invalid-feedback">
@@ -72,44 +85,28 @@ const Login = () => {
                   </div>
                 )}
               </div>
-
-              <div className="form-group">
+            
+                <div>
+                    Enter Code
+                </div>
+              <div className="form-group d-flex">
                 
-                <input
-                  className={`form-control form-control-solid h-auto py-3 px-6 rounded-xl ${
-                    errors.password && "is-invalid" /*: "is-valid"*/
-                  }`}
-                  style={{border:"2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em"}}
-                  type="password"
-                  name="password"
-                  autoComplete="off"
-                  placeholder="Password"
-                  {...register("password", {
-                    required: true,
-                    pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
-                  })}
-                />
-                {errors.password?.type === "required" && (
-                  <div className="invalid-feedback">
-                    The password field is required.
-                  </div>
-                )}
-                {errors.password?.type === "pattern" && (
-                  <div className="invalid-feedback">
-                    Password must be of 8 characters long with atleast one
-                    uppercase, one lowercase and one number.
-                  </div>
-                )}
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
                 
               </div>
-              <div className="d-flex justify-content-between my-2">
-
+              <div className=" my-4">
+              Didn’t receive email?{" "}
                   <Link
                     to="/forgot-password"
                     className="font-size-h6 font-weight-bolder text-hover-primary"
                     style={{color: '#39d9a7'}}
                   >
-                    Forgot Password
+                    Resend
                   </Link>
                 </div>
 
@@ -122,7 +119,7 @@ const Login = () => {
                   onClick={handleSubmit(onSubmit)}
                   href="#!"
                   id="kt_login_submit"
-                  className="btn btn-primary font-weight-bolder rounded-xl text-light font-size-h6 px-4 py-3 my-3 mr-3 w-100 d-flex justify-content-between"
+                  className="btn btn-primary font-weight-bolder rounded-xl text-light font-size-h6 px-4 py-3 my-3 mr-3 w-100 d-flex justify-content-between align-items-center"
                 >
                   <span>
                     Login to your account 
@@ -140,4 +137,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Login2FA;

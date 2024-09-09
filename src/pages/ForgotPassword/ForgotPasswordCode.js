@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 
 import "../Login/Login.css";
 import { HorizontalArrow } from "../../util/Svg";
-const ForgotPassword = () => {
+const ForgotPasswordCode = () => {
   const history = useHistory();
   const {
     register,
@@ -18,7 +18,7 @@ const ForgotPassword = () => {
 
   const onSubmit = (data) => {
     const { email } = data;
-    history.push("/forgot-password/code")
+    history.push("/reset-password")
   };
 
   return (
@@ -29,7 +29,7 @@ const ForgotPassword = () => {
         </div>
 
         <div className="login-content d-flex flex-column p-5 p-md-10 border-0 bg-transparent align-items-start mr-18" >
-          <button className="bg-transparent border-0" onClick={() => history.push("/login")}>
+          <button className="bg-transparent border-0" onClick={() => history.push("/forgot-password")}>
             <HorizontalArrow dir={"left"} />
           </button>
           <a href="/" className="login-logo pb-8 text-center mt-2">
@@ -46,7 +46,7 @@ const ForgotPassword = () => {
                 <h2 className="font-weight-bolder font-size-h1 font-size-h1-lg mb-2" style={{ letterSpacing: "0.03em" }}>
                   Forgot Password
                 </h2>
-                <span style={{ color: "#aaabad", fontWeight: "normal" }}>Enter your registered email address, we’ll send you a reset code</span>
+                <span style={{ color: "#aaabad", fontWeight: "normal" }}>Enter the code sent to your email address to proceed</span>
               </div>
 
               <div className="form-group mb-3">
@@ -58,11 +58,13 @@ const ForgotPassword = () => {
                   name="username"
                   autoComplete="off"
                   placeholder="Enter Your Email"
-                  {...register("email", {
-                    required: true,
-                    pattern:
-                      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                  })}
+                  disabled={true}
+                  value={"Jason_angelo14@email.com"}
+                //   {...register("email", {
+                //     required: true,
+                //     pattern:
+                //       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                //   })}
                 />
                 {errors.email?.type === "required" && (
                   <div className="invalid-feedback">
@@ -75,7 +77,29 @@ const ForgotPassword = () => {
                   </div>
                 )}
               </div>
-
+              <div>
+                    Enter Code
+                </div>
+              <div className="form-group d-flex">
+                
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
+                <input type="text" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px"}} maxLength={1}/>
+                
+              </div>
+              <div className=" my-4">
+              Didn’t receive email?{" "}
+                  <Link
+                    to="/forgot-password"
+                    className="font-size-h6 font-weight-bolder text-hover-primary"
+                    style={{color: '#39d9a7'}}
+                  >
+                    Resend
+                  </Link>
+                </div>
               <div className="pb-lg-0 pb-5 w-100">
                 <button
                   onClick={handleSubmit(onSubmit)}
@@ -88,7 +112,7 @@ const ForgotPassword = () => {
                   className="btn btn-primary font-weight-bolder rounded-xl text-light font-size-h6 px-4 py-3 my-3 mr-3 w-100 d-flex justify-content-between"
                 >
                   <span>
-                    Send reset code
+                  Reset Password
                   </span>
                   <div>
                     <HorizontalArrow dir={"right"} svgStyle={{ fill: "#fff" }} />
@@ -103,4 +127,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgotPasswordCode;
