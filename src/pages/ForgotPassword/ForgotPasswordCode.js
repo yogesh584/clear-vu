@@ -22,9 +22,9 @@ const ForgotPasswordCode = () => {
   };
 
   return (
-    <div className="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid">
+    <div className="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid" style={{backgroundImage: "url(auth-bg.png)", backgroundSize: "100%"}}>
       <div className="login-container d-flex align-items-center justify-content-end bgi-size-cover bgi-no-repeat flex-row-fluid p-8" style={{ maxHeight: "100vh" }}>
-        <div className="position-absolute top-0 left-0 h-50">
+        <div className="position-absolute top-0 left-0" style={{height: "35%"}}>
           <img src="Logo1.svg" className="h-100" />
         </div>
 
