@@ -1,16 +1,24 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link,useHistory } from "react-router-dom";
+import { authSuccess } from "../../store/auth/action";
 
 import "./Login.css";
 import { HorizontalArrow } from "../../util/Svg";
+import useRequest from "../../hooks/useRequest"
+import { useDispatch } from "react-redux";
+
 const Login = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    getValues
   } = useForm();
+
+  const {request: loginRequest, response: loginResponse} = useRequest();
 
   useEffect(() => {
     document.title = "Login - Clear vu";
@@ -18,8 +26,28 @@ const Login = () => {
 
   const onSubmit = (data) => {
     const { email, password } = data;
-    history.push("/login/2fa")
+    loginRequest("post","pub/login",{
+      "emailId": email,
+      "password": password
+    })
   };
+
+  useEffect(()=>{
+    if(loginResponse){
+      const {responseCode, responseMessage} = loginResponse;
+      const email = getValues("email");
+
+      dispatch(
+        authSuccess({
+          token: responseMessage,
+          email: email,
+          loggedIn: false
+        })
+      );
+
+      history.push("/login/2fa")
+    }
+  },[loginResponse])
 
   return (
     <div className="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid" style={{backgroundImage: "url(auth-bg.png)", backgroundSize: "100%"}}>
@@ -27,7 +55,7 @@ const Login = () => {
         <div className="position-absolute top-0 left-0" style={{height: "35%"}}>
           <img src="Logo1.svg" className="h-100"/>
         </div>
-        <div className="login-content d-flex flex-column p-5 p-md-10 border-0 bg-transparent align-items-start mr-18" >
+        <div className="login-content d-flex flex-column p-5 p-md-10 border-0 bg-transparent align-items-start justify-content-center mr-18" >
           <a href="#!" className="login-logo pb-8 text-center">
             <img src="./logo.png" className="max-h-80px" alt="" />
           </a>
@@ -54,7 +82,7 @@ const Login = () => {
                   type="text"
                   name="username"
                   autoComplete="off"
-                  placeholder="Enter Your Email"
+                  placeholder="Enter email address"
                   {...register("email", {
                     required: true,
                     pattern:

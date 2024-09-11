@@ -27,25 +27,25 @@ const Sidebar = ({ toggleSidebar }) => {
     if (user_role_id != 1) {
       let filtered = filteredMenu.map((menu) => {
         let subMenues = menu.subMenu || [];
-        let filteredSubMenu = subMenues.filter((sub) => {
-          let exists = false;
-          sub.key.forEach((v) => {
-            if (!!permissions[v]) {
-              exists = true;
-            }
-          });
-          return exists;
-        });
-        menu.subMenu = filteredSubMenu;
+        // let filteredSubMenu = subMenues.filter((sub) => {
+        //   let exists = false;
+        //   sub.key.forEach((v) => {
+        //     if (!!permissions[v]) {
+        //       exists = true;
+        //     }
+        //   });
+        //   return exists;
+        // });
+        menu.subMenu = subMenues;
 
         console.log(menu.key)
 
-        let menuExist = false
-        menu.key.forEach((v) => {
-          if (!!permissions[v]) {
-            menuExist = true;
-          }
-        });
+        let menuExist = true
+        // menu.key.forEach((v) => {
+        //   if (!!permissions[v]) {
+        //     menuExist = true;
+        //   }
+        // });
 
         if (menuExist) {
           return menu;

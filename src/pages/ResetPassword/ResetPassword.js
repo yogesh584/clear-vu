@@ -27,7 +27,7 @@ const ResetPassword = () => {
         <div className="position-absolute top-0 left-0" style={{height: "35%"}}>
           <img src="Logo1.svg" className="h-100"/>
         </div>
-        <div className="login-content d-flex flex-column p-5 p-md-10 border-0 bg-transparent align-items-start mr-18" >
+        <div className="login-content d-flex flex-column p-5 p-md-10 border-0 bg-transparent align-items-start justify-content-center mr-18" >
         <button className="bg-transparent border-0" onClick={()=> history.push("/forgot-password")}>
                 <HorizontalArrow dir={"left"}/>
             </button>

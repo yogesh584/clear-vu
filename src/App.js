@@ -59,17 +59,15 @@ const App = () => {
   // }, [token]);
 
   useEffect(()=>{
-    dispatch(
-      authSuccess({
-        loggedIn: false,
-        token : "",
-        userId: 1,
-        name: "John Tomas",
-        email: "jthomas@mailinator.com",
-        user_role_id: 1,
-        permissions: {},
-      })
-    )
+    if (token) {
+      dispatch(
+        authSuccess({
+          loggedIn: true,
+          token : token,
+          name: "skjdf"
+        })
+      )
+    }
   },[token])
 
 
@@ -117,6 +115,9 @@ const App = () => {
   const onTop = () => {
     window.scrollTo(0, 0);
   };
+
+  console.log("logged in : ", loggedIn);
+  
 
   return (
     <div className="d-flex flex-column flex-root">

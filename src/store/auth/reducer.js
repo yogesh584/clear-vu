@@ -3,6 +3,7 @@ import {
   AUTH_LOGOUT,
   SIDEBAR_TOGGLE,
   LOADING,
+  AUTH_SUCCESS_2FA
 } from "./actionTypes";
 
 const initialState = {
@@ -17,7 +18,12 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case AUTH_SUCCESS:
+    case AUTH_SUCCESS: 
+    return {
+      ...state,
+      ...action.updates,
+    };
+    case AUTH_SUCCESS_2FA:
       return {
         ...state,
         loggedIn: true,

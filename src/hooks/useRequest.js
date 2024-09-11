@@ -10,6 +10,8 @@ import { BASEURL } from "../constant/api";
 const BACKEND_URL = BASEURL.PORT;
 
 const useRequest = () => {
+  console.log("BACKEND_URL",BACKEND_URL);
+  
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null);

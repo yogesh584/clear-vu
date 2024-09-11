@@ -3,6 +3,7 @@ import {
   AUTH_LOGOUT,
   SIDEBAR_TOGGLE,
   LOADING,
+  AUTH_SUCCESS_2FA
 } from "./actionTypes";
 import { toast } from "react-toastify";
 
@@ -15,6 +16,17 @@ export const authSuccess = (updates) => {
     updates,
   };
 };
+
+export const authSuccess2FA = (updates) => {
+  if (updates.token) {
+    localStorage.setItem("token", updates.token);
+  }
+  return {
+    type: AUTH_SUCCESS_2FA,
+    updates,
+  };
+};
+
 
 export const sidebarToggle = (updates) => {
   return {

@@ -28,7 +28,7 @@ const ForgotPassword = () => {
           <img src="Logo1.svg" className="h-100" />
         </div>
 
-        <div className="login-content d-flex flex-column p-5 p-md-10 border-0 bg-transparent align-items-start mr-18" >
+        <div className="login-content d-flex flex-column p-5 p-md-10 border-0 bg-transparent align-items-start  justify-content-center mr-18" >
           <button className="bg-transparent border-0" onClick={() => history.push("/login")}>
             <HorizontalArrow dir={"left"} />
           </button>
@@ -57,7 +57,7 @@ const ForgotPassword = () => {
                   type="text"
                   name="username"
                   autoComplete="off"
-                  placeholder="Enter Your Email"
+                  placeholder="Enter email address"
                   {...register("email", {
                     required: true,
                     pattern:

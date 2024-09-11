@@ -1,3 +1,4 @@
+export const AUTH_SUCCESS_2FA = "AUTH_SUCCESS_2FA"
 export const AUTH_SUCCESS = "AUTH_SUCCESS"
 export const AUTH_LOGOUT = "AUTH_LOGOUT"
 export const SIDEBAR_TOGGLE = "SIDEBAR_TOGGLE"
