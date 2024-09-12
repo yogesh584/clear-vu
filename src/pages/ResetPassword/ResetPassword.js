@@ -1,25 +1,55 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link,useHistory } from "react-router-dom";
+import useRequest from "../../hooks/useRequest"
+import { useDispatch,useSelector } from "react-redux";
+import { authSuccess } from "../../store/auth/action";
+
 
 import "../Login/Login.css";
 import { HorizontalArrow } from "../../util/Svg";
+import { toast } from "react-toastify";
 const ResetPassword = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const { email, token } = useSelector((state) => state.auth);
+
+
+  const {request: resetPasswordRequest, response: resetPasswordResponse} = useRequest();
+
+
   useEffect(() => {
-    document.title = "Login - Clear vu";
+    document.title = "Reset Password - Clear vu";
   }, []);
 
   const onSubmit = (data) => {
-    const { email, password } = data;
-    history.push("/login")
+    const { cpassword, password } = data;
+    resetPasswordRequest("post", "pub/reset/password",{
+      "emailId":email,
+      "password":password,
+      "confirmPassword":cpassword
+    });
   };
+
+  useEffect(()=>{
+    if(resetPasswordResponse){
+      dispatch(
+        authSuccess({
+          token: "",
+          email: "",
+          loggedIn: false
+        })
+      );
+      toast.success("Password Updated Successfully.");
+      history.push("/login")
+    }
+  },[resetPasswordResponse])
 
   return (
     <div className="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid" style={{backgroundImage: "url(auth-bg.png)", backgroundSize: "100%"}}>

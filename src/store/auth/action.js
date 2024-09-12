@@ -8,9 +8,6 @@ import {
 import { toast } from "react-toastify";
 
 export const authSuccess = (updates) => {
-  if (updates.token) {
-    localStorage.setItem("token", updates.token);
-  }
   return {
     type: AUTH_SUCCESS,
     updates,
@@ -37,7 +34,7 @@ export const sidebarToggle = (updates) => {
 
 export const logout = () => {
   localStorage.removeItem("token");
-  toast.success("You are now logged out!");
+  // toast.success("You are now logged out!");
   return {
     type: AUTH_LOGOUT,
   };

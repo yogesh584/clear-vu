@@ -69,6 +69,8 @@ const useRequest = () => {
         setResponse(res.data);
       })
       .catch((err) => {
+        console.log("err : ",err);
+        
         fetchedData();
         if (err.response) {
           if (err.response.status === 401) {

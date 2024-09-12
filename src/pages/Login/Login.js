@@ -36,7 +36,7 @@ const Login = () => {
     if(loginResponse){
       const {responseCode, responseMessage} = loginResponse;
       const email = getValues("email");
-
+      
       dispatch(
         authSuccess({
           token: responseMessage,
@@ -135,7 +135,7 @@ const Login = () => {
                   <Link
                     to="/forgot-password"
                     className="font-size-h6 font-weight-bolder text-hover-primary"
-                    style={{color: '#39d9a7'}}
+                    style={{color: '#39d9a7',  textDecoration: "underline"}}
                   >
                     Forgot Password
                   </Link>

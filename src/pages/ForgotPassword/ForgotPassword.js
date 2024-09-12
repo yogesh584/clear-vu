@@ -1,16 +1,23 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
+import useRequest from "../../hooks/useRequest";
+import { useDispatch } from "react-redux";
+import { authSuccess } from "../../store/auth/action";
 
 import "../Login/Login.css";
 import { HorizontalArrow } from "../../util/Svg";
 const ForgotPassword = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    getValues
   } = useForm();
+
+  const {request, response} = useRequest()
 
   useEffect(() => {
     document.title = "Forgot Password - Clear vu";
@@ -18,8 +25,24 @@ const ForgotPassword = () => {
 
   const onSubmit = (data) => {
     const { email } = data;
-    history.push("/forgot-password/code")
+
+    request('post', "pub/forgotpassword", {
+      "emailId":email
+    })
   };
+
+  useEffect(()=>{
+    if(response){
+      const {responseCode, responseMessage} = response;
+      const {email} = getValues()
+      dispatch(authSuccess({
+        email: email,
+        token: responseMessage,
+        loggedIn: false
+      }))
+      history.push("/forgot-password/code")
+    }
+  },[response])
 
   return (
     <div className="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid" style={{backgroundImage: "url(auth-bg.png)", backgroundSize: "100%"}}>

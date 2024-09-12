@@ -1,21 +1,36 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import useRequest from "../../hooks/useRequest";
 
 import "../Login/Login.css";
 import { HorizontalArrow } from "../../util/Svg";
+import { toast } from "react-toastify";
 const ForgotPasswordCode = () => {
   const history = useHistory();
+  const { email, token } = useSelector((state) => state.auth);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    getValues
   } = useForm();
+
+  const {request: verifyOtpRequest, response: verifyOtpResponse} = useRequest();
+  const {request: resendOtpRequest, response: resendOtpResponse} = useRequest();
 
   useEffect(() => {
     document.title = "Forgot Password - Clear vu";
   }, []);
 
+  useEffect(()=>{
+    console.log("token ", token);
+    
+    if(token == null){
+      history.push("/forgot-password")
+    }
+  },[token])
 
   const handleKeyDown = (index, event) => {
     tabChange(index);
@@ -32,9 +47,30 @@ const ForgotPasswordCode = () => {
 
 
   const onSubmit = (data) => {
-    const { email } = data;
-    history.push("/reset-password")
+    const {otp1, otp2, otp3, otp4, otp5, otp6 } = data;
+    const otp = otp1 + otp2 + otp3 + otp4 + otp5+ otp6;
+    verifyOtpRequest("post", "api/otp/verify", {
+      "otp":otp,
+      "emailId":email
+    })
   };
+  
+  useEffect(()=>{
+    if(verifyOtpResponse){
+      history.push("/reset-password")
+    }
+  },[verifyOtpResponse])
+
+  const resendOtp = () => {
+    resendOtpRequest("post", "api/otp/resend", {"emailId":email})
+  }
+
+  useEffect(()=>{
+    if(resendOtpResponse){
+      const {responseMessage} = resendOtpResponse;
+      toast.success("OTP sent successfully.")
+    }
+  },[resendOtpResponse])
 
   return (
     <div className="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid" style={{ backgroundImage: "url(auth-bg.png)", backgroundSize: "100%" }}>
@@ -74,7 +110,7 @@ const ForgotPasswordCode = () => {
                   autoComplete="off"
                   placeholder="Enter Your Email"
                   disabled={true}
-                  value={"Jason_angelo14@email.com"}
+                  value={email}
                 />
                 {errors.email?.type === "required" && (
                   <div className="invalid-feedback">
@@ -92,23 +128,24 @@ const ForgotPasswordCode = () => {
               </div>
               <div className="form-group d-flex otp_verification">
 
-                <input type="text" onKeyUp={() => { handleKeyDown(0) }} name="otp1" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{ width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                <input type="text" onKeyUp={() => { handleKeyDown(1) }} name="otp2" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{ width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                <input type="text" onKeyUp={() => { handleKeyDown(2) }} name="otp3" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{ width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                <input type="text" onKeyUp={() => { handleKeyDown(3) }} name="otp4" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{ width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                <input type="text" onKeyUp={() => { handleKeyDown(4) }} name="otp5" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{ width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                <input type="text" onKeyUp={() => { handleKeyDown(5) }} name="otp6" className="border-left-0 border-top-0 border-right-0 bg-transparent mr-3" style={{ width: "30px", borderBottom: "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                <input type="text" onKeyUp={() => { handleKeyDown(0) }} name="otp1" {...register("otp1", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp1 ? "2px solid red" : "2px solid #c6c9ce",  outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                <input type="text" onKeyUp={() => { handleKeyDown(1) }} name="otp2" {...register("otp2", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp2 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                <input type="text" onKeyUp={() => { handleKeyDown(2) }} name="otp3" {...register("otp3", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp3 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                <input type="text" onKeyUp={() => { handleKeyDown(3) }} name="otp4" {...register("otp4", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp4 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                <input type="text" onKeyUp={() => { handleKeyDown(4) }} name="otp5" {...register("otp5", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp5 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                <input type="text" onKeyUp={() => { handleKeyDown(5) }} name="otp6" {...register("otp6", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp6 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
 
               </div>
               <div className=" my-4">
                 Didn’t receive email?{" "}
-                <Link
-                  to="/forgot-password"
-                  className="font-size-h6 font-weight-bolder text-hover-primary"
-                  style={{ color: '#39d9a7' }}
+                <button
+                  className="font-size-h6 font-weight-bolder text-hover-primary border-0 bg-transparent"
+                  onClick={resendOtp}
+                  type="button"
+                  style={{ color: '#39d9a7', textDecoration: "underline" }}
                 >
                   Resend
-                </Link>
+                </button>
               </div>
               <div className="pb-lg-0 pb-5 w-100">
                 <button
