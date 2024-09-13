@@ -11,13 +11,3 @@ export const BASEURL = {
       ? "http://localhost:8080"
       : "",
 };
-
-export const FRONTENDURL =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8080"
-    : "";
-
-export const ADMINURL =
-  process.env.NODE_ENV == "development"
-    ? "http://localhost:8080"
-    : "";

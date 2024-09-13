@@ -114,7 +114,7 @@ const Login = () => {
                   placeholder="Password"
                   {...register("password", {
                     required: true,
-                    pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
+                    // pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
                   })}
                 />
                 {errors.password?.type === "required" && (
@@ -122,12 +122,12 @@ const Login = () => {
                     The password field is required.
                   </div>
                 )}
-                {errors.password?.type === "pattern" && (
+                {/* {errors.password?.type === "pattern" && (
                   <div className="invalid-feedback">
                     Password must be of 8 characters long with atleast one
                     uppercase, one lowercase and one number.
                   </div>
-                )}
+                )} */}
                 
               </div>
               <div className="d-flex justify-content-between my-2">
