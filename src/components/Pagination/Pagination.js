@@ -16,7 +16,7 @@ const Pagination = ({
   return (
     <div className="row">
       <div className="col-xl-12 px-8">
-        <div className="d-flex align-items-center" style={{ justifyContent: "space-between" }}>
+        <div className="d-flex flex-wrap align-items-center" id="pagination-container" >
           <div className="dataTables_length mr-4">
             <label className="mb-0">
               Rows per page: &nbsp; &nbsp;

@@ -297,7 +297,7 @@ const Table = ({
   };
 
   return (
-    <div className="table-responsive" style={{ overflow: "hidden" }}>
+    <div className="table-responsive">
       <table
         className="table dataTable table-head-custom table-head-bg table-borderless table-vertical-center"
         id="taskTable"
