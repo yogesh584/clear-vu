@@ -251,6 +251,14 @@
   background-color: #c9f7f5;
 }
 
+.login-container{
+  justify-content: flex-end;
+}
+
+.login-content{
+  padding: 3rem;
+}
+
 .login.login-4
   .login-container
   .login-content
@@ -345,6 +353,25 @@
   .login.login-4 .login-aside .login-conteiner {
     min-height: 210px !important;
     background-size: 200px;
+  }
+}
+
+
+@media (max-width: 850px) {
+  #left-logo{
+    display: none;
+  }
+  .login-container{
+    width: 100% !important;
+    margin: 0px !important;
+    justify-content: center !important;
+    padding: 0px !important;
+  }
+  .login-content{
+    width: 100% !important;
+    max-width: 525px;
+    margin: 0px !important;
+    padding: 2rem !important;
   }
 }
 

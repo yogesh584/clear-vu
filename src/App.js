@@ -4,12 +4,11 @@ import { Switch, Redirect, Route, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./App.css";
-import { authSuccess, logout } from "./store/auth/action";
+import { authSuccess } from "./store/auth/action";
 
 import {
   privateRoutes,
-  notPrivateRoutes,
-  noLayoutPrivateRoutes,
+  notPrivateRoutes
 } from "./util/routes";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Header from "./components/Header/Header";
@@ -28,7 +27,6 @@ const App = () => {
     (state) => state.auth
   );
 
-  console.log("loggedIN", loggedIn)
   const routePath = useLocation();
 
   useEffect(() => {
@@ -42,7 +40,7 @@ const App = () => {
     } else {
       setToken(token);
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(()=>{
     if (token) {

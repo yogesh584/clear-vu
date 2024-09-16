@@ -1,0 +1,21 @@
+
+  /* Non-active bullets (default) */
+  .swiper-pagination-bullet {
+    height: 10px;
+    width: 10px;
+    background-color: #5a6c91;
+  }
+  
+  /* Active bullet */
+  .swiper-pagination-bullet-active {
+    width: 25px;
+    height: 10px;
+    border-radius: 10px;
+    background-color: #39d9a7;
+  }
+  
+  .swiper-pagination{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

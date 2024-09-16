@@ -10,6 +10,12 @@ import { SearchInput, SearchSubmitButton } from "../Form/Form";
 import cardStyles from "../../styles/card.module.css"
 
 
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination as SwiperPagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import "../../styles/slider.css"
+
 const OBJ_TABLE = {
     SKU: "SKU",
     Location: "location",
@@ -83,107 +89,162 @@ const GarmentsComp = () => {
     return <div id="linens" role="tabpanel" aria-labelledby="linens-tab">
     {/*         CARDS        */}
     <div id="cards_parent" className="mt-4 mb-6">
-        <div id="cards" className="d-flex w-100 px-3 justify-content-between">
-            <div id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", width: "32%", borderRadius: "10px" }}>
-                <div id="row1" className="d-flex justify-content-between">
-                    <div>
-                        <span style={{ fontSize: "18px" }}>Floor-1 (North)</span>
-                    </div>
-                    <div className="d-flex align-items-center">
-                        <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
-                            <span>35.71%</span>
+    <Swiper
+                modules={[SwiperPagination]}
+
+                slidesPerView={3}
+                loop={false}
+                observer={true}
+                pagination={{
+                    clickable: true
+                }}
+                spaceBetween={20}
+                breakpoints={{
+                    0: {
+                        slidesPerView: 1,
+                    },
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 10,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                    },
+                    // when window width is >= 1024px
+                    1200: {
+                        slidesPerView: 3,
+                        spaceBetween: 20,
+                    },
+                    1400: {
+                        slidesPerView: 4,
+                        spaceBetween: 20,
+                    }
+                }}
+                id="cards" className="d-flex w-100 px-3 justify-content-between pb-10"
+            >
+                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
+                    <div id="row1" className="d-flex justify-content-between">
+                        <div>
+                            <span style={{ fontSize: "18px" }}>Floor-1 (North)</span>
                         </div>
-                        <PencilIcon />
-                    </div>
-                </div>
-                <div id="row2" className="d-flex justify-content-between mt-3">
-                    <div className="d-flex flex-column">
-                        <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
-                        <span style={{ fontSize: "24px" }} className="mb-1">108</span>
-                        <a style={{ color: "#39D9A7" }}>View</a>
-                    </div>
-                    <div className="d-flex flex-column">
-                        <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
-                        <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                        <a style={{ color: "#39D9A7" }}>View</a>
-                    </div>
-                    <div className="d-flex flex-column">
-                        <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
-                        <span style={{ fontSize: "24px" }} className="mb-1">66</span>
-                        <a style={{ color: "#39D9A7" }}>View</a>
-                    </div>
-                </div>
-            </div>
-            <div id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", width: "32%", borderRadius: "10px" }}>
-                <div id="row1" className="d-flex justify-content-between">
-                    <div>
-                        <span style={{ fontSize: "18px" }}>Floor-2 (North)</span>
-                    </div>
-                    <div className="d-flex align-items-center">
-                        <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
-                            <span>35.71%</span>
+                        <div className="d-flex align-items-center">
+                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
+                                <span>35.71%</span>
+                            </div>
+                            <PencilIcon />
                         </div>
-                        <PencilIcon />
                     </div>
-                </div>
-                <div id="row2" className="d-flex justify-content-between mt-3">
-                    <div className="d-flex flex-column">
-                        <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
-                        <span style={{ fontSize: "24px" }} className="mb-1">108</span>
-                        <a style={{ color: "#39D9A7" }}>View</a>
-                    </div>
-                    <div className="d-flex flex-column">
-                        <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
-                        <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                        <a style={{ color: "#39D9A7" }}>View</a>
-                    </div>
-                    <div className="d-flex flex-column">
-                        <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
-                        <span style={{ fontSize: "24px" }} className="mb-1">66</span>
-                        <a style={{ color: "#39D9A7" }}>View</a>
-                    </div>
-                </div>
-            </div>
-            <div id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #60ba51", width: "32%", borderRadius: "10px" }}>
-                <div id="row1" className="d-flex justify-content-between">
-                    <div>
-                        <span style={{ fontSize: "18px" }}>Floor-3 (North)</span>
-                    </div>
-                    <div className="d-flex align-items-center">
-                        <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#60ba51", border: "1px solid #60ba51" }}>
-                            <span>100%</span>
+                    <div id="row2" className="d-flex justify-content-between mt-3">
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">108</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
                         </div>
-                        <PencilIcon />
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
+                        </div>
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
+                        </div>
                     </div>
-                </div>
-                <div id="row2" className="d-flex justify-content-between mt-3">
-                    <div className="d-flex flex-column">
-                        <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
-                        <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                        <a style={{ color: "#39D9A7" }}>View</a>
+                </SwiperSlide>
+                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
+                    <div id="row1" className="d-flex justify-content-between">
+                        <div>
+                            <span style={{ fontSize: "18px" }}>Floor-2 (North)</span>
+                        </div>
+                        <div className="d-flex align-items-center">
+                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
+                                <span>35.71%</span>
+                            </div>
+                            <PencilIcon />
+                        </div>
                     </div>
-                    <div className="d-flex flex-column">
-                        <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
-                        <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                        <a style={{ color: "#39D9A7" }}>View</a>
+                    <div id="row2" className="d-flex justify-content-between mt-3">
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">108</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
+                        </div>
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
+                        </div>
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
+                        </div>
                     </div>
-                    <div className="d-flex flex-column">
-                        <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
-                        <span style={{ fontSize: "24px" }} className="mb-1">66</span>
-                        <a style={{ color: "#39D9A7" }}>View</a>
+                </SwiperSlide>
+
+                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #60ba51", borderRadius: "10px" }}>
+                    <div id="row1" className="d-flex justify-content-between">
+                        <div>
+                            <span style={{ fontSize: "18px" }}>Floor-3 (North)</span>
+                        </div>
+                        <div className="d-flex align-items-center">
+                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#60ba51", border: "1px solid #60ba51" }}>
+                                <span>100%</span>
+                            </div>
+                            <PencilIcon />
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div className="d-flex justify-content-center align-items-center mt-4">
-            <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-            <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-            <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-            <div className="rounded-pill mr-2" style={{ height: "10px", width: "25px", background: "#39d9a7" }}></div>
-            <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-            <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-            <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-        </div>
+                    <div id="row2" className="d-flex justify-content-between mt-3">
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
+                        </div>
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
+                        </div>
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
+                        </div>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #F3B14D", borderRadius: "10px" }}>
+                    <div id="row1" className="d-flex justify-content-between">
+                        <div>
+                            <span style={{ fontSize: "18px" }}>Floor-4 (North)</span>
+                        </div>
+                        <div className="d-flex align-items-center">
+                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#F3B14D", border: "1px solid #F3B14D" }}>
+                                <span>100%</span>
+                            </div>
+                            <PencilIcon />
+                        </div>
+                    </div>
+                    <div id="row2" className="d-flex justify-content-between mt-3">
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">18</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
+                        </div>
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
+                        </div>
+                        <div className="d-flex flex-column">
+                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
+                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
+                            <a style={{ color: "#39D9A7" }}>View</a>
+                        </div>
+                    </div>
+                </SwiperSlide>
+            </Swiper>
     </div>
 
     <div className="d-flex flex-column-fluid w-100" style={{ background: "#fafafa" }}>
@@ -196,12 +257,12 @@ const GarmentsComp = () => {
                                 <h4 style={{ fontWeight: "700" }}>Details</h4>
                                 <p style={{ color: "#9a9b9d", fontWeight: "normal" }}>Last updated 10:30pm 02/07/2024</p>
                             </div>
-                            <div className="card-toolbar">
+                            <div className="card-toolbar" style={{gap: "10px"}}>
                                 <div style={{ position: "relative" }}>
                                     <div style={{ position: "absolute", left: "14px", top: "10px" }}>
                                         <HeaderSearchIcon svgStyle={{ stroke: "#e8e9eb" }} />
                                     </div>
-                                    <input type="text" className="mr-3 " placeholder="Search for linen, floor or more..." style={{
+                                    <input type="text" placeholder="Search for linen, floor or more..." style={{
                                         paddingTop: "10px",
                                         paddingBottom: "10px",
                                         borderRadius: "8px",
