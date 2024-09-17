@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link,useHistory } from "react-router-dom";
 import useRequest from "../../hooks/useRequest"
@@ -7,7 +7,7 @@ import { authSuccess } from "../../store/auth/action";
 
 
 import "../Login/Login.css";
-import { HorizontalArrow } from "../../util/Svg";
+import { ClosedEyeIcon, HorizontalArrow, OpenEyeIcon } from "../../util/Svg";
 import { toast } from "react-toastify";
 const ResetPassword = () => {
   const history = useHistory();
@@ -16,11 +16,13 @@ const ResetPassword = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setError
   } = useForm();
 
   const { email, token } = useSelector((state) => state.auth);
 
-
+  const [isPasswordVisible1, setIsPasswordVisible1] = useState(false);
+  const [isPasswordVisible2, setIsPasswordVisible2] = useState(false);
   const {request: resetPasswordRequest, response: resetPasswordResponse} = useRequest();
 
 
@@ -30,12 +32,23 @@ const ResetPassword = () => {
 
   const onSubmit = (data) => {
     const { cpassword, password } = data;
+
+    if (password !== cpassword) {
+      setError("cpassword", {
+        type: "manual",
+        message: "Confirm password do not match.",
+      });
+      return;
+    }
     resetPasswordRequest("post", "pub/reset/password",{
       "emailId":email,
       "password":password,
       "confirmPassword":cpassword
     });
   };
+
+  console.log("errors ; ", errors);
+  
 
   useEffect(()=>{
     if(resetPasswordResponse){
@@ -81,27 +94,45 @@ const ResetPassword = () => {
 
                 <div className="form-group mb-3">
                   
-                  <input
-                    className={`form-control form-control-solid h-auto py-3 px-6 rounded-xl ${
-                      errors.password && "is-invalid" /*: "is-valid"*/
-                    }`}
-                    style={{border:"2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em"}}
-                    type="password"
-                    name="password"
-                    autoComplete="off"
-                    placeholder="Password"
-                    {...register("password", {
-                      required: true,
-                      pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
-                    })}
-                  />
+                <div className="position-relative">
+                    <input
+                      className={`form-control form-control-solid h-auto py-3 px-6 rounded-xl ${errors.password && "is-invalid" /*: "is-valid"*/
+                        }`}
+                      style={{ border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
+                      type={isPasswordVisible1 ? "text" : "password"}
+                      name="password"
+                      autoComplete="off"
+                      placeholder="Password"
+                      {...register("password", {
+                        required: true,
+                        pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
+                      })}
+                    />
+                    {isPasswordVisible1 ? (
+                          <span
+                            className="position-absolute" style={{top: "50%",right: "15px",transform: "translateY(-50%)", cursor: "pointer"}}
+                            onClick={() =>
+                              setIsPasswordVisible1((prev) => false)
+                            }
+                          >
+                            <ClosedEyeIcon />
+                          </span>
+                        ) : (
+                          <span
+                            className="position-absolute" style={{top: "50%",right: "15px",transform: "translateY(-50%)", cursor: "pointer"}}
+                            onClick={() => setIsPasswordVisible1((prev) => true)}
+                          >
+                            <OpenEyeIcon />
+                          </span>
+                        )}
+                  </div>
                   {errors.password?.type === "required" && (
-                    <div className="invalid-feedback">
+                    <div className="invalid-feedback" style={{display: "inline-block"}}>
                       The password field is required.
                     </div>
                   )}
                   {errors.password?.type === "pattern" && (
-                    <div className="invalid-feedback">
+                    <div className="invalid-feedback" style={{display: "inline-block"}}>
                       Password must be of 8 characters long with atleast one
                       uppercase, one lowercase and one number.
                     </div>
@@ -111,29 +142,52 @@ const ResetPassword = () => {
 
                 <div className="form-group">
                   
-                  <input
-                    className={`form-control form-control-solid h-auto py-3 px-6 rounded-xl ${
-                      errors.password && "is-invalid" /*: "is-valid"*/
-                    }`}
-                    style={{border:"2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em"}}
-                    type="password"
-                    name="cpassword"
-                    autoComplete="off"
-                    placeholder="Confirm new password"
-                    {...register("cpassword", {
-                      required: true,
-                      pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
-                    })}
-                  />
+                <div className="position-relative">
+                    <input
+                      className={`form-control form-control-solid h-auto py-3 px-6 rounded-xl ${errors.password && "is-invalid" /*: "is-valid"*/
+                        }`}
+                      style={{ border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
+                      type={isPasswordVisible2 ? "text" : "password"}
+                      name="cpassword"
+                      autoComplete="off"
+                      placeholder="Confirm Password"
+                      {...register("cpassword", {
+                        required: true,
+                        pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
+                      })}
+                    />
+                    {isPasswordVisible2 ? (
+                          <span
+                            className="position-absolute" style={{top: "50%",right: "15px",transform: "translateY(-50%)", cursor: "pointer"}}
+                            onClick={() =>
+                              setIsPasswordVisible2((prev) => false)
+                            }
+                          >
+                            <ClosedEyeIcon />
+                          </span>
+                        ) : (
+                          <span
+                            className="position-absolute" style={{top: "50%",right: "15px",transform: "translateY(-50%)", cursor: "pointer"}}
+                            onClick={() => setIsPasswordVisible2((prev) => true)}
+                          >
+                            <OpenEyeIcon />
+                          </span>
+                        )}
+                  </div>
                   {errors.cpassword?.type === "required" && (
-                    <div className="invalid-feedback">
+                    <div className="invalid-feedback" style={{display: "inline-block"}}>
                       The Confirm new password field is required.
                     </div>
                   )}
                   {errors.cpassword?.type === "pattern" && (
-                    <div className="invalid-feedback">
+                    <div className="invalid-feedback" style={{display: "inline-block"}}>
                       Password must be of 8 characters long with atleast one
                       uppercase, one lowercase and one number.
+                    </div>
+                  )}
+                  {errors.cpassword?.type === "manual" && (
+                    <div className="invalid-feedback" style={{display: "inline-block"}}>
+                      Confirm password do not match.
                     </div>
                   )}
                   

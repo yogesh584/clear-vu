@@ -7,6 +7,7 @@ import useRequest from "../../hooks/useRequest";
 import "../Login/Login.css";
 import { HorizontalArrow } from "../../util/Svg";
 import { toast } from "react-toastify";
+import ResendTimer from "../../components/ResendTimer/ResendTimer"
 const ForgotPasswordCode = () => {
   const history = useHistory();
   const { email, token } = useSelector((state) => state.auth);
@@ -137,17 +138,7 @@ const ForgotPasswordCode = () => {
                   <input type="text" onKeyUp={() => { handleKeyDown(5) }} name="otp6" {...register("otp6", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp6 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
 
                 </div>
-                <div className=" my-4">
-                  Didn’t receive email?{" "}
-                  <button
-                    className="font-size-h6 font-weight-bolder text-hover-primary border-0 bg-transparent"
-                    onClick={resendOtp}
-                    type="button"
-                    style={{ color: '#39d9a7', textDecoration: "underline" }}
-                  >
-                    Resend
-                  </button>
-                </div>
+                <ResendTimer />
                 <div className="pb-lg-0 pb-5 w-100">
                   <button
                     onClick={handleSubmit(onSubmit)}
