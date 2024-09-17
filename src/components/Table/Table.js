@@ -587,7 +587,7 @@ const Table = ({
         {mainData.length == 0 && (
           <tbody>
             <tr>
-              <td colSpan="6" style={{ textAlign: "center" }}>
+              <td colSpan={Object.keys(tableHeading).length} style={{ textAlign: "center" }}>
                 {" "}
                 {"Record not found"}
               </td>

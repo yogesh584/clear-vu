@@ -4,6 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 import useRequest from "../../hooks/useRequest";
 import { useDispatch } from "react-redux";
 import { authSuccess } from "../../store/auth/action";
+import notification from "../../util/toastifyNotifications"
 
 import "../Login/Login.css";
 import { HorizontalArrow } from "../../util/Svg";
@@ -40,6 +41,7 @@ const ForgotPassword = () => {
         token: responseMessage,
         loggedIn: false
       }))
+      notification.success("OTP sent successfully.", "An OTP has been sent to your email. Please check your inbox.")
       history.push("/forgot-password/code")
     }
   },[response])

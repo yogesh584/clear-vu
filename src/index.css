@@ -37,3 +37,8 @@ span {
   text-align: left;
   font-weight: bold;
 }
+
+.Toastify > div{
+  max-width: 450px;
+  width: auto;
+}

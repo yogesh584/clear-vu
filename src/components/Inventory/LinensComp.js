@@ -16,18 +16,18 @@ import 'swiper/css/pagination';
 import "../../styles/slider.css"
 
 const OBJ_TABLE = {
-    SKU: "SKU",
+    SKU: "sku",
     Location: "location",
     "Product name": "productName",
-    "In use": "inUse",
+    "In use": "countInUse",
     "Clean stock": "cleanStock",
     "Par level": "parLevel",
     "Dirty return": "dirtyReturn",
-    "Del. qty": "delQty",
+    "Del. qty": "deliveredQuantity",
     "Fill rate": "fillRate"
 };
 
-const LinensComp = () => {
+const LinensComp = ({data}) => {
     const [page, setPage] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(10);
     const [perPage, setPerPage] = useState(2);
@@ -341,63 +341,7 @@ const LinensComp = () => {
                                     <Table
                                         currentSort={currentSort}
                                         sortingHandler={sortingHandler}
-                                        mainData={[
-                                            {
-                                                SKU: '071',
-                                                location: 'Floor 1 (West)',
-                                                productName: 'Bedsheet',
-                                                inUse: 100,
-                                                cleanStock: 56,
-                                                parLevel: 56,
-                                                dirtyReturn: 56,
-                                                delQty: 56,
-                                                fillRate: '35.71%'
-                                            },
-                                            {
-                                                SKU: '157',
-                                                location: 'Floor 1 (West)',
-                                                productName: 'Pillow covers',
-                                                inUse: 86,
-                                                cleanStock: 56,
-                                                parLevel: 56,
-                                                dirtyReturn: 56,
-                                                delQty: 56,
-                                                fillRate: '100%'
-                                            },
-                                            {
-                                                SKU: '012',
-                                                location: 'Floor 1 (West)',
-                                                productName: 'Blankets',
-                                                inUse: 86,
-                                                cleanStock: 56,
-                                                parLevel: 56,
-                                                dirtyReturn: 56,
-                                                delQty: 56,
-                                                fillRate: '35.71%'
-                                            },
-                                            {
-                                                SKU: '018',
-                                                location: 'Floor 1 (West)',
-                                                productName: 'Inner sheet',
-                                                inUse: 86,
-                                                cleanStock: 56,
-                                                parLevel: 56,
-                                                dirtyReturn: 56,
-                                                delQty: 56,
-                                                fillRate: '35.71%'
-                                            },
-                                            {
-                                                SKU: '142',
-                                                location: 'Floor 1 (West)',
-                                                productName: 'Bath towel',
-                                                inUse: 86,
-                                                cleanStock: 56,
-                                                parLevel: 56,
-                                                dirtyReturn: 56,
-                                                delQty: 56,
-                                                fillRate: '35.71%'
-                                            }
-                                        ]}
+                                        mainData={data}
                                         tableHeading={Object.keys(OBJ_TABLE)}
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{
@@ -420,63 +364,7 @@ const LinensComp = () => {
                                             perPage={perPage}
                                             defaultPerPage={records_per_page}
                                             perPageChangeHandler={perPageChangeHandler}
-                                            currentDocLength={[
-                                                {
-                                                    SKU: '071',
-                                                    location: 'Floor 1 (West)',
-                                                    productName: 'Bedsheet',
-                                                    inUse: 100,
-                                                    cleanStock: 56,
-                                                    parLevel: 56,
-                                                    dirtyReturn: 56,
-                                                    delQty: 56,
-                                                    fillRate: '35.71%'
-                                                },
-                                                {
-                                                    SKU: '157',
-                                                    location: 'Floor 1 (West)',
-                                                    productName: 'Pillow covers',
-                                                    inUse: 86,
-                                                    cleanStock: 56,
-                                                    parLevel: 56,
-                                                    dirtyReturn: 56,
-                                                    delQty: 56,
-                                                    fillRate: '100%'
-                                                },
-                                                {
-                                                    SKU: '012',
-                                                    location: 'Floor 1 (West)',
-                                                    productName: 'Blankets',
-                                                    inUse: 86,
-                                                    cleanStock: 56,
-                                                    parLevel: 56,
-                                                    dirtyReturn: 56,
-                                                    delQty: 56,
-                                                    fillRate: '35.71%'
-                                                },
-                                                {
-                                                    SKU: '018',
-                                                    location: 'Floor 1 (West)',
-                                                    productName: 'Inner sheet',
-                                                    inUse: 86,
-                                                    cleanStock: 56,
-                                                    parLevel: 56,
-                                                    dirtyReturn: 56,
-                                                    delQty: 56,
-                                                    fillRate: '35.71%'
-                                                },
-                                                {
-                                                    SKU: '142',
-                                                    location: 'Floor 1 (West)',
-                                                    productName: 'Bath towel',
-                                                    inUse: 86,
-                                                    cleanStock: 56,
-                                                    parLevel: 56,
-                                                    dirtyReturn: 56,
-                                                    delQty: 56,
-                                                    fillRate: '35.71%'
-                                                }
-                                            ].length}
+                                            currentDocLength={data.length}
                                         />
                                     )}
                                 </div>

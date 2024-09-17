@@ -7,6 +7,7 @@ import "./Login.css";
 import { ClosedEyeIcon, HorizontalArrow, OpenEyeIcon } from "../../util/Svg";
 import useRequest from "../../hooks/useRequest"
 import { useDispatch } from "react-redux";
+import notification from "../../util/toastifyNotifications"
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -45,6 +46,8 @@ const Login = () => {
           loggedIn: false
         })
       );
+
+      notification.success("OTP sent successfully.", "An OTP has been sent to your email. Please check your inbox.")
 
       history.push("/login/2fa")
     }

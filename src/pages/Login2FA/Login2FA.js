@@ -7,7 +7,6 @@ import useRequest from "../../hooks/useRequest";
 import "../Login/Login.css";
 import { authSuccess, authSuccess2FA } from "../../store/auth/action";
 import { HorizontalArrow } from "../../util/Svg";
-import { toast } from "react-toastify";
 import ResendTimer from "../../components/ResendTimer/ResendTimer";
 const Login2FA = () => {
   const dispatch = useDispatch()
@@ -78,16 +77,6 @@ const Login2FA = () => {
     }
   },[verifyOtpResponse])
 
-  const resendOtp = () => {
-    resendOtpRequest("post", "api/otp/resend", {"emailId":email})
-  }
-
-  useEffect(()=>{
-    if(resendOtpResponse){
-      const {responseMessage} = resendOtpResponse;
-      toast.success("OTP sent successfully.")
-    }
-  },[resendOtpResponse])
 
   return (
     <div className="d-flex justify-content-center align-items-center w-100" style={{height: "100vh",backgroundImage: "url(auth-bg.png)", backgroundSize: "cover"}}>

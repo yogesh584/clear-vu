@@ -27,7 +27,7 @@ const OBJ_TABLE = {
     "Status": "status",
 };
 
-const GarmentsComp = () => {
+const GarmentsComp = ({data}) => {
     const [page, setPage] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(10);
     const [perPage, setPerPage] = useState(2);
@@ -336,58 +336,7 @@ const GarmentsComp = () => {
                                 <Table
                                     currentSort={currentSort}
                                     sortingHandler={sortingHandler}
-                                    mainData={[
-                                        {
-                                          SKU: "088",
-                                          location: "Floor 1 (West)",
-                                          productName: "Lab coats",
-                                          inUse: "S",
-                                          lastWashed: "02-24-2024",
-                                          totalWashed: 56,
-                                          nextWashCycle: "5 Days",
-                                          status: "In use"
-                                        },
-                                        {
-                                          SKU: "089",
-                                          location: "Floor 1 (West)",
-                                          productName: "Scrubs",
-                                          inUse: "Samuel Nikon",
-                                          lastWashed: "02-24-2024",
-                                          totalWashed: 56,
-                                          nextWashCycle: "5 Days",
-                                          status: "In laundry"
-                                        },
-                                        {
-                                          SKU: "090",
-                                          location: "Floor 1 (West)",
-                                          productName: "Head wear",
-                                          inUse: "-",
-                                          lastWashed: "02-24-2024",
-                                          totalWashed: 56,
-                                          nextWashCycle: "5 Days",
-                                          status: "Clean stock"
-                                        },
-                                        {
-                                          SKU: "091",
-                                          location: "Floor 1 (West)",
-                                          productName: "Patient gown",
-                                          inUse: "XXL",
-                                          lastWashed: "02-24-2024",
-                                          totalWashed: 56,
-                                          nextWashCycle: "5 Days",
-                                          status: "In laundry"
-                                        },
-                                        {
-                                          SKU: "092",
-                                          location: "Floor 3 (West)",
-                                          productName: "Head wear",
-                                          inUse: "-",
-                                          lastWashed: "02-24-2024",
-                                          totalWashed: 56,
-                                          nextWashCycle: "5 Days",
-                                          status: "In use"
-                                        }
-                                      ]}
+                                    mainData={data}
                                     tableHeading={Object.keys(OBJ_TABLE)}
                                     tableData={Object.values(OBJ_TABLE)}
                                     renderAs={{
@@ -410,58 +359,7 @@ const GarmentsComp = () => {
                                         perPage={perPage}
                                         defaultPerPage={records_per_page}
                                         perPageChangeHandler={perPageChangeHandler}
-                                        currentDocLength={[
-                                            {
-                                              SKU: "088",
-                                              location: "Floor 1 (West)",
-                                              productName: "Lab coats",
-                                              inUse: "S",
-                                              lastWashed: "02-24-2024",
-                                              totalWashed: 56,
-                                              nextWashCycle: "5 Days",
-                                              status: "In use"
-                                            },
-                                            {
-                                              SKU: "089",
-                                              location: "Floor 1 (West)",
-                                              productName: "Scrubs",
-                                              inUse: "Samuel Nikon",
-                                              lastWashed: "02-24-2024",
-                                              totalWashed: 56,
-                                              nextWashCycle: "5 Days",
-                                              status: "In laundry"
-                                            },
-                                            {
-                                              SKU: "090",
-                                              location: "Floor 1 (West)",
-                                              productName: "Head wear",
-                                              inUse: "-",
-                                              lastWashed: "02-24-2024",
-                                              totalWashed: 56,
-                                              nextWashCycle: "5 Days",
-                                              status: "Clean stock"
-                                            },
-                                            {
-                                              SKU: "091",
-                                              location: "Floor 1 (West)",
-                                              productName: "Patient gown",
-                                              inUse: "XXL",
-                                              lastWashed: "02-24-2024",
-                                              totalWashed: 56,
-                                              nextWashCycle: "5 Days",
-                                              status: "In laundry"
-                                            },
-                                            {
-                                              SKU: "092",
-                                              location: "Floor 3 (West)",
-                                              productName: "Head wear",
-                                              inUse: "-",
-                                              lastWashed: "02-24-2024",
-                                              totalWashed: 56,
-                                              nextWashCycle: "5 Days",
-                                              status: "In use"
-                                            }
-                                          ].length}
+                                        currentDocLength={data.length}
                                     />
                                 )}
                             </div>

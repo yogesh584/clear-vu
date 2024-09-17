@@ -4,12 +4,11 @@ import { Switch, Redirect, Route, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./App.css";
-import { authSuccess, logout } from "./store/auth/action";
+import { authSuccess } from "./store/auth/action";
 
 import {
   privateRoutes,
-  notPrivateRoutes,
-  noLayoutPrivateRoutes,
+  notPrivateRoutes
 } from "./util/routes";
 import Sidebar from "./components/Sidebar/Sidebar";
 import Header from "./components/Header/Header";
@@ -21,14 +20,13 @@ const App = () => {
   const [filteredPrivateRoutes, setFilteredPrivateRoutes] =
     useState(privateRoutes);
 
-  const [toggleSidebar,setToggleSidebar] = useState(false);
+  const [toggleSidebar, setToggleSidebar] = useState(false);
 
   const dispatch = useDispatch();
   const { loggedIn, loading, permissions, user_role_id } = useSelector(
     (state) => state.auth
   );
 
-  console.log("loggedIN", loggedIn)
   const routePath = useLocation();
 
   useEffect(() => {
@@ -42,19 +40,19 @@ const App = () => {
     } else {
       setToken(token);
     }
-  }, []);
+  }, [dispatch]);
 
-  useEffect(()=>{
+  useEffect(() => {
     if (token) {
       dispatch(
         authSuccess({
           loggedIn: true,
-          token : token,
+          token: token,
           name: "John Tomas"
         })
       )
     }
-  },[token])
+  }, [token])
 
   useEffect(() => {
     if (user_role_id === 2) {
@@ -76,12 +74,12 @@ const App = () => {
           <>
             {loggedIn ? (
               <>
-                <Sidebar toggleSidebar={toggleSidebar}/>
+                <Sidebar toggleSidebar={toggleSidebar} />
                 <div
                   className="d-flex flex-column flex-row-fluid wrapper"
                   id="kt_wrapper"
                 >
-                  <Header setToggleSidebar={setToggleSidebar}/>
+                  <Header setToggleSidebar={setToggleSidebar} />
                   <Switch>
                     {filteredPrivateRoutes.map((route, index) => (
                       <Route

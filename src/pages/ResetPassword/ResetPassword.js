@@ -8,7 +8,8 @@ import { authSuccess } from "../../store/auth/action";
 
 import "../Login/Login.css";
 import { ClosedEyeIcon, HorizontalArrow, OpenEyeIcon } from "../../util/Svg";
-import { toast } from "react-toastify";
+import notification from "../../util/toastifyNotifications"
+
 const ResetPassword = () => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -59,7 +60,7 @@ const ResetPassword = () => {
           loggedIn: false
         })
       );
-      toast.success("Password Updated Successfully.");
+      notification.success("Your password was updated successfully.", "Your password has been successfully changed. Now you canlog in using your new password.")
       history.push("/login")
     }
   },[resetPasswordResponse])

@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 
 import useRequest from "../../hooks/useRequest";
 import {StopwatchIcon} from "../../util/Svg"
-import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import notification from "../../util/toastifyNotifications"
 
 const defaultTimerValue = "00:00:30";
 const ResendTimer = () => {
@@ -73,7 +73,7 @@ const ResendTimer = () => {
 
     useEffect(()=>{
         if(response){
-          toast.success("OTP sent successfully.")
+            notification.success("OTP sent successfully.", "An OTP has been sent to your email. Please check your inbox.")
         }
     },[response])
 

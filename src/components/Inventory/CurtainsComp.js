@@ -27,7 +27,7 @@ const OBJ_TABLE = {
     "Status": "status",
 };
 
-const CurtainsComp = () => {
+const CurtainsComp = ({data}) => {
     const [page, setPage] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(10);
     const [perPage, setPerPage] = useState(2);
@@ -336,59 +336,7 @@ const CurtainsComp = () => {
                                     <Table
                                         currentSort={currentSort}
                                         sortingHandler={sortingHandler}
-                                        mainData={[
-                                            {
-                                                SKU: "021",
-                                                location: "Floor 1 (West)",
-                                                productName: "Privacy curtains",
-                                                installationDate: "02-24-2024",
-                                                lastWashed: "02-24-2024",
-                                                totalWashed: 56,
-                                                nextWashCycle: "5 Days",
-                                                status: "In use"
-                                            },
-                                            {
-                                                SKU: "022",
-                                                location: "Floor 1 (West)",
-                                                productName: "Room Dividers",
-                                                installationDate: "02-24-2024",
-                                                lastWashed: "02-24-2024",
-                                                totalWashed: 56,
-                                                nextWashCycle: "5 Days",
-                                                status: "In laundry"
-                                            },
-                                            {
-                                                SKU: "033",
-                                                location: "Floor 1 (West)",
-                                                productName: "Shower Curtains",
-                                                installationDate: "02-24-2024",
-                                                lastWashed: "02-24-2024",
-                                                totalWashed: 56,
-                                                nextWashCycle: "5 Days",
-                                                status: "Clean stock"
-                                            },
-                                            {
-                                                SKU: "021",
-                                                location: "Floor 1 (West)",
-                                                productName: "Privacy curtains",
-                                                installationDate: "02-24-2024",
-                                                lastWashed: "02-24-2024",
-                                                totalWashed: 56,
-                                                nextWashCycle: "5 Days",
-                                                status: "In laundry"
-                                            },
-                                            {
-                                                SKU: "021",
-                                                location: "Floor 3 (West)",
-                                                productName: "Privacy curtains",
-                                                installationDate: "02-24-2024",
-                                                lastWashed: "02-24-2024",
-                                                totalWashed: 56,
-                                                nextWashCycle: "5 Days",
-                                                status: "In use"
-                                            }
-                                        ]
-                                        }
+                                        mainData={data}
                                         tableHeading={Object.keys(OBJ_TABLE)}
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{
@@ -411,58 +359,7 @@ const CurtainsComp = () => {
                                             perPage={perPage}
                                             defaultPerPage={records_per_page}
                                             perPageChangeHandler={perPageChangeHandler}
-                                            currentDocLength={[
-                                                {
-                                                    SKU: "021",
-                                                    location: "Floor 1 (West)",
-                                                    productName: "Privacy curtains",
-                                                    installationDate: "02-24-2024",
-                                                    lastWashed: "02-24-2024",
-                                                    totalWashed: 56,
-                                                    nextWashCycle: "5 Days",
-                                                    status: "In use"
-                                                },
-                                                {
-                                                    SKU: "022",
-                                                    location: "Floor 1 (West)",
-                                                    productName: "Room Dividers",
-                                                    installationDate: "02-24-2024",
-                                                    lastWashed: "02-24-2024",
-                                                    totalWashed: 56,
-                                                    nextWashCycle: "5 Days",
-                                                    status: "In laundry"
-                                                },
-                                                {
-                                                    SKU: "033",
-                                                    location: "Floor 1 (West)",
-                                                    productName: "Shower Curtains",
-                                                    installationDate: "02-24-2024",
-                                                    lastWashed: "02-24-2024",
-                                                    totalWashed: 56,
-                                                    nextWashCycle: "5 Days",
-                                                    status: "Clean stock"
-                                                },
-                                                {
-                                                    SKU: "021",
-                                                    location: "Floor 1 (West)",
-                                                    productName: "Privacy curtains",
-                                                    installationDate: "02-24-2024",
-                                                    lastWashed: "02-24-2024",
-                                                    totalWashed: 56,
-                                                    nextWashCycle: "5 Days",
-                                                    status: "In laundry"
-                                                },
-                                                {
-                                                    SKU: "021",
-                                                    location: "Floor 3 (West)",
-                                                    productName: "Privacy curtains",
-                                                    installationDate: "02-24-2024",
-                                                    lastWashed: "02-24-2024",
-                                                    totalWashed: 56,
-                                                    nextWashCycle: "5 Days",
-                                                    status: "In use"
-                                                }
-                                            ].length}
+                                            currentDocLength={data.length}
                                         />
                                     )}
                                 </div>
