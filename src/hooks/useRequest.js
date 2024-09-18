@@ -23,7 +23,7 @@ const useRequest = () => {
 
   useEffect(() => {
     dispatch(updateLoading({ loading }));
-  }, [loading]);
+  }, [loading,dispatch]);
 
   const startFetching = () => {
     setResponse(null);
@@ -69,15 +69,13 @@ const useRequest = () => {
         setResponse(res.data);
       })
       .catch((err) => {
-        console.log("err : ",err);
-        
         fetchedData();
         if (err.response) {
           if (err.response.status === 401) {
             dispatch(logout());
           } else if (err.response.status === 404) {
             history.push("/404");
-          } else if (err.response.status == 400) {
+          } else if (err.response.status === 400) {
             notification.error("Bad Request", err.response.data.responseMessage)
           } else {
             toast.error(err.response.data.message);

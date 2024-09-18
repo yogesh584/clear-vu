@@ -36,7 +36,7 @@ const Login = () => {
 
   useEffect(() => {
     if (loginResponse) {
-      const { responseCode, responseMessage } = loginResponse;
+      const {  responseMessage } = loginResponse;
       const email = getValues("email");
 
       dispatch(
@@ -117,14 +117,13 @@ const Login = () => {
                       placeholder="Password"
                       {...register("password", {
                         required: true,
-                        pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
                       })}
                     />
                     {isPasswordVisible ? (
                           <span
                             className="position-absolute" style={{top: "50%",right: "15px",transform: "translateY(-50%)", cursor: "pointer"}}
                             onClick={() =>
-                              setIsPasswordVisible((prev) => false)
+                              setIsPasswordVisible(false)
                             }
                           >
                             <ClosedEyeIcon />
@@ -132,7 +131,7 @@ const Login = () => {
                         ) : (
                           <span
                             className="position-absolute" style={{top: "50%",right: "15px",transform: "translateY(-50%)", cursor: "pointer"}}
-                            onClick={() => setIsPasswordVisible((prev) => true)}
+                            onClick={() => setIsPasswordVisible(true)}
                           >
                             <OpenEyeIcon />
                           </span>

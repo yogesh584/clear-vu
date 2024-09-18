@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState,useEffect } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { FilterIcon, HeaderSearchIcon, PencilIcon } from "../../util/Svg";
@@ -8,10 +7,10 @@ import Pagination from "../Pagination/Pagination";
 import Table from "../Table/Table";
 import { SearchInput, SearchSubmitButton } from "../Form/Form";
 import cardStyles from "../../styles/card.module.css"
-
+import useRequest from "../../hooks/useRequest";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination as SwiperPagination } from 'swiper/modules';
+import { Pagination as SwiperPagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import "../../styles/slider.css"
@@ -27,9 +26,15 @@ const OBJ_TABLE = {
     "Status": "status",
 };
 
-const CurtainsComp = ({data}) => {
+
+let isDataAlreadyFetched = {
+    card: false,
+    table: false
+}
+
+const CurtainsComp = ({activeTab, tableData, setTableData, cardData, setCardData}) => {
     const [page, setPage] = useState(1);
-    const [totalDocuments, setTotalDocuments] = useState(10);
+    const [totalDocuments, setTotalDocuments] = useState(0);
     const [perPage, setPerPage] = useState(2);
     const [currentSort, setCurrentSort] = useState({
         sortBy: "created on",
@@ -37,17 +42,45 @@ const CurtainsComp = ({data}) => {
     });
 
     const { records_per_page } = useSelector((state) => state.setting);
-    const { permissions, user_role_id } = useSelector((store) => store.auth);
     const {
         register,
         handleSubmit,
         formState: { errors },
         resetField,
-        getValues,
     } = useForm();
 
-    const onSearchHandler = (data) => {
-        const { title } = getValues();
+    const { request: requestCurtainsData, response: responseCurtainsData } = useRequest()
+    const {request: requestCurtainsCards, response:responseCurtainsCards} = useRequest();
+
+    useEffect(()=>{
+        if(activeTab == "curtains"){
+            if(!isDataAlreadyFetched.card){
+                requestCurtainsCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=2`);  
+            }
+
+            if(!isDataAlreadyFetched.table){
+                requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${records_per_page}&pageNumber=1`);
+            }
+        }
+    },[activeTab])
+
+    useEffect(() => {
+        if (responseCurtainsData) {
+            isDataAlreadyFetched.table = true;
+            const { content,totalElements } = responseCurtainsData;
+            setTableData(content)
+            setTotalDocuments(totalElements)
+        }
+    }, [responseCurtainsData])
+
+    useEffect(() => {
+        if (responseCurtainsCards) {
+            isDataAlreadyFetched.card = true;
+            setCardData(responseCurtainsCards)
+        }
+    }, [responseCurtainsCards])
+
+    const onSearchHandler = () => {
         setPage(1);
     };
 
@@ -59,7 +92,7 @@ const CurtainsComp = ({data}) => {
     };
 
     const sortingHandler = (sortBy) => {
-        if (currentSort.sortBy == sortBy) {
+        if (currentSort.sortBy === sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
 
             setCurrentSort({ sortBy, order: newOrder });
@@ -71,12 +104,14 @@ const CurtainsComp = ({data}) => {
 
     const fetchMoreData = ({ selected }) => {
         setPage(selected + 1);
+        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${perPage}&pageNumber=${selected + 1}`);
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(1);
         setPerPage(event.target.value);
+        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${records_per_page}&pageNumber=1`);
     };
 
     const InputFields = [
@@ -123,127 +158,38 @@ const CurtainsComp = ({data}) => {
                 }}
                 id="cards" className="d-flex w-100 px-3 justify-content-between pb-10"
             >
-                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
-                    <div id="row1" className="d-flex justify-content-between">
-                        <div>
-                            <span style={{ fontSize: "18px" }}>Floor-1 (North)</span>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
-                                <span>35.71%</span>
+                {Array.isArray(cardData) && cardData.map((d,index) => {
+                    return <SwiperSlide key={index + "lineans_card"} id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
+                        <div id="row1" className="d-flex justify-content-between">
+                            <div>
+                                <span style={{ fontSize: "18px" }}>Floor-{index + 1} (North)</span>
                             </div>
-                            <PencilIcon />
-                        </div>
-                    </div>
-                    <div id="row2" className="d-flex justify-content-between mt-3">
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">108</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
-                    <div id="row1" className="d-flex justify-content-between">
-                        <div>
-                            <span style={{ fontSize: "18px" }}>Floor-2 (North)</span>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
-                                <span>35.71%</span>
+                            <div className="d-flex align-items-center">
+                                <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
+                                    <span>35.71%</span>
+                                </div>
+                                <PencilIcon />
                             </div>
-                            <PencilIcon />
                         </div>
-                    </div>
-                    <div id="row2" className="d-flex justify-content-between mt-3">
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">108</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                    </div>
-                </SwiperSlide>
-
-                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #60ba51", borderRadius: "10px" }}>
-                    <div id="row1" className="d-flex justify-content-between">
-                        <div>
-                            <span style={{ fontSize: "18px" }}>Floor-3 (North)</span>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#60ba51", border: "1px solid #60ba51" }}>
-                                <span>100%</span>
+                        <div id="row2" className="d-flex justify-content-between mt-3">
+                            <div className="d-flex flex-column">
+                                <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
+                                <span style={{ fontSize: "24px" }} className="mb-1">{d.inUse}</span>
+                                <a href="/" style={{ color: "#39D9A7" }}>View</a>
                             </div>
-                            <PencilIcon />
-                        </div>
-                    </div>
-                    <div id="row2" className="d-flex justify-content-between mt-3">
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #F3B14D", borderRadius: "10px" }}>
-                    <div id="row1" className="d-flex justify-content-between">
-                        <div>
-                            <span style={{ fontSize: "18px" }}>Floor-4 (North)</span>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#F3B14D", border: "1px solid #F3B14D" }}>
-                                <span>100%</span>
+                            <div className="d-flex flex-column">
+                                <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
+                                <span style={{ fontSize: "24px" }} className="mb-1">{d.inStock}</span>
+                                <a href="/" style={{ color: "#39D9A7" }}>View</a>
                             </div>
-                            <PencilIcon />
+                            <div className="d-flex flex-column">
+                                <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
+                                <span style={{ fontSize: "24px" }} className="mb-1">{d.requested}</span>
+                                <a href="/" style={{ color: "#39D9A7" }}>View</a>
+                            </div>
                         </div>
-                    </div>
-                    <div id="row2" className="d-flex justify-content-between mt-3">
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">18</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                    </div>
-                </SwiperSlide>
+                    </SwiperSlide>
+                })}
             </Swiper>
         </div>
 
@@ -273,10 +219,8 @@ const CurtainsComp = ({data}) => {
                                             outline: "none"
                                         }} />
                                     </div>
-                                    <a
-                                        className="btn btn-primary  mr-2" // dropdown-toggle
-                                        // data-toggle="collapse"
-                                        // data-target="#collapseOne6"
+                                    <button
+                                        className="btn btn-primary  mr-2" 
                                         style={{
                                             border: "1px solid #e8e9eb",
                                             borderRadius: "8px",
@@ -293,7 +237,7 @@ const CurtainsComp = ({data}) => {
                                         <span className="ml-3">
                                             Filter
                                         </span>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                             <div className="card-body py-0" >
@@ -314,7 +258,7 @@ const CurtainsComp = ({data}) => {
                                                 <div className="row mb-6">
                                                     {InputFields.map((inputMain, index) => (
                                                         <SearchInput
-                                                            key={index}
+                                                            key={inputMain + index + Math.ceil(Math.random())}
                                                             {...inputMain}
                                                             errors={errors}
                                                             register={register}
@@ -336,7 +280,7 @@ const CurtainsComp = ({data}) => {
                                     <Table
                                         currentSort={currentSort}
                                         sortingHandler={sortingHandler}
-                                        mainData={data}
+                                        mainData={tableData}
                                         tableHeading={Object.keys(OBJ_TABLE)}
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{
@@ -354,12 +298,12 @@ const CurtainsComp = ({data}) => {
                                     {perPage !== 0 && (
                                         <Pagination
                                             page={page}
-                                            totalDocuments={20}
+                                            totalDocuments={totalDocuments}
                                             getNewData={fetchMoreData}
                                             perPage={perPage}
                                             defaultPerPage={records_per_page}
                                             perPageChangeHandler={perPageChangeHandler}
-                                            currentDocLength={data.length}
+                                            currentDocLength={tableData.length}
                                         />
                                     )}
                                 </div>
