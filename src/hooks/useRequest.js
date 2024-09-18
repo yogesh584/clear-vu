@@ -6,11 +6,11 @@ import { toast } from "react-toastify";
 
 import { logout, updateLoading } from "../store/auth/action";
 import { BASEURL } from "../constant/api";
+import notification from "../util/toastifyNotifications";
 
 const BACKEND_URL = BASEURL.PORT;
 
 const useRequest = () => {
-  console.log("BACKEND_URL",BACKEND_URL, process.env.NODE_ENV);
   
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -77,13 +77,15 @@ const useRequest = () => {
             dispatch(logout());
           } else if (err.response.status === 404) {
             history.push("/404");
+          } else if (err.response.status == 400) {
+            notification.error("Bad Request", err.response.data.responseMessage)
           } else {
             toast.error(err.response.data.message);
           }
         } else if (err.request) {
-          toast.error("Slow Network Speed. Try Again later.");
+          notification.error("Try Again later.", "Slow Network Speed. Try Again later.")
         } else {
-          toast.error("Oops!! Unusual error occurred");
+          notification.error("Oops!!.", "Unusual error occurred")
         }
       });
   };

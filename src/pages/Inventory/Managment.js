@@ -13,167 +13,9 @@ const Dashboard = () => {
         curtains: false
     });
 
-    const [linensData, setLinensData] = useState([
-        {
-            "sku": "012",
-            "productName": "Bath Towel",
-            "location": "first floor(East)",
-            "countInUse": 50,
-            "cleanStock": 50,
-            "parLevel": "56",
-            "dirtyReturn": 56,
-            "deliveredQuantity": 30,
-            "fillRate": 53.57142857142857
-        },
-        {
-            "sku": "071",
-            "productName": "Bedsheet",
-            "location": "first floor(West)",
-            "countInUse": 50,
-            "cleanStock": 50,
-            "parLevel": "56",
-            "dirtyReturn": 56,
-            "deliveredQuantity": 56,
-            "fillRate": 100
-        },
-        {
-            "sku": "157",
-            "productName": "Pillow cover",
-            "location": "first floor(West)",
-            "countInUse": 50,
-            "cleanStock": 50,
-            "parLevel": "56",
-            "dirtyReturn": 56,
-            "deliveredQuantity": 56,
-            "fillRate": 100
-        },
-        {
-            "sku": "018",
-            "productName": "Blanket",
-            "location": "first floor(West)",
-            "countInUse": 50,
-            "cleanStock": 50,
-            "parLevel": "56",
-            "dirtyReturn": 56,
-            "deliveredQuantity": 56,
-            "fillRate": 100
-        },
-        {
-            "sku": "018",
-            "productName": "Blanket",
-            "location": "Second floor(West)",
-            "countInUse": 50,
-            "cleanStock": 50,
-            "parLevel": "56",
-            "dirtyReturn": 56,
-            "deliveredQuantity": 30,
-            "fillRate": 53.57142857142857
-        }
-    ])
-    const [garmentsData, setGarmentsData] = useState([
-        {
-          SKU: "088",
-          location: "Floor 1 (West)",
-          productName: "Lab coats",
-          inUse: "S",
-          lastWashed: "02-24-2024",
-          totalWashed: 56,
-          nextWashCycle: "5 Days",
-          status: "In use"
-        },
-        {
-          SKU: "089",
-          location: "Floor 1 (West)",
-          productName: "Scrubs",
-          inUse: "Samuel Nikon",
-          lastWashed: "02-24-2024",
-          totalWashed: 56,
-          nextWashCycle: "5 Days",
-          status: "In laundry"
-        },
-        {
-          SKU: "090",
-          location: "Floor 1 (West)",
-          productName: "Head wear",
-          inUse: "-",
-          lastWashed: "02-24-2024",
-          totalWashed: 56,
-          nextWashCycle: "5 Days",
-          status: "Clean stock"
-        },
-        {
-          SKU: "091",
-          location: "Floor 1 (West)",
-          productName: "Patient gown",
-          inUse: "XXL",
-          lastWashed: "02-24-2024",
-          totalWashed: 56,
-          nextWashCycle: "5 Days",
-          status: "In laundry"
-        },
-        {
-          SKU: "092",
-          location: "Floor 3 (West)",
-          productName: "Head wear",
-          inUse: "-",
-          lastWashed: "02-24-2024",
-          totalWashed: 56,
-          nextWashCycle: "5 Days",
-          status: "In use"
-        }
-      ])
-    const [curtainsData, setCurtainsData] = useState([
-        {
-            SKU: "021",
-            location: "Floor 1 (West)",
-            productName: "Privacy curtains",
-            installationDate: "02-24-2024",
-            lastWashed: "02-24-2024",
-            totalWashed: 56,
-            nextWashCycle: "5 Days",
-            status: "In use"
-        },
-        {
-            SKU: "022",
-            location: "Floor 1 (West)",
-            productName: "Room Dividers",
-            installationDate: "02-24-2024",
-            lastWashed: "02-24-2024",
-            totalWashed: 56,
-            nextWashCycle: "5 Days",
-            status: "In laundry"
-        },
-        {
-            SKU: "033",
-            location: "Floor 1 (West)",
-            productName: "Shower Curtains",
-            installationDate: "02-24-2024",
-            lastWashed: "02-24-2024",
-            totalWashed: 56,
-            nextWashCycle: "5 Days",
-            status: "Clean stock"
-        },
-        {
-            SKU: "021",
-            location: "Floor 1 (West)",
-            productName: "Privacy curtains",
-            installationDate: "02-24-2024",
-            lastWashed: "02-24-2024",
-            totalWashed: 56,
-            nextWashCycle: "5 Days",
-            status: "In laundry"
-        },
-        {
-            SKU: "021",
-            location: "Floor 3 (West)",
-            productName: "Privacy curtains",
-            installationDate: "02-24-2024",
-            lastWashed: "02-24-2024",
-            totalWashed: 56,
-            nextWashCycle: "5 Days",
-            status: "In use"
-        }
-    ])
+    const [linensData, setLinensData] = useState([])
+    const [garmentsData, setGarmentsData] = useState([])
+    const [curtainsData, setCurtainsData] = useState([])
 
     const { request: requestLinensData, response: responseLinensData } = useRequest()
     const { request: requestGarmentsData, response: responseGarmentsData } = useRequest()
@@ -181,22 +23,22 @@ const Dashboard = () => {
 
     const handleTabClick = (tabName) => {
         setActiveTab(tabName);
-        // if (!isDataAlreadyFetched[tabName]) {
-        //     if (tabName == "linens") {
-        //         requestLinensData("get", `inventory/management`);
-        //     }
-        //     if (tabName == "garments") {
-        //         requestGarmentsData("get", `inventory/management`);
-        //     }
-        //     if (tabName == "curtains") {
-        //         requestCurtainsData("get", `inventory/management`);
-        //     }
-        // }
+        if (!isDataAlreadyFetched[tabName]) {
+            if (tabName == "linens") {
+                requestLinensData("get", `api/inventory/management?userId=1&categoryId=1`);
+            }
+            if (tabName == "garments") {
+                requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2`);
+            }
+            if (tabName == "curtains") {
+                requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3`);
+            }
+        }
     };
 
     useEffect(() => {
         document.title = "Inventory Managment - Clear vu";
-        // requestLinensData("get", `inventory/management`);
+        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1`);
     }, []);
 
     useEffect(() => {
