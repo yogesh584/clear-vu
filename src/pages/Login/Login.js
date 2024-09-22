@@ -28,6 +28,20 @@ const Login = () => {
 
   const onSubmit = (data) => {
     const { email, password } = data;
+    // dispatch(
+    //   authSuccess({
+    //     token: "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMTkyQ0JDLUhTMzg0IiwiZXhwIjowLCJhbGciOiJkaXIifQ..znPn-PBY5EXnl2AHlp5y9g.PQz9R76l6iFYedLdVQ6i-eEUjb8Dd0Vpp86migjrGvBfu0pVyM_nW9eHO5di2LIXqsMl1-tvrvkupSn5HEdyJKAay1vMcIsiqs_LTAW4iBcQolq1SoRqCDYu85HSSahrKgPAlO45DLmOLid7mMY9Bh_nlVc7eMguhcZRn6GiJrkGOUn6gnzUMEEKV6hmJ-6gQPqs8XXIq4GR_jP4WYT7Vw.WcH7Z_IGKnkM6DGdgBTg2AeaXCixsBgt",
+    //     email: "test2@clearvu.com",
+    //     loggedIn: true,
+    //     userId: 6,
+    //     name: "admin",
+    //     user_role_id: 1,
+    //     permissions: {},
+    //   })
+    // );
+
+
+
     loginRequest("post", "pub/login", {
       "emailId": email,
       "password": password
@@ -36,7 +50,7 @@ const Login = () => {
 
   useEffect(() => {
     if (loginResponse) {
-      const {  responseMessage } = loginResponse;
+      const { responseMessage } = loginResponse;
       const email = getValues("email");
 
       dispatch(
@@ -51,7 +65,7 @@ const Login = () => {
 
       history.push("/login/2fa")
     }
-  }, [loginResponse])
+  }, [loginResponse, dispatch])
 
   return (
     <div className="d-flex justify-content-center align-items-center w-100" style={{ height: "100vh", backgroundImage: "url(auth-bg.png)", backgroundSize: "cover" }}>
@@ -120,34 +134,34 @@ const Login = () => {
                       })}
                     />
                     {isPasswordVisible ? (
-                          <span
-                            className="position-absolute" style={{top: "50%",right: "15px",transform: "translateY(-50%)", cursor: "pointer"}}
-                            onClick={() =>
-                              setIsPasswordVisible(false)
-                            }
-                          >
-                            <ClosedEyeIcon />
-                          </span>
-                        ) : (
-                          <span
-                            className="position-absolute" style={{top: "50%",right: "15px",transform: "translateY(-50%)", cursor: "pointer"}}
-                            onClick={() => setIsPasswordVisible(true)}
-                          >
-                            <OpenEyeIcon />
-                          </span>
-                        )}
+                      <span
+                        className="position-absolute" style={{ top: "50%", right: "15px", transform: "translateY(-50%)", cursor: "pointer" }}
+                        onClick={() =>
+                          setIsPasswordVisible(false)
+                        }
+                      >
+                        <ClosedEyeIcon />
+                      </span>
+                    ) : (
+                      <span
+                        className="position-absolute" style={{ top: "50%", right: "15px", transform: "translateY(-50%)", cursor: "pointer" }}
+                        onClick={() => setIsPasswordVisible(true)}
+                      >
+                        <OpenEyeIcon />
+                      </span>
+                    )}
                   </div>
-                    {errors.password?.type === "required" && (
-                      <div className="invalid-feedback">
-                        The password field is required.
-                      </div>
-                    )}
-                    {errors.password?.type === "pattern" && (
-                      <div className="invalid-feedback">
-                        Password must be of 8 characters long with atleast one
-                        uppercase, one lowercase and one number.
-                      </div>
-                    )}
+                  {errors.password?.type === "required" && (
+                    <div className="invalid-feedback">
+                      The password field is required.
+                    </div>
+                  )}
+                  {errors.password?.type === "pattern" && (
+                    <div className="invalid-feedback">
+                      Password must be of 8 characters long with atleast one
+                      uppercase, one lowercase and one number.
+                    </div>
+                  )}
 
                 </div>
                 <div className="d-flex justify-content-between my-2">

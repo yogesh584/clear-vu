@@ -32,7 +32,7 @@ let isDataAlreadyFetched = {
     table: false
 }
 
-const LinensComp = ({activeTab, tableData, setTableData,cardData,setCardData}) => {
+const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData }) => {
     const [page, setPage] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(0);
     const [perPage, setPerPage] = useState(2);
@@ -42,7 +42,7 @@ const LinensComp = ({activeTab, tableData, setTableData,cardData,setCardData}) =
     });
 
     let { records_per_page } = useSelector((state) => state.setting);
-    if(!records_per_page){
+    if (!records_per_page) {
         records_per_page = 10;
     }
     const {
@@ -53,24 +53,24 @@ const LinensComp = ({activeTab, tableData, setTableData,cardData,setCardData}) =
     } = useForm();
 
     const { request: requestLinensData, response: responseLinensData } = useRequest()
-    const { request: requestLineansCards, response:responseLineansCards} = useRequest();
+    const { request: requestLineansCards, response: responseLineansCards } = useRequest();
 
-    useEffect(()=>{
-        if(activeTab == "linens"){
-            if(!isDataAlreadyFetched.card){
+    useEffect(() => {
+        if (activeTab == "linens") {
+            if (!isDataAlreadyFetched.card) {
                 requestLineansCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=1&pageSize=${records_per_page}&pageNumber=1`);
             }
 
-            if(!isDataAlreadyFetched.table){
+            if (!isDataAlreadyFetched.table) {
                 requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${records_per_page}&pageNumber=1`);
             }
         }
-    },[activeTab])
+    }, [activeTab])
 
     useEffect(() => {
         if (responseLinensData) {
             isDataAlreadyFetched.table = true;
-            const { content,totalElements } = responseLinensData;
+            const { content, totalElements } = responseLinensData;
             setTableData(content)
             setTotalDocuments(totalElements)
         }
@@ -91,17 +91,16 @@ const LinensComp = ({activeTab, tableData, setTableData,cardData,setCardData}) =
     const onResetHandler = (e) => {
         e.preventDefault();
         resetField("title");
-
         setPage(1);
     };
 
     const sortingHandler = (sortBy) => {
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-
+            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-
+            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -162,7 +161,7 @@ const LinensComp = ({activeTab, tableData, setTableData,cardData,setCardData}) =
                 }}
                 id="cards" className="d-flex w-100 px-3 justify-content-between pb-10"
             >
-                {Array.isArray(cardData) && cardData.map((d,index) => {
+                {Array.isArray(cardData) && cardData.map((d, index) => {
                     return <SwiperSlide key={index + "lineans_card"} id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
                         <div id="row1" className="d-flex justify-content-between">
                             <div>
@@ -216,7 +215,7 @@ const LinensComp = ({activeTab, tableData, setTableData,cardData,setCardData}) =
                                     <h4 style={{ fontWeight: "700" }}>Details</h4>
                                     <p style={{ color: "#9a9b9d", fontWeight: "normal" }}>Last updated 10:30pm 02/07/2024</p>
                                 </div>
-                                <div className="card-toolbar" style={{gap: "10px"}}>
+                                <div className="card-toolbar" style={{ gap: "10px" }}>
                                     <div style={{ position: "relative" }}>
                                         <div style={{ position: "absolute", left: "14px", top: "10px" }}>
                                             <HeaderSearchIcon svgStyle={{ stroke: "#e8e9eb" }} />

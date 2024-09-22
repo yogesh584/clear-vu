@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import useRequest from "../../hooks/useRequest";
 import { useDispatch } from "react-redux";
 import { authSuccess } from "../../store/auth/action";
@@ -18,7 +18,7 @@ const ForgotPassword = () => {
     getValues
   } = useForm();
 
-  const {request, response} = useRequest()
+  const { request, response } = useRequest()
 
   useEffect(() => {
     document.title = "Forgot Password - Clear vu";
@@ -28,14 +28,14 @@ const ForgotPassword = () => {
     const { email } = data;
 
     request('post', "pub/forgotpassword", {
-      "emailId":email
+      "emailId": email
     })
   };
 
-  useEffect(()=>{
-    if(response){
-      const {responseCode, responseMessage} = response;
-      const {email} = getValues()
+  useEffect(() => {
+    if (response) {
+      const { responseMessage } = response;
+      const { email } = getValues()
       dispatch(authSuccess({
         email: email,
         token: responseMessage,
@@ -44,13 +44,13 @@ const ForgotPassword = () => {
       notification.success("OTP sent successfully.", "An OTP has been sent to your email. Please check your inbox.")
       history.push("/forgot-password/code")
     }
-  },[response])
+  }, [response])
 
   return (
-    <div className="d-flex justify-content-center align-items-center w-100" style={{height: "100vh",backgroundImage: "url(auth-bg.png)", backgroundSize: "cover"}}>
-      <div className="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid" style={{ maxWidth: "100%"}}>
-      <div className="d-flex align-items-center  bgi-size-cover bgi-no-repeat flex-row-fluid login-container" style={{maxHeight: "100vw"}}>
-        <div className="position-absolute top-0 left-0" style={{height: "35%"}} id="left-logo">
+    <div className="d-flex justify-content-center align-items-center w-100" style={{ height: "100vh", backgroundImage: "url(auth-bg.png)", backgroundSize: "cover" }}>
+      <div className="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid" style={{ maxWidth: "100%" }}>
+        <div className="d-flex align-items-center  bgi-size-cover bgi-no-repeat flex-row-fluid login-container" style={{ maxHeight: "100vw" }}>
+          <div className="position-absolute top-0 left-0" style={{ height: "35%" }} id="left-logo">
             <img src="Logo1.svg" className="h-100" />
           </div>
 

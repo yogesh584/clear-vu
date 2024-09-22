@@ -31,7 +31,7 @@ let isDataAlreadyFetched = {
     table: false
 }
 
-const GarmentsComp = ({activeTab, tableData, setTableData,cardData,setCardData}) => {
+const GarmentsComp = ({ activeTab, tableData, setTableData, cardData, setCardData }) => {
     const [page, setPage] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(0);
     const [perPage, setPerPage] = useState(2);
@@ -41,7 +41,7 @@ const GarmentsComp = ({activeTab, tableData, setTableData,cardData,setCardData})
     });
 
     let { records_per_page } = useSelector((state) => state.setting);
-    if(!records_per_page){
+    if (!records_per_page) {
         records_per_page = 10;
     }
     const {
@@ -52,29 +52,29 @@ const GarmentsComp = ({activeTab, tableData, setTableData,cardData,setCardData})
     } = useForm();
 
     const { request: requestGarmentsData, response: responseGarmentsData } = useRequest()
-    const {request: requestGarmentsCards, response:responseGarmentsCards} = useRequest();
+    const { request: requestGarmentsCards, response: responseGarmentsCards } = useRequest();
 
 
-    useEffect(()=>{
-        if(activeTab == "garments"){
-            if(!isDataAlreadyFetched.card){
+    useEffect(() => {
+        if (activeTab == "garments") {
+            if (!isDataAlreadyFetched.card) {
                 requestGarmentsCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=2`);
             }
 
-            if(!isDataAlreadyFetched.table){
+            if (!isDataAlreadyFetched.table) {
                 requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${records_per_page}&pageNumber=1`);
             }
         }
-    },[activeTab])
+    }, [activeTab])
 
-    console.log("table",tableData)
+    console.log("table", tableData)
 
     useEffect(() => {
         if (responseGarmentsData) {
             isDataAlreadyFetched.table = true;
-            const { content,totalElements } = responseGarmentsData;
-            console.log("content",responseGarmentsData);
-            
+            const { content, totalElements } = responseGarmentsData;
+            console.log("content", responseGarmentsData);
+
             setTableData(content)
             setTotalDocuments(totalElements)
         }
@@ -101,10 +101,10 @@ const GarmentsComp = ({activeTab, tableData, setTableData,cardData,setCardData})
     const sortingHandler = (sortBy) => {
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-
+            requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-
+            requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -129,9 +129,9 @@ const GarmentsComp = ({activeTab, tableData, setTableData,cardData,setCardData})
     ];
 
     return <div id="linens" role="tabpanel" aria-labelledby="linens-tab">
-    {/*         CARDS        */}
-    <div id="cards_parent" className="mt-4 mb-6">
-    <Swiper
+        {/*         CARDS        */}
+        <div id="cards_parent" className="mt-4 mb-6">
+            <Swiper
                 modules={[SwiperPagination]}
 
                 slidesPerView={3}
@@ -165,7 +165,7 @@ const GarmentsComp = ({activeTab, tableData, setTableData,cardData,setCardData})
                 }}
                 id="cards" className="d-flex w-100 px-3 justify-content-between pb-10"
             >
-                {Array.isArray(cardData) && cardData.map((d,index) => {
+                {Array.isArray(cardData) && cardData.map((d, index) => {
                     return <SwiperSlide key={index + "lineans_card"} id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
                         <div id="row1" className="d-flex justify-content-between">
                             <div>
@@ -198,123 +198,124 @@ const GarmentsComp = ({activeTab, tableData, setTableData,cardData,setCardData})
                     </SwiperSlide>
                 })}
             </Swiper>
-    </div>
+        </div>
 
-    <div className="d-flex flex-column-fluid w-100" style={{ background: "#fafafa" }}>
-        <div className="w-100">
-            <div >
-                <div className="col-12" style={{ padding: "0px" }}>
-                    <div className="card card-custom card-stretch card-shadowless">
-                        <div className="card-header" style={{ borderBottom: "0" }}>
-                            <div className="card-title d-flex flex-column justify-content-start align-items-start">
-                                <h4 style={{ fontWeight: "700" }}>Details</h4>
-                                <p style={{ color: "#9a9b9d", fontWeight: "normal" }}>Last updated 10:30pm 02/07/2024</p>
-                            </div>
-                            <div className="card-toolbar" style={{gap: "10px"}}>
-                                <div style={{ position: "relative" }}>
-                                    <div style={{ position: "absolute", left: "14px", top: "10px" }}>
-                                        <HeaderSearchIcon svgStyle={{ stroke: "#e8e9eb" }} />
-                                    </div>
-                                    <input type="text" placeholder="Search for linen, floor or more..." style={{
-                                        paddingTop: "10px",
-                                        paddingBottom: "10px",
-                                        borderRadius: "8px",
-                                        border: "2px solid #e8e9eb",
-                                        color: "#333",
-                                        width: "280px",
-                                        paddingLeft: "40px",
-                                        outline: "none"
-                                    }} />
+        <div className="d-flex flex-column-fluid w-100" style={{ background: "#fafafa" }}>
+            <div className="w-100">
+                <div >
+                    <div className="col-12" style={{ padding: "0px" }}>
+                        <div className="card card-custom card-stretch card-shadowless">
+                            <div className="card-header" style={{ borderBottom: "0" }}>
+                                <div className="card-title d-flex flex-column justify-content-start align-items-start">
+                                    <h4 style={{ fontWeight: "700" }}>Details</h4>
+                                    <p style={{ color: "#9a9b9d", fontWeight: "normal" }}>Last updated 10:30pm 02/07/2024</p>
                                 </div>
-                                <a
-                                    className="btn btn-primary  mr-2" // dropdown-toggle
-                                    // data-toggle="collapse"
-                                    // data-target="#collapseOne6"
-                                    style={{
-                                        border: "1px solid #e8e9eb",
-                                        borderRadius: "8px",
-                                        color: "#000",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        padding: "10px",
-                                        paddingLeft: "18px",
-                                        paddingRight: "18px",
-                                        background: "#e8e9eb"
-                                    }}
-                                >
-                                    <FilterIcon />
-                                    <span className="ml-3">
-                                        Filter
-                                    </span>
-                                </a>
+                                <div className="card-toolbar" style={{ gap: "10px" }}>
+                                    <div style={{ position: "relative" }}>
+                                        <div style={{ position: "absolute", left: "14px", top: "10px" }}>
+                                            <HeaderSearchIcon svgStyle={{ stroke: "#e8e9eb" }} />
+                                        </div>
+                                        <input type="text" placeholder="Search for linen, floor or more..." style={{
+                                            paddingTop: "10px",
+                                            paddingBottom: "10px",
+                                            borderRadius: "8px",
+                                            border: "2px solid #e8e9eb",
+                                            color: "#333",
+                                            width: "280px",
+                                            paddingLeft: "40px",
+                                            outline: "none"
+                                        }} />
+                                    </div>
+                                    <a
+                                        className="btn btn-primary  mr-2" // dropdown-toggle
+                                        // data-toggle="collapse"
+                                        // data-target="#collapseOne6"
+                                        style={{
+                                            border: "1px solid #e8e9eb",
+                                            borderRadius: "8px",
+                                            color: "#000",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            padding: "10px",
+                                            paddingLeft: "18px",
+                                            paddingRight: "18px",
+                                            background: "#e8e9eb"
+                                        }}
+                                    >
+                                        <FilterIcon />
+                                        <span className="ml-3">
+                                            Filter
+                                        </span>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div className="card-body py-0" >
-                            <div
-                                className="accordion accordion-solid accordion-toggle-plus"
-                                id="accordionExample6"
-                            >
+                            <div className="card-body py-0" >
                                 <div
-                                    id="collapseOne6"
-                                    className="collapse"
-                                    data-parent="#accordionExample6"
+                                    className="accordion accordion-solid accordion-toggle-plus"
+                                    id="accordionExample6"
                                 >
-                                    <div>
-                                        <form
-                                            onSubmit={handleSubmit(onSearchHandler)}
-                                            className="kt-form kt-form--fit mb-0"
-                                        >
-                                            <div className="row mb-6">
-                                                {InputFields.map((inputMain, index) => (
-                                                    <SearchInput
-                                                        key={index}
-                                                        {...inputMain}
-                                                        errors={errors}
-                                                        register={register}
-                                                    />
-                                                ))}
-                                            </div>
+                                    <div
+                                        id="collapseOne6"
+                                        className="collapse"
+                                        data-parent="#accordionExample6"
+                                    >
+                                        <div>
+                                            <form
+                                                onSubmit={handleSubmit(onSearchHandler)}
+                                                className="kt-form kt-form--fit mb-0"
+                                            >
+                                                <div className="row mb-6">
+                                                    {InputFields.map((inputMain, index) => (
+                                                        <SearchInput
+                                                            key={index}
+                                                            {...inputMain}
+                                                            errors={errors}
+                                                            register={register}
+                                                        />
+                                                    ))}
+                                                </div>
 
-                                            <SearchSubmitButton
-                                                handleSubmit={handleSubmit}
-                                                onSearchHandler={onSearchHandler}
-                                                onResetHandler={onResetHandler}
-                                            />
-                                        </form>
-                                        <hr />
+                                                <SearchSubmitButton
+                                                    handleSubmit={handleSubmit}
+                                                    onSearchHandler={onSearchHandler}
+                                                    onResetHandler={onResetHandler}
+                                                />
+                                            </form>
+                                            <hr />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="dataTables_wrapper block-table mb-10">
-                                <Table
-                                    currentSort={currentSort}
-                                    sortingHandler={sortingHandler}
-                                    mainData={tableData}
-                                    tableHeading={Object.keys(OBJ_TABLE)}
-                                    tableData={Object.values(OBJ_TABLE)}
-                                    renderAs={{
-                                        created_at: (val) => moment(val).format("DD-MM-YYYY"),
-                                    }}
-                                    links={[]}
-                                    onlyDate={{
-                                        createdAt: "date",
-                                        startDate: "dateTime",
-                                        endDate: "dateTime",
-                                    }}
-                                    dontShowSort={["name"]}
-                                />
-
-                                {perPage !== 0 && (
-                                    <Pagination
-                                        page={page}
-                                        totalDocuments={totalDocuments}
-                                        getNewData={fetchMoreData}
-                                        perPage={perPage}
-                                        defaultPerPage={records_per_page}
-                                        perPageChangeHandler={perPageChangeHandler}
-                                        currentDocLength={tableData.length}
+                                <div className="dataTables_wrapper block-table mb-10">
+                                    <Table
+                                        currentSort={currentSort}
+                                        sortingHandler={sortingHandler}
+                                        mainData={tableData}
+                                        tableHeading={Object.keys(OBJ_TABLE)}
+                                        tableData={Object.values(OBJ_TABLE)}
+                                        renderAs={{
+                                            created_at: (val) => moment(val).format("DD-MM-YYYY"),
+                                        }}
+                                        links={[]}
+                                        onlyDate={{
+                                            createdAt: "date",
+                                            startDate: "dateTime",
+                                            endDate: "dateTime",
+                                        }}
+                                        dontShowSort={["name"]}
                                     />
-                                )}
+
+                                    {perPage !== 0 && (
+                                        <Pagination
+                                            page={page}
+                                            totalDocuments={totalDocuments}
+                                            getNewData={fetchMoreData}
+                                            perPage={perPage}
+                                            defaultPerPage={records_per_page}
+                                            perPageChangeHandler={perPageChangeHandler}
+                                            currentDocLength={tableData.length}
+                                        />
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -322,7 +323,6 @@ const GarmentsComp = ({activeTab, tableData, setTableData,cardData,setCardData})
             </div>
         </div>
     </div>
-</div>
 }
 
 export default GarmentsComp;

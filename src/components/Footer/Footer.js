@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const Footer = () => {
-  const { copyright } = useSelector((state) => state.setting);
+  // const { copyright } = useSelector((state) => state.setting);
   return (
     <div></div>
     // <div className="footer bg-white py-4 d-flex flex-lg-column " style={{ display: "none !important" }} id="kt_footer">

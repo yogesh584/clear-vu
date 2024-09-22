@@ -9,9 +9,7 @@ const Pagination = ({
   totalDocuments,
   getNewData,
   perPage,
-  defaultPerPage,
   perPageChangeHandler,
-  currentDocLength,
 }) => {
   return (
     <div className="row">
@@ -56,14 +54,14 @@ const Pagination = ({
               renderOnZeroPageCount={null}
             />
           </div>
-          {console.log(" Math.ceil(totalDocuments / perPage)", page,totalDocuments, perPage)}
+          {console.log(" Math.ceil(totalDocuments / perPage)", page, totalDocuments, perPage)}
 
           <div className="d-flex">
-            <button className="pagination_button previous_button mr-3" disabled={page < Math.ceil(totalDocuments / perPage) || totalDocuments == 0 }  onClick={()=> {getNewData({selected: page - 2})}}>
+            <button className="pagination_button previous_button mr-3" disabled={page < Math.ceil(totalDocuments / perPage) || totalDocuments == 0} onClick={() => { getNewData({ selected: page - 2 }) }}>
               <HorizontalArrow dir={"left"} />
               <span className="ml-4">Previous</span>
             </button>
-            <button className="pagination_button next_button" disabled={page >= Math.ceil(totalDocuments / perPage)} onClick={()=> getNewData({selected: page})}>
+            <button className="pagination_button next_button" disabled={page >= Math.ceil(totalDocuments / perPage)} onClick={() => getNewData({ selected: page })}>
               <span className="mr-4">Next</span>
               <HorizontalArrow dir={"right"} />
             </button>

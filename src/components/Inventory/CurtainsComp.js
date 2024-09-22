@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { FilterIcon, HeaderSearchIcon, PencilIcon } from "../../util/Svg";
@@ -32,7 +32,7 @@ let isDataAlreadyFetched = {
     table: false
 }
 
-const CurtainsComp = ({activeTab, tableData, setTableData, cardData, setCardData}) => {
+const CurtainsComp = ({ activeTab, tableData, setTableData, cardData, setCardData }) => {
     const [page, setPage] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(0);
     const [perPage, setPerPage] = useState(2);
@@ -50,24 +50,24 @@ const CurtainsComp = ({activeTab, tableData, setTableData, cardData, setCardData
     } = useForm();
 
     const { request: requestCurtainsData, response: responseCurtainsData } = useRequest()
-    const {request: requestCurtainsCards, response:responseCurtainsCards} = useRequest();
+    const { request: requestCurtainsCards, response: responseCurtainsCards } = useRequest();
 
-    useEffect(()=>{
-        if(activeTab == "curtains"){
-            if(!isDataAlreadyFetched.card){
-                requestCurtainsCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=2`);  
+    useEffect(() => {
+        if (activeTab == "curtains") {
+            if (!isDataAlreadyFetched.card) {
+                requestCurtainsCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=2`);
             }
 
-            if(!isDataAlreadyFetched.table){
+            if (!isDataAlreadyFetched.table) {
                 requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${records_per_page}&pageNumber=1`);
             }
         }
-    },[activeTab])
+    }, [activeTab])
 
     useEffect(() => {
         if (responseCurtainsData) {
             isDataAlreadyFetched.table = true;
-            const { content,totalElements } = responseCurtainsData;
+            const { content, totalElements } = responseCurtainsData;
             setTableData(content)
             setTotalDocuments(totalElements)
         }
@@ -94,10 +94,10 @@ const CurtainsComp = ({activeTab, tableData, setTableData, cardData, setCardData
     const sortingHandler = (sortBy) => {
         if (currentSort.sortBy === sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-
+            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-
+            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -158,7 +158,7 @@ const CurtainsComp = ({activeTab, tableData, setTableData, cardData, setCardData
                 }}
                 id="cards" className="d-flex w-100 px-3 justify-content-between pb-10"
             >
-                {Array.isArray(cardData) && cardData.map((d,index) => {
+                {Array.isArray(cardData) && cardData.map((d, index) => {
                     return <SwiperSlide key={index + "lineans_card"} id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
                         <div id="row1" className="d-flex justify-content-between">
                             <div>
@@ -203,7 +203,7 @@ const CurtainsComp = ({activeTab, tableData, setTableData, cardData, setCardData
                                     <h4 style={{ fontWeight: "700" }}>Details</h4>
                                     <p style={{ color: "#9a9b9d", fontWeight: "normal" }}>Last updated 10:30pm 02/07/2024</p>
                                 </div>
-                                <div className="card-toolbar" style={{gap: "10px"}}>
+                                <div className="card-toolbar" style={{ gap: "10px" }}>
                                     <div style={{ position: "relative" }}>
                                         <div style={{ position: "absolute", left: "14px", top: "10px" }}>
                                             <HeaderSearchIcon svgStyle={{ stroke: "#e8e9eb" }} />
@@ -220,7 +220,7 @@ const CurtainsComp = ({activeTab, tableData, setTableData, cardData, setCardData
                                         }} />
                                     </div>
                                     <button
-                                        className="btn btn-primary  mr-2" 
+                                        className="btn btn-primary  mr-2"
                                         style={{
                                             border: "1px solid #e8e9eb",
                                             borderRadius: "8px",

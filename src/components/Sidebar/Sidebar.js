@@ -5,12 +5,11 @@ import { useSelector, useDispatch } from "react-redux";
 import OneLevelMenu from "../Menu/OneLevel";
 import ZeroLevelMenu from "../Menu/ZeroLevel";
 import { menu } from "../../util/data";
-import { Arrow } from "../../util/Svg";
 import { sidebarToggle } from "../../store/auth/action";
 
 const Sidebar = ({ toggleSidebar }) => {
   const [fullSidebar, setFullSidebar] = useState(false);
-  const { isMobileSidebarOpen, permissions, user_role_id } = useSelector(
+  const { isMobileSidebarOpen, user_role_id } = useSelector(
     (state) => state.auth
   );
 
