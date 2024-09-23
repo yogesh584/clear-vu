@@ -116,8 +116,7 @@ const Login = () => {
                       autoComplete="off"
                       placeholder="Password"
                       {...register("password", {
-                        required: true,
-                        pattern: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
+                        required: true
                       })}
                     />
                     {isPasswordVisible ? (
@@ -141,12 +140,6 @@ const Login = () => {
                     {errors.password?.type === "required" && (
                       <div className="invalid-feedback">
                         The password field is required.
-                      </div>
-                    )}
-                    {errors.password?.type === "pattern" && (
-                      <div className="invalid-feedback">
-                        Password must be of 8 characters long with atleast one
-                        uppercase, one lowercase and one number.
                       </div>
                     )}
 
