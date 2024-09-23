@@ -4,26 +4,26 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { logout, updateLoading } from "../store/auth/action";
+import { authSuccess, logout, updateLoading } from "../store/auth/action";
 import { BASEURL } from "../constant/api";
 import notification from "../util/toastifyNotifications";
 
 const BACKEND_URL = BASEURL.PORT;
 
 const useRequest = () => {
-  
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null);
 
-  const { token } = useSelector((state) => state.auth);
+  const { token, email } = useSelector((state) => state.auth);
 
   const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(updateLoading({ loading }));
-  }, [loading]);
+  }, [loading, dispatch]);
 
   const startFetching = () => {
     setResponse(null);
@@ -68,16 +68,15 @@ const useRequest = () => {
         fetchedData();
         setResponse(res.data);
       })
-      .catch((err) => {
-        console.log("err : ",err);
-        
+      .catch(async (err) => {
         fetchedData();
         if (err.response) {
           if (err.response.status === 401) {
-            dispatch(logout());
+            refreshUserToken()
+            // dispatch(logout());
           } else if (err.response.status === 404) {
             history.push("/404");
-          } else if (err.response.status == 400) {
+          } else if (err.response.status === 400) {
             notification.error("Bad Request", err.response.data.responseMessage)
           } else {
             toast.error(err.response.data.message);
@@ -89,6 +88,48 @@ const useRequest = () => {
         }
       });
   };
+
+  const refreshUserToken = () => {
+    let config;
+
+    if (token) {
+      config = {
+        method,
+        url: `${BACKEND_URL}/api/token/refresh`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        data: {
+          emailId: email
+        },
+      };
+    } else {
+      config = {
+        method,
+        url: `${BACKEND_URL}/${url}`,
+        data: {
+          emailId: email
+        },
+      };
+    }
+
+    startFetching();
+
+    axios(config)
+      .then((res) => {
+        dispatch(authSuccess({
+          token: res.responseMessage
+        }))
+      })
+      .catch((err) => {
+        fetchedData();
+        if (err.response) {
+          if (err.response.status === 401) {
+            dispatch(logout());
+          }
+        }
+      });
+  }
 
   return {
     loading,

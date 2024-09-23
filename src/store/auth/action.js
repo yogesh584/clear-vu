@@ -5,7 +5,6 @@ import {
   LOADING,
   AUTH_SUCCESS_2FA
 } from "./actionTypes";
-import { toast } from "react-toastify";
 
 export const authSuccess = (updates) => {
   return {
@@ -34,7 +33,6 @@ export const sidebarToggle = (updates) => {
 
 export const logout = () => {
   localStorage.removeItem("token");
-  // toast.success("You are now logged out!");
   return {
     type: AUTH_LOGOUT,
   };

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { FilterIcon, HeaderSearchIcon, PencilIcon } from "../../util/Svg";
@@ -8,9 +7,10 @@ import Pagination from "../Pagination/Pagination";
 import Table from "../Table/Table";
 import { SearchInput, SearchSubmitButton } from "../Form/Form";
 import cardStyles from "../../styles/card.module.css"
+import useRequest from "../../hooks/useRequest";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination as SwiperPagination } from 'swiper/modules';
+import { Pagination as SwiperPagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import "../../styles/slider.css"
@@ -27,55 +27,95 @@ const OBJ_TABLE = {
     "Fill rate": "fillRate"
 };
 
-const LinensComp = ({data}) => {
+let isDataAlreadyFetched = {
+    card: false,
+    table: false
+}
+
+const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData }) => {
     const [page, setPage] = useState(1);
-    const [totalDocuments, setTotalDocuments] = useState(10);
+    const [totalDocuments, setTotalDocuments] = useState(0);
     const [perPage, setPerPage] = useState(2);
     const [currentSort, setCurrentSort] = useState({
         sortBy: "created on",
         order: "desc",
     });
 
-    const { records_per_page } = useSelector((state) => state.setting);
+    let { records_per_page } = useSelector((state) => state.setting);
+    if (!records_per_page) {
+        records_per_page = 10;
+    }
     const {
         register,
         handleSubmit,
         formState: { errors },
         resetField,
-        getValues,
     } = useForm();
 
-    const onSearchHandler = (data) => {
-        const { title } = getValues();
+    const { request: requestLinensData, response: responseLinensData } = useRequest()
+    const { request: requestLineansCards, response: responseLineansCards } = useRequest();
+
+    useEffect(() => {
+        if (activeTab == "linens") {
+            if (!isDataAlreadyFetched.card) {
+                requestLineansCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=1&pageSize=${records_per_page}&pageNumber=1`);
+            }
+
+            if (!isDataAlreadyFetched.table) {
+                requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${records_per_page}&pageNumber=1`);
+            }
+        }
+    }, [activeTab])
+
+    useEffect(() => {
+        if (responseLinensData) {
+            isDataAlreadyFetched.table = true;
+            const { content, totalElements } = responseLinensData;
+            setTableData(content)
+            setTotalDocuments(totalElements)
+        }
+    }, [responseLinensData])
+
+    useEffect(() => {
+        if (responseLineansCards) {
+            isDataAlreadyFetched.card = true;
+            setCardData(responseLineansCards)
+        }
+    }, [responseLineansCards])
+
+
+    const onSearchHandler = () => {
         setPage(1);
     };
 
     const onResetHandler = (e) => {
         e.preventDefault();
         resetField("title");
-
         setPage(1);
     };
 
     const sortingHandler = (sortBy) => {
+        const newOrder = currentSort.order === "asc" ? "desc" : "asc";
         if (currentSort.sortBy == sortBy) {
-            const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-
+            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-
+            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
 
     const fetchMoreData = ({ selected }) => {
+        console.log("selected : ", selected)
         setPage(selected + 1);
+        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${perPage}&pageNumber=${selected + 1}`);
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(1);
         setPerPage(event.target.value);
+        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${event.target.value}&pageNumber=1`);
     };
 
     const InputFields = [
@@ -121,127 +161,38 @@ const LinensComp = ({data}) => {
                 }}
                 id="cards" className="d-flex w-100 px-3 justify-content-between pb-10"
             >
-                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
-                    <div id="row1" className="d-flex justify-content-between">
-                        <div>
-                            <span style={{ fontSize: "18px" }}>Floor-1 (North)</span>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
-                                <span>35.71%</span>
+                {Array.isArray(cardData) && cardData.map((d, index) => {
+                    return <SwiperSlide key={index + "lineans_card"} id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
+                        <div id="row1" className="d-flex justify-content-between">
+                            <div>
+                                <span style={{ fontSize: "18px" }}>Floor-{index + 1} (North)</span>
                             </div>
-                            <PencilIcon />
-                        </div>
-                    </div>
-                    <div id="row2" className="d-flex justify-content-between mt-3">
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">108</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
-                    <div id="row1" className="d-flex justify-content-between">
-                        <div>
-                            <span style={{ fontSize: "18px" }}>Floor-2 (North)</span>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
-                                <span>35.71%</span>
+                            <div className="d-flex align-items-center">
+                                <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
+                                    <span>35.71%</span>
+                                </div>
+                                <PencilIcon />
                             </div>
-                            <PencilIcon />
                         </div>
-                    </div>
-                    <div id="row2" className="d-flex justify-content-between mt-3">
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">108</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                    </div>
-                </SwiperSlide>
-
-                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #60ba51", borderRadius: "10px" }}>
-                    <div id="row1" className="d-flex justify-content-between">
-                        <div>
-                            <span style={{ fontSize: "18px" }}>Floor-3 (North)</span>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#60ba51", border: "1px solid #60ba51" }}>
-                                <span>100%</span>
+                        <div id="row2" className="d-flex justify-content-between mt-3">
+                            <div className="d-flex flex-column">
+                                <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
+                                <span style={{ fontSize: "24px" }} className="mb-1">{d.inUse}</span>
+                                <a href="/" style={{ color: "#39D9A7" }}>View</a>
                             </div>
-                            <PencilIcon />
-                        </div>
-                    </div>
-                    <div id="row2" className="d-flex justify-content-between mt-3">
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #F3B14D", borderRadius: "10px" }}>
-                    <div id="row1" className="d-flex justify-content-between">
-                        <div>
-                            <span style={{ fontSize: "18px" }}>Floor-4 (North)</span>
-                        </div>
-                        <div className="d-flex align-items-center">
-                            <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#F3B14D", border: "1px solid #F3B14D" }}>
-                                <span>100%</span>
+                            <div className="d-flex flex-column">
+                                <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
+                                <span style={{ fontSize: "24px" }} className="mb-1">{d.inStock}</span>
+                                <a href="/" style={{ color: "#39D9A7" }}>View</a>
                             </div>
-                            <PencilIcon />
+                            <div className="d-flex flex-column">
+                                <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
+                                <span style={{ fontSize: "24px" }} className="mb-1">{d.requested}</span>
+                                <a href="/" style={{ color: "#39D9A7" }}>View</a>
+                            </div>
                         </div>
-                    </div>
-                    <div id="row2" className="d-flex justify-content-between mt-3">
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In use</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">18</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">In stock</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">42</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                        <div className="d-flex flex-column">
-                            <span style={{ fontSize: "16px", fontWeight: "normal" }} className="mb-1">Requested</span>
-                            <span style={{ fontSize: "24px" }} className="mb-1">66</span>
-                            <a style={{ color: "#39D9A7" }}>View</a>
-                        </div>
-                    </div>
-                </SwiperSlide>
+                    </SwiperSlide>
+                })}
             </Swiper>
             {/* <div className="d-flex justify-content-center align-items-center mt-4">
                 <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
@@ -264,7 +215,7 @@ const LinensComp = ({data}) => {
                                     <h4 style={{ fontWeight: "700" }}>Details</h4>
                                     <p style={{ color: "#9a9b9d", fontWeight: "normal" }}>Last updated 10:30pm 02/07/2024</p>
                                 </div>
-                                <div className="card-toolbar" style={{gap: "10px"}}>
+                                <div className="card-toolbar" style={{ gap: "10px" }}>
                                     <div style={{ position: "relative" }}>
                                         <div style={{ position: "absolute", left: "14px", top: "10px" }}>
                                             <HeaderSearchIcon svgStyle={{ stroke: "#e8e9eb" }} />
@@ -341,7 +292,7 @@ const LinensComp = ({data}) => {
                                     <Table
                                         currentSort={currentSort}
                                         sortingHandler={sortingHandler}
-                                        mainData={data}
+                                        mainData={tableData}
                                         tableHeading={Object.keys(OBJ_TABLE)}
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{
@@ -359,12 +310,12 @@ const LinensComp = ({data}) => {
                                     {perPage !== 0 && (
                                         <Pagination
                                             page={page}
-                                            totalDocuments={20}
+                                            totalDocuments={totalDocuments}
                                             getNewData={fetchMoreData}
                                             perPage={perPage}
                                             defaultPerPage={records_per_page}
                                             perPageChangeHandler={perPageChangeHandler}
-                                            currentDocLength={data.length}
+                                            currentDocLength={tableData.length}
                                         />
                                     )}
                                 </div>

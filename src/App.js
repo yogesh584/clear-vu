@@ -48,7 +48,6 @@ const App = () => {
         authSuccess({
           loggedIn: true,
           token: token,
-          name: "John Tomas"
         })
       )
     }

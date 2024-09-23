@@ -4,11 +4,11 @@ import { NotificationCloseIcon } from "./Svg"
 class Notification {
     info(title, description) {
         toast.info(
-            ({ closeToast }) => (
+            () => (
                 <div className="bg-white d-flex" style={{ borderRadius: "20px", gap: "5px" }}>
                     <div>
                         <div><h5 style={{ fontSize: "17px", color: "#289A77" }}>{title}</h5></div>
-                        <div><p style={{ fontWeight: "normal", fontSize: "12px",margin: 0 }}>{description}</p></div>
+                        <div><p style={{ fontWeight: "normal", fontSize: "12px", margin: 0 }}>{description}</p></div>
                     </div>
                     <div>
                         <NotificationCloseIcon />
@@ -19,7 +19,7 @@ class Notification {
                 icon: false,
                 closeButton: false,
                 style: {
-                    padding:"1.5rem",
+                    padding: "1.5rem",
                     borderRadius: "20px"
                 },
                 hideProgressBar: true,
@@ -29,12 +29,12 @@ class Notification {
 
     error(title, description) {
         toast.error(
-            ({ closeToast }) => (
+            () => (
                 <div className="bg-white d-flex" style={{ borderRadius: "20px", gap: "5px" }}>
                     <div>
                         <div><h5 style={{ fontSize: "17px", color: "#FB6464" }}>{title}</h5></div>
                         {
-                            description && <div><p style={{ fontWeight: "normal", fontSize: "12px",margin: 0 }}>{description}</p></div>
+                            description && <div><p style={{ fontWeight: "normal", fontSize: "12px", margin: 0 }}>{description}</p></div>
                         }
                     </div>
                     <div>
@@ -46,7 +46,7 @@ class Notification {
                 icon: false,
                 closeButton: false,
                 style: {
-                    padding:"1.5rem",
+                    padding: "1.5rem",
                     borderRadius: "20px"
                 },
                 hideProgressBar: true,
@@ -56,11 +56,11 @@ class Notification {
 
     success(title, description) {
         toast.success(
-            ({ closeToast }) => (
+            () => (
                 <div className="bg-white d-flex" style={{ borderRadius: "20px", gap: "5px" }}>
                     <div>
                         <div><h5 style={{ fontSize: "17px", color: "#289A77" }}>{title}</h5></div>
-                        <div><p style={{ fontWeight: "normal", fontSize: "12px",margin: 0 }}>{description}</p></div>
+                        <div><p style={{ fontWeight: "normal", fontSize: "12px", margin: 0 }}>{description}</p></div>
                     </div>
                     <div>
                         <NotificationCloseIcon />
@@ -71,7 +71,7 @@ class Notification {
                 icon: false,
                 closeButton: false,
                 style: {
-                    padding:"1.5rem",
+                    padding: "1.5rem",
                     borderRadius: "20px"
                 },
                 hideProgressBar: true,

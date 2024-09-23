@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useRequest from "../../hooks/useRequest";
 
@@ -14,26 +14,24 @@ const ForgotPasswordCode = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    getValues
+    formState: { errors }
   } = useForm();
 
-  const {request: verifyOtpRequest, response: verifyOtpResponse} = useRequest();
-  const {request: resendOtpRequest, response: resendOtpResponse} = useRequest();
+  const { request: verifyOtpRequest, response: verifyOtpResponse } = useRequest();
+  const { request: resendOtpRequest, response: resendOtpResponse } = useRequest();
 
   useEffect(() => {
     document.title = "Forgot Password - Clear vu";
   }, []);
 
-  useEffect(()=>{
-    console.log("token ", token);
-    
-    if(token == null){
+  useEffect(() => {
+
+    if (token == null) {
       history.push("/forgot-password")
     }
-  },[token])
+  }, [token])
 
-  const handleKeyDown = (index, event) => {
+  const handleKeyDown = (index) => {
     tabChange(index);
   };
 
@@ -48,36 +46,35 @@ const ForgotPasswordCode = () => {
 
 
   const onSubmit = (data) => {
-    const {otp1, otp2, otp3, otp4, otp5, otp6 } = data;
-    const otp = otp1 + otp2 + otp3 + otp4 + otp5+ otp6;
+    const { otp1, otp2, otp3, otp4, otp5, otp6 } = data;
+    const otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
     verifyOtpRequest("post", "api/otp/verify", {
-      "otp":otp,
-      "emailId":email
+      "otp": otp,
+      "emailId": email
     })
   };
-  
-  useEffect(()=>{
-    if(verifyOtpResponse){
+
+  useEffect(() => {
+    if (verifyOtpResponse) {
       history.push("/reset-password")
     }
-  },[verifyOtpResponse])
+  }, [verifyOtpResponse])
 
-  const resendOtp = () => {
-    resendOtpRequest("post", "api/otp/resend", {"emailId":email})
-  }
+  // const resendOtp = () => {
+  //   resendOtpRequest("post", "api/otp/resend", {"emailId":email})
+  // }
 
-  useEffect(()=>{
-    if(resendOtpResponse){
-      const {responseMessage} = resendOtpResponse;
+  useEffect(() => {
+    if (resendOtpResponse) {
       toast.success("OTP sent successfully.")
     }
-  },[resendOtpResponse])
+  }, [resendOtpResponse])
 
   return (
-    <div className="d-flex justify-content-center align-items-center w-100" style={{height: "100vh",backgroundImage: "url(auth-bg.png)", backgroundSize: "cover"}}>
-      <div className="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid" style={{ maxWidth: "100%"}}>
-      <div className="d-flex align-items-center  bgi-size-cover bgi-no-repeat flex-row-fluid login-container" style={{maxHeight: "100vw"}}>
-        <div className="position-absolute top-0 left-0" style={{height: "35%"}} id="left-logo">
+    <div className="d-flex justify-content-center align-items-center w-100" style={{ height: "100vh", backgroundImage: "url(auth-bg.png)", backgroundSize: "cover" }}>
+      <div className="login login-4 wizard d-flex flex-column flex-lg-row flex-column-fluid" style={{ maxWidth: "100%" }}>
+        <div className="d-flex align-items-center  bgi-size-cover bgi-no-repeat flex-row-fluid login-container" style={{ maxHeight: "100vw" }}>
+          <div className="position-absolute top-0 left-0" style={{ height: "35%" }} id="left-logo">
             <img src="Logo1.svg" className="h-100" />
           </div>
 
@@ -130,12 +127,12 @@ const ForgotPasswordCode = () => {
                 </div>
                 <div className="form-group d-flex otp_verification">
 
-                  <input type="text" onKeyUp={() => { handleKeyDown(0) }} name="otp1" {...register("otp1", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp1 ? "2px solid red" : "2px solid #c6c9ce",  outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                  <input type="text" onKeyUp={() => { handleKeyDown(1) }} name="otp2" {...register("otp2", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp2 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                  <input type="text" onKeyUp={() => { handleKeyDown(2) }} name="otp3" {...register("otp3", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp3 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                  <input type="text" onKeyUp={() => { handleKeyDown(3) }} name="otp4" {...register("otp4", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp4 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                  <input type="text" onKeyUp={() => { handleKeyDown(4) }} name="otp5" {...register("otp5", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp5 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                  <input type="text" onKeyUp={() => { handleKeyDown(5) }} name="otp6" {...register("otp6", {required: true})} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp6 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={() => { handleKeyDown(0) }} name="otp1" {...register("otp1", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp1 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={() => { handleKeyDown(1) }} name="otp2" {...register("otp2", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp2 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={() => { handleKeyDown(2) }} name="otp3" {...register("otp3", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp3 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={() => { handleKeyDown(3) }} name="otp4" {...register("otp4", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp4 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={() => { handleKeyDown(4) }} name="otp5" {...register("otp5", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp5 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={() => { handleKeyDown(5) }} name="otp6" {...register("otp6", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp6 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
 
                 </div>
                 <ResendTimer />

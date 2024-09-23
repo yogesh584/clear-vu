@@ -18,8 +18,8 @@ import {
   ChangePassword,
   SendCreds,
   SystemManagements,
-  Download,
   SubTask,
+  SortingIcon,
 } from "../../util/Svg";
 import { API } from "../../constant/api";
 
@@ -43,7 +43,6 @@ const SortableItem = sortableElement(
     date_time_format,
     renderAs,
   }) => {
-    const { role } = useSelector((state) => state.auth);
 
     return (
       <>
@@ -251,22 +250,22 @@ const Table = ({
   // status,
 }) => {
   const [filteredLinks, setFilteredLinks] = useState([]);
-  const { permissions, user_role_id } = useSelector((store) => store.auth);
+  // const { permissions, user_role_id } = useSelector((store) => store.auth);
 
-  useEffect(() => {
-    if (user_role_id != 1) {
-      let filtered = filteredLinks.filter((elem) => {
-        let exists = false;
-        elem.key.forEach((v) => {
-          if (!!permissions[v]) {
-            exists = true;
-          }
-        });
-        return exists;
-      });
-      setFilteredLinks(filtered);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (user_role_id != 1) {
+  //     let filtered = filteredLinks.filter((elem) => {
+  //       let exists = false;
+  //       elem.key.forEach((v) => {
+  //         if (!!permissions[v]) {
+  //           exists = true;
+  //         }
+  //       });
+  //       return exists;
+  //     });
+  //     setFilteredLinks(filtered);
+  //   }
+  // }, []);
 
 
   useEffect(() => {
@@ -323,6 +322,10 @@ const Table = ({
                 }}
               >
                 <a className="no_sort">{heading}</a>
+
+                {!dontShowSort.includes(heading) && <div style={{ display: "inline-block", marginLeft: "6px" }}>
+                  <SortingIcon order={currentSort.order} isSortActive={currentSort.sortBy === heading} />
+                </div>}
               </th>
             ))}
             {filteredLinks && filteredLinks.length > 0 ? (
