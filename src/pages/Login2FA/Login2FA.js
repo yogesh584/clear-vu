@@ -102,17 +102,13 @@ const Login2FA = () => {
           }
         })
 
-        config.url = `${BASEURL.PORT}/api/user/access`
+        config.url = `${BASEURL.PORT}/api/user/access?emailId=${email}`
 
         axios(config)
         .then((d) => {
           const { responseCode, responseMessage, data } = d.data;
-          if (responseCode == "SGEN001") {
-            // dispatch(
-            //   authSuccess2FA({
-            //   })
-            // )
-          }
+          // if (responseCode == "SGEN001") {
+          // }
         })
 
         // Getting User Details

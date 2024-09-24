@@ -6,13 +6,6 @@ import CurtainsComp from "../../components/Inventory/CurtainsComp";
 
 const Dashboard = () => {
     const [activeTab, setActiveTab] = useState("linens");
-    const [linensTableData, setLinensTableData] = useState([]);
-    const [linensCardData, setLinensCardData] = useState([]);
-    const [garmentsCardData, setGarmenntsCardData] = useState([]);
-    const [curtainsCardData, setCurtainsCardData] = useState([]);
-    const [garmentsTableData, setGarmentsTableData] = useState([]);
-    const [curtainsTableData, setCurtainsTableData] = useState([])
-
 
     const handleTabClick = (tabName) => {
         setActiveTab(tabName);
@@ -83,15 +76,9 @@ const Dashboard = () => {
             </div>
 
             <div className="tab-content mt-3">
-                {activeTab === "linens" && (
-                    <LinensComp activeTab={activeTab} setTableData={setLinensTableData} tableData={linensTableData} cardData={linensCardData} setCardData={setLinensCardData} />
-                )}
-                {activeTab === "garments" && (
-                    <GarmentsComp activeTab={activeTab} setTableData={setGarmentsTableData} tableData={garmentsTableData} cardData={garmentsCardData} setCardData={setGarmenntsCardData} />
-                )}
-                {activeTab === "curtains" && (
-                    <CurtainsComp activeTab={activeTab} setTableData={setCurtainsTableData} tableData={curtainsTableData} cardData={curtainsCardData} setCardData={setCurtainsCardData} />
-                )}
+                <LinensComp activeTab={activeTab} />
+                <GarmentsComp activeTab={activeTab}  />
+                <CurtainsComp activeTab={activeTab}  />
             </div>
         </div>
     );

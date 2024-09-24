@@ -32,7 +32,9 @@ let isDataAlreadyFetched = {
     table: false
 }
 
-const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData }) => {
+const LinensComp = ({ activeTab }) => {
+    const [tableData, setTableData] = useState([]);
+    const [cardData, setCardData] = useState([]);
     const [page, setPage] = useState(0);
     const [totalDocuments, setTotalDocuments] = useState(0);
     const [perPage, setPerPage] = useState(2);
@@ -50,9 +52,9 @@ const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData 
     useEffect(()=>{
         if (!records_per_page) {
             records_per_page = 10;
-            setPerPage(10)
+            setPerPage(2)
         } else {
-            setPerPage(records_per_page)
+            setPerPage(2)
         }
     },[records_per_page])
     const {
@@ -154,7 +156,7 @@ const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData 
         }
     ];
 
-    return <div id="linens" role="tabpanel" aria-labelledby="linens-tab">
+    return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{display: activeTab == "linens" ? "block" : "none"}}>
         {/*         CARDS        */}
         <div id="cards_parent swiper" className="mt-4 mb-6">
             <Swiper

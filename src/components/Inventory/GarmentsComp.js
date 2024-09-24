@@ -31,7 +31,9 @@ let isDataAlreadyFetched = {
     table: false
 }
 
-const GarmentsComp = ({ activeTab, tableData, setTableData, cardData, setCardData }) => {
+const GarmentsComp = ({ activeTab }) => {
+    const [tableData, setTableData] = useState([]);
+    const [cardData, setCardData] = useState([]);
     const [page, setPage] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(0);
     const [perPage, setPerPage] = useState(2);
@@ -154,7 +156,7 @@ const GarmentsComp = ({ activeTab, tableData, setTableData, cardData, setCardDat
         }
     ];
 
-    return <div id="linens" role="tabpanel" aria-labelledby="linens-tab">
+    return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{display: activeTab == "garments" ? "block" : "none"}}>
         {/*         CARDS        */}
         <div id="cards_parent" className="mt-4 mb-6">
             <Swiper
