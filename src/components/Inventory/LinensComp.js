@@ -37,12 +37,13 @@ const LinensComp = ({ activeTab }) => {
     const [cardData, setCardData] = useState([]);
     const [page, setPage] = useState(0);
     const [totalDocuments, setTotalDocuments] = useState(0);
-    const [perPage, setPerPage] = useState(2);
+    const [perPage, setPerPage] = useState(0);
     const [currentSort, setCurrentSort] = useState({
         sortBy: "created on",
         order: "desc",
     });
-
+    const [searchKey, setSearchKey] = useState(null);
+    
     let { records_per_page } = useSelector((state) => state.setting);
     
     if (!records_per_page) {
@@ -156,6 +157,14 @@ const LinensComp = ({ activeTab }) => {
         }
     ];
 
+    const filteredTableData = tableData.filter((item) => {
+        return (
+            item.location.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+            item.productName.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+            item.sku.toLowerCase().includes(searchKey?.toLowerCase() || "")
+        );
+    });
+
     return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{display: activeTab == "linens" ? "block" : "none"}}>
         {/*         CARDS        */}
         <div id="cards_parent swiper" className="mt-4 mb-6">
@@ -196,7 +205,7 @@ const LinensComp = ({ activeTab }) => {
                     return <SwiperSlide key={index + "lineans_card"} id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
                         <div id="row1" className="d-flex justify-content-between">
                             <div>
-                                <span style={{ fontSize: "18px" }}>Floor-{index + 1} (North)</span>
+                                <span style={{ fontSize: "18px", textTransform: "capitalize" }}>{d.location}</span>
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
@@ -251,7 +260,9 @@ const LinensComp = ({ activeTab }) => {
                                             width: "280px",
                                             paddingLeft: "40px",
                                             outline: "none"
-                                        }} />
+                                        }} 
+                                            onChange={(e) => setSearchKey(e.target.value)}
+                                        />
                                     </div>
                                     <a
                                         className="btn btn-primary  mr-2"
@@ -314,11 +325,12 @@ const LinensComp = ({ activeTab }) => {
                                     <Table
                                         currentSort={currentSort}
                                         sortingHandler={sortingHandler}
-                                        mainData={tableData}
+                                        mainData={filteredTableData}
                                         tableHeading={Object.keys(OBJ_TABLE)}
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{
                                             created_at: (val) => moment(val).format("DD-MM-YYYY"),
+                                            fillRate: (val) => Number(val).toFixed(2)
                                         }}
                                         links={[]}
                                         onlyDate={{
