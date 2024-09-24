@@ -105,7 +105,7 @@ const Header = ({ setToggleSidebar }) => {
       </div>
       <div id="kt_header" className="header  header-fixed ">
         <div className="container-fluid  d-flex align-items-stretch justify-content-between align-items-center">
-          <div className={`d-flex ${styles.customHamburger}`}>
+          <div className={`${styles.customHamburger}`}>
             <button
               className={`brand-toggle btn btn-sm px-0`}
               id="kt_aside_toggle"
