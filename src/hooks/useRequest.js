@@ -72,7 +72,7 @@ const useRequest = () => {
         fetchedData();
         if (err.response) {
           if (err.response.status === 401) {
-            refreshUserToken()
+            refreshUserToken(method, url, data)
             // dispatch(logout());
           } else if (err.response.status === 404) {
             history.push("/404");
@@ -89,7 +89,7 @@ const useRequest = () => {
       });
   };
 
-  const refreshUserToken = () => {
+  const refreshUserToken = (method, url, data) => {
     let config;
 
     if (token) {
@@ -120,6 +120,9 @@ const useRequest = () => {
         dispatch(authSuccess({
           token: res.responseMessage
         }))
+        if ((method && url) || data) {
+          requestData(method, url, data)
+        }
       })
       .catch((err) => {
         fetchedData();

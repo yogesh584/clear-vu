@@ -75,20 +75,18 @@ const Login2FA = () => {
         };
 
         let config = {
-          method: "post",
-          url: `${BASEURL.PORT}/api/user/profile`,
+          method: "get",
+          url: `${BASEURL.PORT}/api/user/profile?emailId=${email}`,
           headers: {
             Authorization: `Bearer ${responseMessage}`,
             'Content-Type': 'application/json',
-          },
-          data: data
+          }
         };
         
         axios(config)
         .then((d) => {
           const { responseCode, responseMessage, data } = d.data;
           if (responseCode == "SGEN001") {
-            console.log(">>ENTER<<")
             dispatch(
               authSuccess2FA({
                 loggedIn: true,
