@@ -16,6 +16,7 @@ const Login2FA = () => {
 
   const { request: verifyOtpRequest, response: verifyOtpResponse } = useRequest();
   const { request: requestUserDetails, response: responseUserDetails } = useRequest();
+  const { request: requestUserAccessPermissions, response: responseUserAccessPermissions } = useRequest();
   const { token, email } = useSelector((state) => state.auth);
 
   const {
@@ -98,6 +99,19 @@ const Login2FA = () => {
                 permissions: {},
               })
             )
+          }
+        })
+
+        config.url = `${BASEURL.PORT}/api/user/access`
+
+        axios(config)
+        .then((d) => {
+          const { responseCode, responseMessage, data } = d.data;
+          if (responseCode == "SGEN001") {
+            // dispatch(
+            //   authSuccess2FA({
+            //   })
+            // )
           }
         })
 

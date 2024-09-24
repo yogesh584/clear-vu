@@ -22,6 +22,7 @@ const Pagination = ({
                 onChange={perPageChangeHandler}
                 className="custom-select custom-select-sm form-control form-control-sm border-0"
               >
+                <option value="10">10</option>
                 <option value="15">15</option>
                 <option value="20">20</option>
                 <option value="30">30</option>
@@ -61,7 +62,7 @@ const Pagination = ({
               <HorizontalArrow dir={"left"} />
               <span className="ml-4">Previous</span>
             </button>
-            <button className="pagination_button next_button" disabled={page >= Math.ceil(totalDocuments / perPage)} onClick={() => getNewData({ selected: page })}>
+            <button className="pagination_button next_button" disabled={page+1 >= Math.ceil(totalDocuments / perPage)} onClick={() => getNewData({ selected: page })}>
               <span className="mr-4">Next</span>
               <HorizontalArrow dir={"right"} />
             </button>

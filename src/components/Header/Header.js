@@ -6,6 +6,7 @@ import { logout, sidebarToggle } from "../../store/auth/action";
 import { Arrow, HamburgerMenu, HeaderSearchIcon, HeaderNotificationIcon } from "../../util/Svg";
 import useRequest from "../../hooks/useRequest"
 import notification from "../../util/toastifyNotifications"
+import styles from "../../styles/header.module.css"
 
 
 const Header = ({ setToggleSidebar }) => {
@@ -103,10 +104,9 @@ const Header = ({ setToggleSidebar }) => {
         </div>
       </div>
       <div id="kt_header" className="header  header-fixed ">
-        <div className=" container-fluid  d-flex align-items-stretch justify-content-between align-items-center">
-          <div className="d-flex">
+        <div className="container-fluid  d-flex align-items-stretch justify-content-between align-items-center">
+          <div className={`d-flex ${styles.customHamburger}`}>
             <button
-              // onClick={}
               className={`brand-toggle btn btn-sm px-0`}
               id="kt_aside_toggle"
             >
@@ -132,6 +132,7 @@ const Header = ({ setToggleSidebar }) => {
                 className="topbar-item"
                 data-toggle="dropdown"
                 data-offset="10px,0px"
+                style={{cursor:"pointer"}}
               >
                 <a className="d-flex align-items-center">
                   <div className="symbol symbol-30 symbol-circle symbol-primary mr-3">
@@ -157,7 +158,6 @@ const Header = ({ setToggleSidebar }) => {
               </div>
               <div className="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg">
                 <div className="row row-paddingless">
-
                   <div className="col-12">
                     <a
                       onClick={logoutHandler}

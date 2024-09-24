@@ -33,7 +33,7 @@ let isDataAlreadyFetched = {
 }
 
 const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData }) => {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [totalDocuments, setTotalDocuments] = useState(0);
     const [perPage, setPerPage] = useState(2);
     const [currentSort, setCurrentSort] = useState({
@@ -42,9 +42,19 @@ const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData 
     });
 
     let { records_per_page } = useSelector((state) => state.setting);
+    
     if (!records_per_page) {
         records_per_page = 10;
     }
+
+    useEffect(()=>{
+        if (!records_per_page) {
+            records_per_page = 10;
+            setPerPage(10)
+        } else {
+            setPerPage(records_per_page)
+        }
+    },[records_per_page])
     const {
         register,
         handleSubmit,
@@ -58,11 +68,11 @@ const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData 
     useEffect(() => {
         if (activeTab == "linens") {
             if (!isDataAlreadyFetched.card) {
-                requestLineansCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=1&size=${records_per_page}&pageNumber=1`);
+                requestLineansCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=1&size=${records_per_page}&page=0`);
             }
 
             if (!isDataAlreadyFetched.table) {
-                requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${records_per_page}&pageNumber=1`);
+                requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${records_per_page}&page=0`);
             }
         }
     }, [activeTab])
@@ -116,10 +126,10 @@ const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData 
 
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&pageNumber=${1}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
+            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&pageNumber=${1}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
+            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -127,14 +137,14 @@ const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData 
     const fetchMoreData = ({ selected }) => {
         console.log("selected : ", selected)
         setPage(selected + 1);
-        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&pageNumber=${selected + 1}`);
+        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${selected}`);
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(1);
         setPerPage(event.target.value);
-        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${event.target.value}&pageNumber=1`);
+        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${event.target.value}&page=0`);
     };
 
     const InputFields = [
@@ -213,15 +223,6 @@ const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData 
                     </SwiperSlide>
                 })}
             </Swiper>
-            {/* <div className="d-flex justify-content-center align-items-center mt-4">
-                <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-                <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-                <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-                <div className="rounded-pill mr-2" style={{ height: "10px", width: "25px", background: "#39d9a7" }}></div>
-                <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-                <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-                <div className="rounded-circle mr-2" style={{ height: "10px", width: "10px", background: "#e8e9eb" }}></div>
-            </div> */}
         </div>
 
         <div className="d-flex flex-column-fluid w-100" style={{ background: "#fafafa" }}>

@@ -306,7 +306,11 @@ const Table = ({
             {sorting && <th>ORDER</th>}
             {tableHeading.map((heading, index) => (
               <th
-                onClick={() => sortingHandler(heading)}
+                onClick={() => {
+                  if(!dontShowSort.includes(heading)){
+                    sortingHandler(heading)
+                  }
+                }}
                 key={index}
                 className={`${currentSort.sortBy == heading
                   ? `sorting_${currentSort.order}`
