@@ -52,9 +52,9 @@ const LinensComp = ({ activeTab }) => {
     useEffect(()=>{
         if (!records_per_page) {
             records_per_page = 10;
-            setPerPage(2)
+            setPerPage(10)
         } else {
-            setPerPage(2)
+            setPerPage(records_per_page)
         }
     },[records_per_page])
     const {

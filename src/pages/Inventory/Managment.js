@@ -77,8 +77,8 @@ const Dashboard = () => {
 
             <div className="tab-content mt-3">
                 <LinensComp activeTab={activeTab} />
-                <GarmentsComp activeTab={activeTab}  />
-                <CurtainsComp activeTab={activeTab}  />
+                    <GarmentsComp activeTab={activeTab}  />
+                    <CurtainsComp activeTab={activeTab}  />
             </div>
         </div>
     );
