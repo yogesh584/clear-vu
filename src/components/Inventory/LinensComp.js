@@ -58,11 +58,11 @@ const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData 
     useEffect(() => {
         if (activeTab == "linens") {
             if (!isDataAlreadyFetched.card) {
-                requestLineansCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=1&pageSize=${records_per_page}&pageNumber=1`);
+                requestLineansCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=1&size=${records_per_page}&pageNumber=1`);
             }
 
             if (!isDataAlreadyFetched.table) {
-                requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${records_per_page}&pageNumber=1`);
+                requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${records_per_page}&pageNumber=1`);
             }
         }
     }, [activeTab])
@@ -95,12 +95,31 @@ const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData 
     };
 
     const sortingHandler = (sortBy) => {
-        const newOrder = currentSort.order === "asc" ? "desc" : "asc";
+        let finalSortField = sortBy;
+        if(sortBy == "Location"){
+            finalSortField = "location";
+        } else if(sortBy == "Product name"){
+            finalSortField = "productName";
+        } else if(sortBy == "In use"){
+            finalSortField = "countInUse"
+        } else if(sortBy == "Clean stock"){
+            finalSortField = "cleanStock"
+        } else if(sortBy == "Par level"){
+            finalSortField = "parLevel"
+        } else if(sortBy == "Dirty return"){
+            finalSortField = "dirtyReturn"
+        } else if(sortBy == "Del. qty"){
+            finalSortField = "deliveredQuantity"
+        } else if(sortBy == "Fill rate") {
+            finalSortField = "fillRate"
+        }
+
         if (currentSort.sortBy == sortBy) {
-            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
+            const newOrder = currentSort.order === "asc" ? "desc" : "asc";
+            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&pageNumber=${1}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
+            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&pageNumber=${1}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -108,14 +127,14 @@ const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData 
     const fetchMoreData = ({ selected }) => {
         console.log("selected : ", selected)
         setPage(selected + 1);
-        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${perPage}&pageNumber=${selected + 1}`);
+        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&pageNumber=${selected + 1}`);
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(1);
         setPerPage(event.target.value);
-        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&pageSize=${event.target.value}&pageNumber=1`);
+        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${event.target.value}&pageNumber=1`);
     };
 
     const InputFields = [
@@ -304,7 +323,7 @@ const LinensComp = ({ activeTab, tableData, setTableData, cardData, setCardData 
                                             startDate: "dateTime",
                                             endDate: "dateTime",
                                         }}
-                                        dontShowSort={["name"]}
+                                        dontShowSort={["SKU"]}
                                     />
 
                                     {perPage !== 0 && (

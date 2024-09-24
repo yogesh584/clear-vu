@@ -92,12 +92,40 @@ const CurtainsComp = ({ activeTab, tableData, setTableData, cardData, setCardDat
     };
 
     const sortingHandler = (sortBy) => {
+        let finalSortField = sortBy;
+        if(sortBy == "Location"){
+            finalSortField = "location";
+        } else if(sortBy == "Product name"){
+            finalSortField = "productName";
+        } else if(sortBy == "In use"){
+            finalSortField = "countInUse"
+        } else if(sortBy == "Clean stock"){
+            finalSortField = "cleanStock"
+        } else if(sortBy == "Par level"){
+            finalSortField = "parLevel"
+        } else if(sortBy == "Dirty return"){
+            finalSortField = "dirtyReturn"
+        } else if(sortBy == "Del. qty"){
+            finalSortField = "deliveredQuantity"
+        } else if(sortBy == "Fill rate") {
+            finalSortField = "fillRate"
+        } else if(sortBy == "Last Washed") {
+            finalSortField = "lastWashed"
+        } else if(sortBy == "Total Washed") {
+            finalSortField = "totalWashed"
+        } else if(sortBy == "Next Wash cycle") {
+            finalSortField = "nextWashCycle"
+        } else if(sortBy == "Status") {
+            finalSortField = "status"
+        } else if(sortBy == "Installation Date") {
+            finalSortField = "installationDate"
+        }
         if (currentSort.sortBy === sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
+            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&pageSize=${perPage}&pageNumber=${1}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&pageSize=${perPage}&pageNumber=${1}&orderByField=${sortBy}&ascending=${newOrder == "asc" ? true : false}`);
+            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&pageSize=${perPage}&pageNumber=${1}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
