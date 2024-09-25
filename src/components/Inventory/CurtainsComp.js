@@ -26,49 +26,87 @@ const OBJ_TABLE = {
     "Status": "status",
 };
 
+const getSortingField = (sortBy) => {
+    let finalSortField = sortBy;
+    if (sortBy == "Location") {
+        finalSortField = "location";
+    } else if (sortBy == "Product name") {
+        finalSortField = "productName";
+    } else if (sortBy == "In use") {
+        finalSortField = "countInUse"
+    } else if (sortBy == "Clean stock") {
+        finalSortField = "cleanStock"
+    } else if (sortBy == "Par level") {
+        finalSortField = "parLevel"
+    } else if (sortBy == "Dirty return") {
+        finalSortField = "dirtyReturn"
+    } else if (sortBy == "Del. qty") {
+        finalSortField = "deliveredQuantity"
+    } else if (sortBy == "Fill rate") {
+        finalSortField = "fillRate"
+    } else if (sortBy == "Last Washed") {
+        finalSortField = "lastWashed"
+    } else if (sortBy == "Total Washed") {
+        finalSortField = "totalWashed"
+    } else if (sortBy == "Next Wash cycle") {
+        finalSortField = "nextWashCycle"
+    } else if (sortBy == "Status") {
+        finalSortField = "status"
+    } else if (sortBy == "Installation Date") {
+        finalSortField = "installationDate"
+    }
+    return finalSortField;
+}
 
-// let isDataAlreadyFetched = {
-//     card: false,
-//     table: false
-// }
 
-const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus  }) => {
+const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     const [tableData, setTableData] = useState([]);
     const [cardData, setCardData] = useState([]);
     const [page, setPage] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(0);
-    const [perPage, setPerPage] = useState(2);
+    const [perPage, setPerPage] = useState(10);
     const [currentSort, setCurrentSort] = useState({
-        sortBy: "created on",
-        order: "desc",
+        sortBy: "",
+        order: "",
     });
+    const [isFilteredApplied, setIsFiltersApplied] = useState(false);
 
-    const { records_per_page } = useSelector((state) => state.setting);
+    let { records_per_page } = useSelector((state) => state.setting);
     const {
         register,
         handleSubmit,
         formState: { errors },
         resetField,
+        getValues
     } = useForm();
 
     const { request: requestCurtainsData, response: responseCurtainsData } = useRequest()
     const { request: requestCurtainsCards, response: responseCurtainsCards } = useRequest();
 
+    useEffect(()=>{
+        if (!records_per_page) {
+            records_per_page = 10;
+            setPerPage(10)
+        } else {
+            setPerPage(records_per_page)
+        }
+    },[records_per_page])
+
     useEffect(() => {
         if (activeTab == "curtains") {
             if (!isDataAlreadyFetched.card) {
-                requestCurtainsCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=2`);
+                requestCurtainsCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=2&page=0&size=0`);
             }
 
             if (!isDataAlreadyFetched.table) {
-                requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${records_per_page}&pageNumber=1`);
+                requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${10}&page=0`);
             }
         }
     }, [activeTab])
 
     useEffect(() => {
         if (responseCurtainsData) {
-            changeLinenStatus({...isDataAlreadyFetched, table: true})
+            changeLinenStatus({ ...isDataAlreadyFetched, table: true })
             // isDataAlreadyFetched.table = true;
             const { content, totalElements } = responseCurtainsData;
             setTableData(content)
@@ -78,82 +116,74 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus  }) =
 
     useEffect(() => {
         if (responseCurtainsCards) {
-            changeLinenStatus({...isDataAlreadyFetched, card: true})
+            changeLinenStatus({ ...isDataAlreadyFetched, card: true })
             // isDataAlreadyFetched.card = true;
             setCardData(responseCurtainsCards)
         }
     }, [responseCurtainsCards])
 
     const onSearchHandler = () => {
-        setPage(1);
+        
+        const { productName,location } = getValues();
+        let finalSortField = getSortingField(currentSort.sortBy);
+        let querySearchString = "";
+        if(productName){
+            querySearchString += `&productName=${productName}`
+        }
+        if(location){
+            querySearchString += `&location=${location}`
+        }
+        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
+        setPage(0);
+        setIsFiltersApplied(true)
     };
 
     const onResetHandler = (e) => {
         e.preventDefault();
-        resetField("title");
-
-        setPage(1);
+        let finalSortField = getSortingField(currentSort.sortBy);
+        resetField("productName");
+        resetField("location");
+        setPage(0);
+        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
+        setIsFiltersApplied(false);
     };
 
     const sortingHandler = (sortBy) => {
-        let finalSortField = sortBy;
-        if(sortBy == "Location"){
-            finalSortField = "location";
-        } else if(sortBy == "Product name"){
-            finalSortField = "productName";
-        } else if(sortBy == "In use"){
-            finalSortField = "countInUse"
-        } else if(sortBy == "Clean stock"){
-            finalSortField = "cleanStock"
-        } else if(sortBy == "Par level"){
-            finalSortField = "parLevel"
-        } else if(sortBy == "Dirty return"){
-            finalSortField = "dirtyReturn"
-        } else if(sortBy == "Del. qty"){
-            finalSortField = "deliveredQuantity"
-        } else if(sortBy == "Fill rate") {
-            finalSortField = "fillRate"
-        } else if(sortBy == "Last Washed") {
-            finalSortField = "lastWashed"
-        } else if(sortBy == "Total Washed") {
-            finalSortField = "totalWashed"
-        } else if(sortBy == "Next Wash cycle") {
-            finalSortField = "nextWashCycle"
-        } else if(sortBy == "Status") {
-            finalSortField = "status"
-        } else if(sortBy == "Installation Date") {
-            finalSortField = "installationDate"
-        }
+        let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy === sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&pageSize=${perPage}&pageNumber=${1}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
+            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&size=${perPage}&page=${1}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&pageSize=${perPage}&pageNumber=${1}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
+            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&size=${perPage}&page=${1}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
 
     const fetchMoreData = ({ selected }) => {
         setPage(selected + 1);
-        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${perPage}&pageNumber=${selected + 1}`);
+        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${perPage}&page=${selected + 1}`);
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(1);
         setPerPage(event.target.value);
-        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${records_per_page}&pageNumber=1`);
+        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${records_per_page}&page=1`);
     };
 
     const InputFields = [
         {
-            label: "Title",
-            name: "title",
-        }
+            label: "Product Name",
+            name: "productName",
+        },
+        {
+            label: "Location",
+            name: "location",
+        },
     ];
 
-    return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{display: activeTab == "curtains" ? "block" : "none"}}>
+    return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{ display: activeTab == "curtains" ? "block" : "none" }}>
         {/*         CARDS        */}
         <div id="cards_parent" className="mt-4 mb-6">
             <Swiper
@@ -252,7 +282,9 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus  }) =
                                         }} />
                                     </div>
                                     <button
-                                        className="btn btn-primary  mr-2"
+                                        data-toggle="collapse"
+                                        data-target="#searchOptions3"
+                                        className="position-relative btn btn-primary  mr-2"
                                         style={{
                                             border: "1px solid #e8e9eb",
                                             borderRadius: "8px",
@@ -269,18 +301,19 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus  }) =
                                         <span className="ml-3">
                                             Filter
                                         </span>
+                                        {isFilteredApplied && <div className="position-absolute" style={{top: 0, right: "1px",height: "10px", width: "10px", borderRadius: "50%",background: "red"}}></div>}
                                     </button>
                                 </div>
                             </div>
                             <div className="card-body py-0" >
                                 <div
                                     className="accordion accordion-solid accordion-toggle-plus"
-                                    id="accordionExample6"
+                                    id="accordionExample8"
                                 >
                                     <div
-                                        id="collapseOne6"
+                                        id="searchOptions3"
                                         className="collapse"
-                                        data-parent="#accordionExample6"
+                                        data-parent="#accordionExample8"
                                     >
                                         <div>
                                             <form

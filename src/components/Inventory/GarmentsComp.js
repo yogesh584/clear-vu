@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { FilterIcon, HeaderSearchIcon, PencilIcon } from "../../util/Svg";
@@ -26,58 +26,89 @@ const OBJ_TABLE = {
     "Status": "status",
 };
 
-// let isDataAlreadyFetched = {
-//     card: false,
-//     table: false
-// }
+const getSortingField = (sortBy) => {
+    let finalSortField = sortBy;
+    if (sortBy == "Location") {
+        finalSortField = "location";
+    } else if (sortBy == "Product name") {
+        finalSortField = "productName";
+    } else if (sortBy == "In use") {
+        finalSortField = "countInUse"
+    } else if (sortBy == "Clean stock") {
+        finalSortField = "cleanStock"
+    } else if (sortBy == "Par level") {
+        finalSortField = "parLevel"
+    } else if (sortBy == "Dirty return") {
+        finalSortField = "dirtyReturn"
+    } else if (sortBy == "Del. qty") {
+        finalSortField = "deliveredQuantity"
+    } else if (sortBy == "Fill rate") {
+        finalSortField = "fillRate"
+    } else if (sortBy == "Last Washed") {
+        finalSortField = "lastWashed"
+    } else if (sortBy == "Total Washed") {
+        finalSortField = "totalWashed"
+    } else if (sortBy == "Next Wash cycle") {
+        finalSortField = "nextWashCycle"
+    } else if (sortBy == "Status") {
+        finalSortField = "status"
+    } else if (sortBy == "Installation Date") {
+        finalSortField = "installationDate"
+    }
+    return finalSortField;
+}
 
-const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus  }) => {
+
+const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     const [tableData, setTableData] = useState([]);
     const [cardData, setCardData] = useState([]);
     const [page, setPage] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(0);
-    const [perPage, setPerPage] = useState(2);
+    const [perPage, setPerPage] = useState(10);
     const [currentSort, setCurrentSort] = useState({
-        sortBy: "created on",
-        order: "desc",
+        sortBy: "",
+        order: "",
     });
+    const [isFilteredApplied, setIsFiltersApplied] = useState(false);
 
     let { records_per_page } = useSelector((state) => state.setting);
-    if (!records_per_page) {
-        records_per_page = 10;
-    }
     const {
         register,
         handleSubmit,
         formState: { errors },
         resetField,
+        getValues
     } = useForm();
 
     const { request: requestGarmentsData, response: responseGarmentsData } = useRequest()
     const { request: requestGarmentsCards, response: responseGarmentsCards } = useRequest();
 
+    useEffect(()=>{
+        if (!records_per_page) {
+            records_per_page = 10;
+            setPerPage(10)
+        } else {
+            setPerPage(records_per_page)
+        }
+    },[records_per_page])
 
     useEffect(() => {
         if (activeTab == "garments") {
             if (!isDataAlreadyFetched.card) {
-                requestGarmentsCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=2`);
+                requestGarmentsCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=2&page=0&size=0`);
             }
 
             if (!isDataAlreadyFetched.table) {
-                requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${records_per_page}&pageNumber=1`);
+                requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&size=${10}&page=0`);
             }
         }
     }, [activeTab])
 
-    console.log("table", tableData)
-
     useEffect(() => {
         if (responseGarmentsData) {
-            changeLinenStatus({...isDataAlreadyFetched, table: true})
+            changeLinenStatus({ ...isDataAlreadyFetched, table: true })
             // isDataAlreadyFetched.table = true;
             const { content, totalElements } = responseGarmentsData;
-            console.log("content", responseGarmentsData);
-
             setTableData(content)
             setTotalDocuments(totalElements)
         }
@@ -85,80 +116,74 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus  }) =
 
     useEffect(() => {
         if (responseGarmentsCards) {
-            changeLinenStatus({...isDataAlreadyFetched, card: true})
+            changeLinenStatus({ ...isDataAlreadyFetched, card: true })
             // isDataAlreadyFetched.card = true;
             setCardData(responseGarmentsCards)
         }
     }, [responseGarmentsCards])
 
     const onSearchHandler = () => {
-        setPage(1);
+        
+        const { productName,location } = getValues();
+        let finalSortField = getSortingField(currentSort.sortBy);
+        let querySearchString = "";
+        if(productName){
+            querySearchString += `&productName=${productName}`
+        }
+        if(location){
+            querySearchString += `&location=${location}`
+        }
+        requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
+        setPage(0);
+        setIsFiltersApplied(true)
     };
 
     const onResetHandler = (e) => {
         e.preventDefault();
-        resetField("title");
-
-        setPage(1);
+        let finalSortField = getSortingField(currentSort.sortBy);
+        resetField("productName");
+        resetField("location");
+        setPage(0);
+        requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
+        setIsFiltersApplied(false);
     };
 
     const sortingHandler = (sortBy) => {
-        let finalSortField = sortBy;
-        if(sortBy == "Location"){
-            finalSortField = "location";
-        } else if(sortBy == "Product name"){
-            finalSortField = "productName";
-        } else if(sortBy == "In use"){
-            finalSortField = "countInUse"
-        } else if(sortBy == "Clean stock"){
-            finalSortField = "cleanStock"
-        } else if(sortBy == "Par level"){
-            finalSortField = "parLevel"
-        } else if(sortBy == "Dirty return"){
-            finalSortField = "dirtyReturn"
-        } else if(sortBy == "Del. qty"){
-            finalSortField = "deliveredQuantity"
-        } else if(sortBy == "Fill rate") {
-            finalSortField = "fillRate"
-        } else if(sortBy == "Last Washed") {
-            finalSortField = "lastWashed"
-        } else if(sortBy == "Total Washed") {
-            finalSortField = "totalWashed"
-        } else if(sortBy == "Next Wash cycle") {
-            finalSortField = "nextWashCycle"
-        } else if(sortBy == "Status") {
-            finalSortField = "status"
-        }
-        if (currentSort.sortBy == sortBy) {
-            const newOrder = currentSort.order === "asc" ? "desc" : "asc"; 
-            requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${perPage}&pageNumber=${1}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
+        let finalSortField = getSortingField(sortBy);
+        if (currentSort.sortBy === sortBy) {
+            const newOrder = currentSort.order === "asc" ? "desc" : "asc";
+            requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=3&size=${perPage}&page=${1}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${perPage}&pageNumber=${1}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
+            requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=3&size=${perPage}&page=${1}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
 
     const fetchMoreData = ({ selected }) => {
         setPage(selected + 1);
-        requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${perPage}&pageNumber=${selected + 1}`);
+        requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&size=${perPage}&page=${selected + 1}`);
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(1);
         setPerPage(event.target.value);
-        requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&pageSize=${event.target.value}&pageNumber=1`);
+        requestGarmentsData("get", `api/inventory/management?userId=1&categoryId=2&size=${records_per_page}&page=1`);
     };
 
     const InputFields = [
         {
-            label: "Title",
-            name: "title",
-        }
+            label: "Product Name",
+            name: "productName",
+        },
+        {
+            label: "Location",
+            name: "location",
+        },
     ];
 
-    return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{display: activeTab == "garments" ? "block" : "none"}}>
+    return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{ display: activeTab == "garments" ? "block" : "none" }}>
         {/*         CARDS        */}
         <div id="cards_parent" className="mt-4 mb-6">
             <Swiper
@@ -256,10 +281,10 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus  }) =
                                             outline: "none"
                                         }} />
                                     </div>
-                                    <a
-                                        className="btn btn-primary  mr-2" // dropdown-toggle
-                                        // data-toggle="collapse"
-                                        // data-target="#collapseOne6"
+                                    <button
+                                        data-toggle="collapse"
+                                        data-target="#searchOptions2"
+                                        className="position-relative btn btn-primary  mr-2"
                                         style={{
                                             border: "1px solid #e8e9eb",
                                             borderRadius: "8px",
@@ -276,18 +301,19 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus  }) =
                                         <span className="ml-3">
                                             Filter
                                         </span>
-                                    </a>
+                                        {isFilteredApplied && <div className="position-absolute" style={{top: 0, right: "1px",height: "10px", width: "10px", borderRadius: "50%",background: "red"}}></div>}
+                                    </button>
                                 </div>
                             </div>
                             <div className="card-body py-0" >
                                 <div
                                     className="accordion accordion-solid accordion-toggle-plus"
-                                    id="accordionExample6"
+                                    id="accordionExample7"
                                 >
                                     <div
-                                        id="collapseOne6"
+                                        id="searchOptions2"
                                         className="collapse"
-                                        data-parent="#accordionExample6"
+                                        data-parent="#accordionExample7"
                                     >
                                         <div>
                                             <form
@@ -297,7 +323,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus  }) =
                                                 <div className="row mb-6">
                                                     {InputFields.map((inputMain, index) => (
                                                         <SearchInput
-                                                            key={index}
+                                                            key={inputMain + index + Math.ceil(Math.random())}
                                                             {...inputMain}
                                                             errors={errors}
                                                             register={register}

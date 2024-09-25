@@ -27,10 +27,28 @@ const OBJ_TABLE = {
     "Fill rate": "fillRate"
 };
 
-// let isDataAlreadyFetched = {
-//     card: false,
-//     table: false
-// }
+const getSortingField = (sortBy) =>{
+    let finalSortField = sortBy;
+        if(sortBy == "Location"){
+            finalSortField = "location";
+        } else if(sortBy == "Product name"){
+            finalSortField = "productName";
+        } else if(sortBy == "In use"){
+            finalSortField = "countInUse"
+        } else if(sortBy == "Clean stock"){
+            finalSortField = "cleanStock"
+        } else if(sortBy == "Par level"){
+            finalSortField = "parLevel"
+        } else if(sortBy == "Dirty return"){
+            finalSortField = "dirtyReturn"
+        } else if(sortBy == "Del. qty"){
+            finalSortField = "deliveredQuantity"
+        } else if(sortBy == "Fill rate") {
+            finalSortField = "fillRate"
+        }
+
+        return finalSortField;
+}
 
 const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     const [tableData, setTableData] = useState([]);
@@ -39,16 +57,14 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     const [totalDocuments, setTotalDocuments] = useState(0);
     const [perPage, setPerPage] = useState(0);
     const [currentSort, setCurrentSort] = useState({
-        sortBy: "created on",
-        order: "desc",
+        sortBy: "",
+        order: "",
     });
     const [searchKey, setSearchKey] = useState(null);
+    const [isFilteredApplied, setIsFiltersApplied] = useState(false);
     
     let { records_per_page } = useSelector((state) => state.setting);
     
-    if (!records_per_page) {
-        records_per_page = 10;
-    }
 
     useEffect(()=>{
         if (!records_per_page) {
@@ -63,6 +79,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         handleSubmit,
         formState: { errors },
         resetField,
+        getValues
     } = useForm();
 
     const { request: requestLinensData, response: responseLinensData } = useRequest()
@@ -83,7 +100,6 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     useEffect(() => {
         if (responseLinensData) {
             changeLinenStatus({...isDataAlreadyFetched, table: true})
-            // isDataAlreadyFetched.table = true;
             const { content, totalElements } = responseLinensData;
             setTableData(content)
             setTotalDocuments(totalElements)
@@ -93,48 +109,45 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     useEffect(() => {
         if (responseLineansCards) {
             changeLinenStatus({...isDataAlreadyFetched, card: true})
-            // isDataAlreadyFetched.card = true;
             setCardData(responseLineansCards)
         }
     }, [responseLineansCards])
 
 
     const onSearchHandler = () => {
-        setPage(1);
+        const { productName,location } = getValues();
+        let finalSortField = getSortingField(currentSort.sortBy);
+        let querySearchString = "";
+        if(productName){
+            querySearchString += `&productName=${productName}`
+        }
+        if(location){
+            querySearchString += `&location=${location}`
+        }
+
+        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
+        setPage(0);
+        setIsFiltersApplied(true)
     };
 
     const onResetHandler = (e) => {
         e.preventDefault();
-        resetField("title");
-        setPage(1);
+        let finalSortField = getSortingField(currentSort.sortBy);
+        resetField("productName");
+        resetField("location");
+        setPage(0);
+        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
+        setIsFiltersApplied(false);
     };
 
     const sortingHandler = (sortBy) => {
-        let finalSortField = sortBy;
-        if(sortBy == "Location"){
-            finalSortField = "location";
-        } else if(sortBy == "Product name"){
-            finalSortField = "productName";
-        } else if(sortBy == "In use"){
-            finalSortField = "countInUse"
-        } else if(sortBy == "Clean stock"){
-            finalSortField = "cleanStock"
-        } else if(sortBy == "Par level"){
-            finalSortField = "parLevel"
-        } else if(sortBy == "Dirty return"){
-            finalSortField = "dirtyReturn"
-        } else if(sortBy == "Del. qty"){
-            finalSortField = "deliveredQuantity"
-        } else if(sortBy == "Fill rate") {
-            finalSortField = "fillRate"
-        }
-
+        let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
+            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
+            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -147,16 +160,20 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
 
 
     const perPageChangeHandler = (event) => {
-        setPage(1);
+        setPage(0);
         setPerPage(event.target.value);
         requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${event.target.value}&page=0`);
     };
 
     const InputFields = [
         {
-            label: "Title",
-            name: "title",
-        }
+            label: "Product Name",
+            name: "productName",
+        },
+        {
+            label: "Location",
+            name: "location",
+        },
     ];
 
     const filteredTableData = tableData.filter((item) => {
@@ -267,7 +284,9 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                         />
                                     </div>
                                     <button
-                                        className="btn btn-primary  mr-2"
+                                    data-toggle="collapse"
+                                    data-target="#searchOptions"
+                                        className="position-relative btn btn-primary  mr-2"
                                         style={{
                                             border: "1px solid #e8e9eb",
                                             borderRadius: "8px",
@@ -284,6 +303,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                         <span className="ml-3">
                                             Filter
                                         </span>
+                                        {isFilteredApplied && <div className="position-absolute" style={{top: 0, right: "1px",height: "10px", width: "10px", borderRadius: "50%",background: "red"}}></div>}
                                     </button>
                                 </div>
                             </div>
@@ -293,7 +313,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                     id="accordionExample6"
                                 >
                                     <div
-                                        id="collapseOne6"
+                                        id="searchOptions"
                                         className="collapse"
                                         data-parent="#accordionExample6"
                                     >

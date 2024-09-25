@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef } from "react";
 import IonRangeSlider from "react-ion-slider";
+import { CrossIcon, HeaderSearchIcon } from "../../util/Svg";
 
 let currDate = new Date();
 currDate = currDate.toISOString().split("T")[0];
@@ -23,7 +24,7 @@ export const Input = ({
   handleMedia = () => { },
   accept,
   isMedia,
-  onChangeFunc = ()=> {}
+  onChangeFunc = () => { }
 }) => {
   let [k, v] = name.split(".");
   let isKey = v ? (errors[k] ? errors[k][v] : errors[name]) : errors[name];
@@ -61,9 +62,8 @@ export const Input = ({
 
         <input
           type={type}
-          className={`form-control form-control-solid form-control-lg ${
-            isKey && "is-invalid"
-          }`}
+          className={`form-control form-control-solid form-control-lg ${isKey && "is-invalid"
+            }`}
           name={name}
           min={min}
           placeholder={label}
@@ -72,7 +72,7 @@ export const Input = ({
           accept={accept}
           onChange={(e) => {
             onChangeFunc(e);
-            if(isMedia){
+            if (isMedia) {
               handleMedia(e)
             }
           }}
@@ -101,7 +101,7 @@ export const Input = ({
           <div className="invalid-feedback">
             {registerFieldsFeedback?.pattern}
           </div>
-        )}        
+        )}
         {otherRegisterFields?.manual && isKey?.type === "manual" && (
           <div className="invalid-feedback">{otherRegisterFields.feedback}</div>
         )}
@@ -128,21 +128,16 @@ export const Input = ({
 export const RangeInput = ({
   colClass,
   label,
-  type,
   tooltip,
   name,
-  min,
   errors,
-  register,
   registerFields,
-  inputData,
   otherRegisterFields,
   registerFieldsFeedback,
   children,
   isArray,
   index,
   setValue,
-  getValues,
   sliderData,
 }) => {
   let [k, v] = name.split(".");
@@ -203,18 +198,18 @@ export const RangeInput = ({
             setValue(`${name}.from`, data.from);
             setValue(`${name}.to`, data.to);
           }}
-          // type="double"
-          // min="0"
-          // max="300"
-          // from="0"
-          // to="350"
-          // skin="flat"
-          // prefix="$"
-          // postfix="k"
-          // max_postfix="+"
-          // //step=""
-          // //values=""
-          // keyboard="true"
+        // type="double"
+        // min="0"
+        // max="300"
+        // from="0"
+        // to="350"
+        // skin="flat"
+        // prefix="$"
+        // postfix="k"
+        // max_postfix="+"
+        // //step=""
+        // //values=""
+        // keyboard="true"
         />
 
         {registerFields?.required && isKey?.type === "required" && (
@@ -276,23 +271,8 @@ export const SelectInput = ({
   children,
   onChange,
   moreData,
-  isArray,
-  index,
   removeButton
 }) => {
-  let [k, v] = name.split(".");
-  let isKey = v ? (errors[k] ? errors[k][v] : errors[name]) : errors[name];
-
-  // console.log('isArray', isArray, name)
-  // console.log('kv', k, v, index)
-
-  // console.log(errors['new_education']?.[0])
-
-  if (isArray) {
-    k = k.split("[")[0];
-    isKey = v ? (errors[k] ? errors[k][index][v] : errors[name]) : errors[name];
-  }
-
   return (
     <div className={`${colClass ? colClass : "col-xl-4"}`}>
       <div className="form-group">
@@ -304,12 +284,11 @@ export const SelectInput = ({
             ""
           )}
         </label>
-        <div className="d-flex" style={{gap: "8px"}}>
+        <div className="d-flex" style={{ gap: "8px" }}>
           <select
             name={name}
-            className={`form-control form-control-solid form-control-lg ${
-              errors[name] && "is-invalid"
-            }`}
+            className={`form-control form-control-solid form-control-lg ${errors[name] && "is-invalid"
+              }`}
             {...register(name, registerFields)}
             onChange={(e) => onChange && onChange(e.target.value)}
           >
@@ -355,9 +334,8 @@ export const Textarea = ({
           )}
         </label>
         <textarea
-          className={`form-control form-control-solid form-control-lg ${
-            isKey && "is-invalid"
-          }`}
+          className={`form-control form-control-solid form-control-lg ${isKey && "is-invalid"
+            }`}
           name={name}
           cols="30"
           rows="5"
@@ -412,9 +390,8 @@ export const Textarea2 = ({
           )}
         </label>
         <textarea
-          className={`form-control form-control-solid form-control-lg ${
-            isKey && "is-invalid"
-          }`}
+          className={`form-control form-control-solid form-control-lg ${isKey && "is-invalid"
+            }`}
           name={name}
           cols="30"
           rows="5"
@@ -430,7 +407,7 @@ export const Textarea2 = ({
             }
           }}
           onChange={(e) => onChange && onChange(e.target.value)}
-          // {...inputData}
+        // {...inputData}
         ></textarea>
         {registerFields?.required && isKey?.type === "required" && (
           <div className="invalid-feedback">
@@ -466,15 +443,17 @@ export const SearchInput = ({
   };
 
   return (
-    <div className="col-lg-3 mb-lg-0 mb-6 mt-2">
-      <label>{label}</label>
+    <div className="col-lg-3 mb-lg-0 mb-6 mt-2" style={{ paddingRight: "0px" }}>
+      {/* <label>{label}</label> */}
 
       {!isDate ? (
         !isSelectInput ? (
           <input
             type="text"
+            style={{ border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
+            autoComplete="off"
             placeholder={label}
-            className={`form-control ${errors[name] && "is-invalid"}`}
+            className={`form-control form-control-solid h-auto py-3 px-6 rounded-xl ${errors[name] && "is-invalid"}`}
             {...register(name, { required })}
             {...extras}
           />
@@ -577,26 +556,30 @@ export const SearchSubmitButton = ({
       <div className="row mt-8">
         <div className="col-lg-12">
           <button
-            className="btn btn-primary btn-primary--icon"
+            className="btn btn-primary btn-primary--icon rounded-xl text-light px-4 py-2"
             id="kt_search"
             onClick={handleSubmit(onSearchHandler)}
           >
-            <span>
-              <span>Search</span>
-              <i className="la la-search ml-1 pr-0"></i>
+            <span className="d-flex align-items-center" style={{ gap: "5px" }}>
+              <span
+                style={{ fontWeight: "normal", fontSize: "13px" }}
+              >Search</span>
+              <HeaderSearchIcon svgStyle={{ height: "16px" }} pathStyle={{ stroke: "#ffffff" }} />
             </span>
           </button>
           &nbsp;&nbsp;
           <button
-            className="btn btn-secondary btn-secondary--icon"
+            className="btn btn-secondary btn-secondary--icon rounded-xl px-4 py-2"
             id="kt_reset"
             data-toggle="collapse"
             data-target="#collapseOne6"
             onClick={onResetHandler}
           >
-            <span>
-              <i className="la la-close"></i>
-              <span>Clear Search</span>
+            <span className="d-flex align-items-center" style={{ gap: "5px" }}>
+              <CrossIcon svgStyle={{ height: "16px" }} />
+              <span
+                style={{ fontWeight: "normal", fontSize: "13px" }}
+              >Clear Search</span>
             </span>
           </button>
         </div>
@@ -618,9 +601,8 @@ export const OtherInput = ({
   return (
     <div className="form-group">
       <input
-        className={`form-control ${
-          errors[name] && "is-invalid"
-        } form-control-solid h-auto py-7 px-6 border-0 rounded-lg font-size-h6`}
+        className={`form-control ${errors[name] && "is-invalid"
+          } form-control-solid h-auto py-7 px-6 border-0 rounded-lg font-size-h6`}
         type={type}
         name={name}
         autoComplete="off"
