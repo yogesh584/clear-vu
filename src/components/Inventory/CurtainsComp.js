@@ -161,13 +161,13 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     };
 
     const fetchMoreData = ({ selected }) => {
-        setPage(selected + 1);
-        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${perPage}&page=${selected + 1}`);
+        setPage(selected);
+        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${perPage}&page=${selected}`);
     };
 
 
     const perPageChangeHandler = (event) => {
-        setPage(1);
+        setPage(0);
         setPerPage(event.target.value);
         requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${records_per_page}&page=1`);
     };
