@@ -27,12 +27,12 @@ const OBJ_TABLE = {
 };
 
 
-let isDataAlreadyFetched = {
-    card: false,
-    table: false
-}
+// let isDataAlreadyFetched = {
+//     card: false,
+//     table: false
+// }
 
-const CurtainsComp = ({ activeTab}) => {
+const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus  }) => {
     const [tableData, setTableData] = useState([]);
     const [cardData, setCardData] = useState([]);
     const [page, setPage] = useState(1);
@@ -68,7 +68,8 @@ const CurtainsComp = ({ activeTab}) => {
 
     useEffect(() => {
         if (responseCurtainsData) {
-            isDataAlreadyFetched.table = true;
+            changeLinenStatus({...isDataAlreadyFetched, table: true})
+            // isDataAlreadyFetched.table = true;
             const { content, totalElements } = responseCurtainsData;
             setTableData(content)
             setTotalDocuments(totalElements)
@@ -77,7 +78,8 @@ const CurtainsComp = ({ activeTab}) => {
 
     useEffect(() => {
         if (responseCurtainsCards) {
-            isDataAlreadyFetched.card = true;
+            changeLinenStatus({...isDataAlreadyFetched, card: true})
+            // isDataAlreadyFetched.card = true;
             setCardData(responseCurtainsCards)
         }
     }, [responseCurtainsCards])
