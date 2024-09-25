@@ -11,6 +11,12 @@ const Dashboard = () => {
         setActiveTab(tabName);
     };
 
+    const [linenCall, setLinenCall] = useState({card: false, table: false})
+
+    const [garmentCall, setGarmentCall] = useState({card: false, table: false})
+
+    const [curtainCall, setCurtainCall] = useState({card: false, table: false})
+
     useEffect(() => {
         document.title = "Inventory Managment - Clear vu";
     }, []);
@@ -76,9 +82,9 @@ const Dashboard = () => {
             </div>
 
             <div className="tab-content mt-3">
-                <LinensComp activeTab={activeTab} />
-                    <GarmentsComp activeTab={activeTab}  />
-                    <CurtainsComp activeTab={activeTab}  />
+                <LinensComp activeTab={activeTab} isDataAlreadyFetched={linenCall} changeLinenStatus={setLinenCall} />
+                    <GarmentsComp activeTab={activeTab} isDataAlreadyFetched={garmentCall} changeLinenStatus={setGarmentCall} />
+                    <CurtainsComp activeTab={activeTab} isDataAlreadyFetched={curtainCall} changeLinenStatus={setCurtainCall} />
             </div>
         </div>
     );

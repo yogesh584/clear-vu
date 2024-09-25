@@ -27,12 +27,12 @@ const OBJ_TABLE = {
     "Fill rate": "fillRate"
 };
 
-let isDataAlreadyFetched = {
-    card: false,
-    table: false
-}
+// let isDataAlreadyFetched = {
+//     card: false,
+//     table: false
+// }
 
-const LinensComp = ({ activeTab }) => {
+const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     const [tableData, setTableData] = useState([]);
     const [cardData, setCardData] = useState([]);
     const [page, setPage] = useState(0);
@@ -82,7 +82,8 @@ const LinensComp = ({ activeTab }) => {
 
     useEffect(() => {
         if (responseLinensData) {
-            isDataAlreadyFetched.table = true;
+            changeLinenStatus({...isDataAlreadyFetched, table: true})
+            // isDataAlreadyFetched.table = true;
             const { content, totalElements } = responseLinensData;
             setTableData(content)
             setTotalDocuments(totalElements)
@@ -91,7 +92,8 @@ const LinensComp = ({ activeTab }) => {
 
     useEffect(() => {
         if (responseLineansCards) {
-            isDataAlreadyFetched.card = true;
+            changeLinenStatus({...isDataAlreadyFetched, card: true})
+            // isDataAlreadyFetched.card = true;
             setCardData(responseLineansCards)
         }
     }, [responseLineansCards])

@@ -26,12 +26,12 @@ const OBJ_TABLE = {
     "Status": "status",
 };
 
-let isDataAlreadyFetched = {
-    card: false,
-    table: false
-}
+// let isDataAlreadyFetched = {
+//     card: false,
+//     table: false
+// }
 
-const GarmentsComp = ({ activeTab }) => {
+const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus  }) => {
     const [tableData, setTableData] = useState([]);
     const [cardData, setCardData] = useState([]);
     const [page, setPage] = useState(1);
@@ -73,7 +73,8 @@ const GarmentsComp = ({ activeTab }) => {
 
     useEffect(() => {
         if (responseGarmentsData) {
-            isDataAlreadyFetched.table = true;
+            changeLinenStatus({...isDataAlreadyFetched, table: true})
+            // isDataAlreadyFetched.table = true;
             const { content, totalElements } = responseGarmentsData;
             console.log("content", responseGarmentsData);
 
@@ -84,7 +85,8 @@ const GarmentsComp = ({ activeTab }) => {
 
     useEffect(() => {
         if (responseGarmentsCards) {
-            isDataAlreadyFetched.card = true;
+            changeLinenStatus({...isDataAlreadyFetched, card: true})
+            // isDataAlreadyFetched.card = true;
             setCardData(responseGarmentsCards)
         }
     }, [responseGarmentsCards])
