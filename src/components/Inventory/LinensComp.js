@@ -264,7 +264,7 @@ const LinensComp = ({ activeTab }) => {
                                             onChange={(e) => setSearchKey(e.target.value)}
                                         />
                                     </div>
-                                    <a
+                                    <button
                                         className="btn btn-primary  mr-2"
                                         style={{
                                             border: "1px solid #e8e9eb",
@@ -282,7 +282,7 @@ const LinensComp = ({ activeTab }) => {
                                         <span className="ml-3">
                                             Filter
                                         </span>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                             <div className="card-body py-0" >
