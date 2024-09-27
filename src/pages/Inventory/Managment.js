@@ -83,8 +83,8 @@ const Dashboard = () => {
 
             <div className="tab-content mt-3">
                 <LinensComp activeTab={activeTab} isDataAlreadyFetched={linenCall} changeLinenStatus={setLinenCall} />
-                    <GarmentsComp activeTab={activeTab} isDataAlreadyFetched={garmentCall} changeLinenStatus={setGarmentCall} />
-                    <CurtainsComp activeTab={activeTab} isDataAlreadyFetched={curtainCall} changeLinenStatus={setCurtainCall} />
+                <GarmentsComp activeTab={activeTab} isDataAlreadyFetched={garmentCall} changeLinenStatus={setGarmentCall} />
+                <CurtainsComp activeTab={activeTab} isDataAlreadyFetched={curtainCall} changeLinenStatus={setCurtainCall} />
             </div>
         </div>
     );
