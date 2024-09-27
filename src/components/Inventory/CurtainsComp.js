@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import { FilterIcon, HeaderSearchIcon, PencilIcon } from "../../util/Svg";
@@ -19,7 +19,7 @@ const OBJ_TABLE = {
     SKU: "SKU",
     Location: "location",
     "Product name": "productName",
-    "Installation Date": "installationDate",
+    "In use": "inUse",
     "Last Washed": "lastWashed",
     "Total Washed": "totalWashed",
     "Next Wash cycle": "nextWashCycle",
@@ -55,25 +55,38 @@ const getSortingField = (sortBy) => {
     } else if (sortBy == "Installation Date") {
         finalSortField = "installationDate"
     }
+
     return finalSortField;
 }
-
 
 const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     const [tableData, setTableData] = useState([]);
     const [cardData, setCardData] = useState([]);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [totalDocuments, setTotalDocuments] = useState(0);
-    const [perPage, setPerPage] = useState(10);
+    const [perPage, setPerPage] = useState(0);
     const [currentSort, setCurrentSort] = useState({
         sortBy: "",
         order: "",
     });
+    const [searchKey, setSearchKey] = useState(null);
     const [isFilteredApplied, setIsFiltersApplied] = useState(false);
+    const [locationList, setLocationList] = useState([]);
+    const [productList, setProductList] = useState([]);
+    const [lastUpdatedAt, setLastUpdatedAt] = useState([]);
 
     let { records_per_page } = useSelector((state) => state.setting);
-    let { userId } = useSelector((state) => state.auth);
+    let { userId, floorDetails } = useSelector((state) => state.auth);
 
+
+    useEffect(() => {
+        if (!records_per_page) {
+            records_per_page = 10;
+            setPerPage(10)
+        } else {
+            setPerPage(records_per_page)
+        }
+    }, [records_per_page])
     const {
         register,
         handleSubmit,
@@ -85,33 +98,49 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     const { request: requestCurtainsData, response: responseCurtainsData } = useRequest()
     const { request: requestCurtainsCards, response: responseCurtainsCards } = useRequest();
 
-    useEffect(()=>{
-        if (!records_per_page) {
-            records_per_page = 10;
-            setPerPage(10)
-        } else {
-            setPerPage(records_per_page)
-        }
-    },[records_per_page])
+    const { request: requestProductList, response: responseProductList } = useRequest();
+    const { request: requestLocationList, response: responseLocationList } = useRequest();
 
     useEffect(() => {
         if (activeTab == "curtains") {
             if (!isDataAlreadyFetched.card) {
-                requestCurtainsCards("get", `api/inventory/get-summaryCard?userId=${userId}&categoryId=2&page=0&size=0`);
+                requestCurtainsCards("get", `api/inventory/get-summaryCard?userId=${userId}&categoryId=3&size=${records_per_page}&page=0`);
             }
 
             if (!isDataAlreadyFetched.table) {
-                requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${10}&page=0`);
+                requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${records_per_page}&page=0`);
+            }
+
+            if (!isDataAlreadyFetched.filters.productName) {
+                requestProductList("get", `api/product?categoryId=3`)
+            }
+
+            if (!isDataAlreadyFetched.filters.location) {
+                requestLocationList("get", `api/floor?facilityId=${floorDetails.facilityId}`)
             }
         }
     }, [activeTab])
 
     useEffect(() => {
+        if (responseLocationList) {
+            setLocationList(responseLocationList)
+            changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: isDataAlreadyFetched.filters.productName, location: true } })
+        }
+    }, [responseLocationList])
+
+    useEffect(() => {
+        if (responseProductList) {
+            setProductList(responseProductList)
+            changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: true, location: isDataAlreadyFetched.filters.location } })
+        }
+    }, [responseProductList])
+
+    useEffect(() => {
         if (responseCurtainsData) {
             changeLinenStatus({ ...isDataAlreadyFetched, table: true })
-            // isDataAlreadyFetched.table = true;
-            const { content, totalElements } = responseCurtainsData;
+            const { inventoryDTOPage: { content, totalElements }, lastUpdatedDateTime } = responseCurtainsData;
             setTableData(content)
+            setLastUpdatedAt(lastUpdatedDateTime)
             setTotalDocuments(totalElements)
         }
     }, [responseCurtainsData])
@@ -119,23 +148,23 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     useEffect(() => {
         if (responseCurtainsCards) {
             changeLinenStatus({ ...isDataAlreadyFetched, card: true })
-            // isDataAlreadyFetched.card = true;
             setCardData(responseCurtainsCards)
         }
     }, [responseCurtainsCards])
 
+
     const onSearchHandler = () => {
-        
-        const { productName,location } = getValues();
+        const { productName, location } = getValues();
         let finalSortField = getSortingField(currentSort.sortBy);
         let querySearchString = "";
-        if(productName){
+        if (productName) {
             querySearchString += `&productName=${productName}`
         }
-        if(location){
+        if (location) {
             querySearchString += `&location=${location}`
         }
-        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
+
+        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
         setPage(0);
         setIsFiltersApplied(true)
     };
@@ -146,51 +175,74 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         resetField("productName");
         resetField("location");
         setPage(0);
-        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
+        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
         setIsFiltersApplied(false);
     };
 
     const sortingHandler = (sortBy) => {
         let finalSortField = getSortingField(sortBy);
-        if (currentSort.sortBy === sortBy) {
+        if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${perPage}&page=${1}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
+            requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${perPage}&page=${1}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
+            requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
 
     const fetchMoreData = ({ selected }) => {
-        setPage(selected);
-        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${selected}`);
+        console.log("selected : ", selected)
+        setPage(selected + 1);
+        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${perPage}&page=${selected}`);
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(0);
         setPerPage(event.target.value);
-        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${records_per_page}&page=1`);
+        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${event.target.value}&page=0`);
     };
 
     const InputFields = [
         {
             label: "Product Name",
             name: "productName",
+            isSelectInput: true,
+            children: <>
+                <option value={""}>Please Select Product Name</option>
+                {Array.isArray(productList) && productList.map((l) => {
+                    return <option key={l.categoryId} value={l.productName}>{l.productName}</option>
+                })}
+            </>
         },
         {
             label: "Location",
             name: "location",
+            isSelectInput: true,
+            children: <>
+                <option value={""}>Please Select Location</option>
+                {Array.isArray(locationList) && locationList.map((l) => {
+                    return <option key={l.locationId} value={l.floorName}>{l.floorName}</option>
+                })}
+
+            </>
         },
     ];
 
-    return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{ display: activeTab == "curtains" ? "block" : "none" }}>
+    const filteredTableData = tableData?.filter((item) => {
+        return (
+            item.location.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+            item.productName.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+            item.sku.toLowerCase().includes(searchKey?.toLowerCase() || "")
+        );
+    });
+
+    return <div id="curtains" role="tabpanel" aria-labelledby="curtains-tab" style={{ display: activeTab == "curtains" ? "block" : "none" }}>
         {/*         CARDS        */}
-        <div id="cards_parent" className="mt-4 mb-6">
+        <div id="cards_parent swiper" className="mt-4 mb-6">
             <Swiper
                 modules={[SwiperPagination]}
-
                 slidesPerView={3}
                 loop={false}
                 observer={true}
@@ -226,7 +278,7 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                     return <SwiperSlide key={index + "lineans_card"} id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
                         <div id="row1" className="d-flex justify-content-between">
                             <div>
-                                <span style={{ fontSize: "18px" }}>Floor-{index + 1} (North)</span>
+                                <span style={{ fontSize: "18px", textTransform: "capitalize" }}>{d.location}</span>
                             </div>
                             <div className="d-flex align-items-center">
                                 <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
@@ -265,14 +317,14 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                             <div className="card-header" style={{ borderBottom: "0" }}>
                                 <div className="card-title d-flex flex-column justify-content-start align-items-start">
                                     <h4 style={{ fontWeight: "700" }}>Details</h4>
-                                    <p style={{ color: "#9a9b9d", fontWeight: "normal" }}>Last updated 10:30pm 02/07/2024</p>
+                                    <p style={{ color: "#9a9b9d", fontWeight: "normal" }}>Last updated {lastUpdatedAt}</p>
                                 </div>
                                 <div className="card-toolbar" style={{ gap: "10px" }}>
                                     <div style={{ position: "relative" }}>
                                         <div style={{ position: "absolute", left: "14px", top: "10px" }}>
                                             <HeaderSearchIcon svgStyle={{ stroke: "#e8e9eb" }} />
                                         </div>
-                                        <input type="text" placeholder="Search for linen, floor or more..." style={{
+                                        <input type="text" placeholder="Search for curtain, floor or more..." style={{
                                             paddingTop: "10px",
                                             paddingBottom: "10px",
                                             borderRadius: "8px",
@@ -281,11 +333,13 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                                             width: "280px",
                                             paddingLeft: "40px",
                                             outline: "none"
-                                        }} />
+                                        }}
+                                            onChange={(e) => setSearchKey(e.target.value)}
+                                        />
                                     </div>
                                     <button
                                         data-toggle="collapse"
-                                        data-target="#searchOptions3"
+                                        data-target="#searchOptions"
                                         className="position-relative btn btn-primary  mr-2"
                                         style={{
                                             border: "1px solid #e8e9eb",
@@ -303,19 +357,19 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                                         <span className="ml-3">
                                             Filter
                                         </span>
-                                        {isFilteredApplied && <div className="position-absolute" style={{top: 0, right: "1px",height: "10px", width: "10px", borderRadius: "50%",background: "red"}}></div>}
+                                        {isFilteredApplied && <div className="position-absolute" style={{ top: 0, right: "1px", height: "10px", width: "10px", borderRadius: "50%", background: "red" }}></div>}
                                     </button>
                                 </div>
                             </div>
                             <div className="card-body py-0" >
                                 <div
                                     className="accordion accordion-solid accordion-toggle-plus"
-                                    id="accordionExample8"
+                                    id="accordionExample6"
                                 >
                                     <div
-                                        id="searchOptions3"
+                                        id="searchOptions"
                                         className="collapse"
-                                        data-parent="#accordionExample8"
+                                        data-parent="#accordionExample6"
                                     >
                                         <div>
                                             <form
@@ -347,11 +401,12 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                                     <Table
                                         currentSort={currentSort}
                                         sortingHandler={sortingHandler}
-                                        mainData={tableData}
+                                        mainData={filteredTableData}
                                         tableHeading={Object.keys(OBJ_TABLE)}
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{
                                             created_at: (val) => moment(val).format("DD-MM-YYYY"),
+                                            fillRate: (val) => Number(val).toFixed(2)
                                         }}
                                         links={[]}
                                         onlyDate={{
@@ -359,7 +414,19 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                                             startDate: "dateTime",
                                             endDate: "dateTime",
                                         }}
-                                        dontShowSort={["name"]}
+                                        dontShowSort={["SKU"]}
+                                        toolTips={
+                                            {
+                                                SKU: "Fill rate = Requested - In use - Clean stock",
+                                                Location: "Fill rate = Requested - In use - Clean stock",
+                                                "Product name": "Fill rate = Requested - In use - Clean stock",
+                                                "In use": "Fill rate = Requested - In use - Clean stock",
+                                                "Last Washed": "Fill rate = Requested - In use - Clean stock",
+                                                "Total Washed": "Fill rate = Requested - In use - Clean stock",
+                                                "Next Wash cycle": "Fill rate = Requested - In use - Clean stock",
+                                                "Status": "Fill rate = Requested - In use - Clean stock",
+                                            }
+                                        }
                                     />
 
                                     {perPage !== 0 && (
@@ -370,7 +437,7 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                                             perPage={perPage}
                                             defaultPerPage={records_per_page}
                                             perPageChangeHandler={perPageChangeHandler}
-                                            currentDocLength={tableData.length}
+                                            currentDocLength={tableData?.length}
                                         />
                                     )}
                                 </div>

@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
 const Footer = () => {
   // const { copyright } = useSelector((state) => state.setting);

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import { useSelector } from "react-redux";
 import { arrayMoveImmutable } from "array-move";
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import {
   sortableContainer,
   sortableElement,
@@ -248,6 +250,7 @@ const Table = ({
   sorting,
   changeOrderHandler,
   // status,
+  toolTips={}
 }) => {
   const [filteredLinks, setFilteredLinks] = useState([]);
   // const { permissions, user_role_id } = useSelector((store) => store.auth);
@@ -276,7 +279,7 @@ const Table = ({
     (state) => state.setting
   );
 
-  const [items, setItems] = useState([...mainData]);
+  const [items, setItems] = useState(Array.isArray(mainData) ? [...mainData] : []);
 
   useEffect(() => {
     setItems([...mainData]);
@@ -307,11 +310,11 @@ const Table = ({
             {tableHeading.map((heading, index) => (
               <th
                 onClick={() => {
-                  if(!dontShowSort.includes(heading)){
+                  if (!dontShowSort.includes(heading)) {
                     sortingHandler(heading)
                   }
                 }}
-                data-toggle="tooltip" data-placement="top" title="Tooltip on top"
+                // data-toggle="tooltip" data-placement="top" title="Tooltip on top"
                 key={index}
                 className={`${currentSort.sortBy == heading
                   ? `sorting_${currentSort.order}`
@@ -326,7 +329,21 @@ const Table = ({
                       : "",
                 }}
               >
-                <a className="no_sort">{heading}</a>
+                {Object.prototype.hasOwnProperty.call(toolTips, heading) ? <span style={{ marginLeft: "0px", fontWeight: "normal", fontSize: "11px" }}>
+                  <OverlayTrigger
+                    delay={{ hide: 450, show: 300 }}
+                    overlay={(props) => (
+                      <Tooltip {...props}>
+                        {"" + toolTips[heading] + "" || <>&nbsp;</>}
+                      </Tooltip>
+                    )}
+                    placement="top"
+                  >
+                    <a className="no_sort">{heading}</a>
+                  </OverlayTrigger>
+                </span> : <a className="no_sort">{heading}</a>}
+                
+                {/*  */}
 
                 {!dontShowSort.includes(heading) && <div style={{ display: "inline-block", marginLeft: "6px" }}>
                   <SortingIcon order={currentSort.order} isSortActive={currentSort.sortBy === heading} />

@@ -27,27 +27,37 @@ const OBJ_TABLE = {
     "Fill rate": "fillRate"
 };
 
-const getSortingField = (sortBy) =>{
+const getSortingField = (sortBy) => {
     let finalSortField = sortBy;
-        if(sortBy == "Location"){
-            finalSortField = "location";
-        } else if(sortBy == "Product name"){
-            finalSortField = "productName";
-        } else if(sortBy == "In use"){
-            finalSortField = "countInUse"
-        } else if(sortBy == "Clean stock"){
-            finalSortField = "cleanStock"
-        } else if(sortBy == "Par level"){
-            finalSortField = "parLevel"
-        } else if(sortBy == "Dirty return"){
-            finalSortField = "dirtyReturn"
-        } else if(sortBy == "Del. qty"){
-            finalSortField = "deliveredQuantity"
-        } else if(sortBy == "Fill rate") {
-            finalSortField = "fillRate"
-        }
+    if (sortBy == "Location") {
+        finalSortField = "location";
+    } else if (sortBy == "Product name") {
+        finalSortField = "productName";
+    } else if (sortBy == "In use") {
+        finalSortField = "countInUse"
+    } else if (sortBy == "Clean stock") {
+        finalSortField = "cleanStock"
+    } else if (sortBy == "Par level") {
+        finalSortField = "parLevel"
+    } else if (sortBy == "Dirty return") {
+        finalSortField = "dirtyReturn"
+    } else if (sortBy == "Del. qty") {
+        finalSortField = "deliveredQuantity"
+    } else if (sortBy == "Fill rate") {
+        finalSortField = "fillRate"
+    } else if (sortBy == "Last Washed") {
+        finalSortField = "lastWashed"
+    } else if (sortBy == "Total Washed") {
+        finalSortField = "totalWashed"
+    } else if (sortBy == "Next Wash cycle") {
+        finalSortField = "nextWashCycle"
+    } else if (sortBy == "Status") {
+        finalSortField = "status"
+    } else if (sortBy == "Installation Date") {
+        finalSortField = "installationDate"
+    }
 
-        return finalSortField;
+    return finalSortField;
 }
 
 const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
@@ -62,19 +72,22 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     });
     const [searchKey, setSearchKey] = useState(null);
     const [isFilteredApplied, setIsFiltersApplied] = useState(false);
-    
-    let { records_per_page } = useSelector((state) => state.setting);
-    let { userId } = useSelector((state) => state.auth);
-    
+    const [locationList, setLocationList] = useState([]);
+    const [productList, setProductList] = useState([]);
+    const [lastUpdatedAt, setLastUpdatedAt] = useState([]);
 
-    useEffect(()=>{
+    let { records_per_page } = useSelector((state) => state.setting);
+    let { userId, floorDetails } = useSelector((state) => state.auth);
+
+
+    useEffect(() => {
         if (!records_per_page) {
             records_per_page = 10;
             setPerPage(10)
         } else {
             setPerPage(records_per_page)
         }
-    },[records_per_page])
+    }, [records_per_page])
     const {
         register,
         handleSubmit,
@@ -86,6 +99,9 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     const { request: requestLinensData, response: responseLinensData } = useRequest()
     const { request: requestLineansCards, response: responseLineansCards } = useRequest();
 
+    const { request: requestProductList, response: responseProductList } = useRequest();
+    const { request: requestLocationList, response: responseLocationList } = useRequest();
+
     useEffect(() => {
         if (activeTab == "linens") {
             if (!isDataAlreadyFetched.card) {
@@ -95,34 +111,57 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             if (!isDataAlreadyFetched.table) {
                 requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${records_per_page}&page=0`);
             }
+
+            if (!isDataAlreadyFetched.filters.productName) {
+                requestProductList("get", `api/product?categoryId=1`)
+            }
+
+            if (!isDataAlreadyFetched.filters.location) {
+                requestLocationList("get", `api/floor?facilityId=${floorDetails.facilityId}`)
+            }
         }
     }, [activeTab])
 
     useEffect(() => {
+        if (responseLocationList) {
+            setLocationList(responseLocationList)
+            changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: isDataAlreadyFetched.filters.productName, location: true } })
+        }
+    }, [responseLocationList])
+
+    useEffect(() => {
+        if (responseProductList) {
+            setProductList(responseProductList)
+            changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: true, location: isDataAlreadyFetched.filters.location } })
+        }
+    }, [responseProductList])
+
+    useEffect(() => {
         if (responseLinensData) {
-            changeLinenStatus({...isDataAlreadyFetched, table: true})
-            const { content, totalElements } = responseLinensData;
+            changeLinenStatus({ ...isDataAlreadyFetched, table: true })
+            const { inventoryDTOPage: { content, totalElements }, lastUpdatedDateTime } = responseLinensData;
             setTableData(content)
+            setLastUpdatedAt(lastUpdatedDateTime)
             setTotalDocuments(totalElements)
         }
     }, [responseLinensData])
 
     useEffect(() => {
         if (responseLineansCards) {
-            changeLinenStatus({...isDataAlreadyFetched, card: true})
+            changeLinenStatus({ ...isDataAlreadyFetched, card: true })
             setCardData(responseLineansCards)
         }
     }, [responseLineansCards])
 
 
     const onSearchHandler = () => {
-        const { productName,location } = getValues();
+        const { productName, location } = getValues();
         let finalSortField = getSortingField(currentSort.sortBy);
         let querySearchString = "";
-        if(productName){
+        if (productName) {
             querySearchString += `&productName=${productName}`
         }
-        if(location){
+        if (location) {
             querySearchString += `&location=${location}`
         }
 
@@ -170,14 +209,29 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         {
             label: "Product Name",
             name: "productName",
+            isSelectInput: true,
+            children: <>
+                <option value={""}>Please Select Product Name</option>
+                {Array.isArray(productList) && productList.map((l) => {
+                    return <option key={l.categoryId} value={l.productName}>{l.productName}</option>
+                })}
+            </>
         },
         {
             label: "Location",
             name: "location",
+            isSelectInput: true,
+            children: <>
+                <option value={""}>Please Select Location</option>
+                {Array.isArray(locationList) && locationList.map((l) => {
+                    return <option key={l.locationId} value={l.floorName}>{l.floorName}</option>
+                })}
+
+            </>
         },
     ];
 
-    const filteredTableData = tableData.filter((item) => {
+    const filteredTableData = tableData?.filter((item) => {
         return (
             item.location.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
             item.productName.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
@@ -185,7 +239,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         );
     });
 
-    return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{display: activeTab == "linens" ? "block" : "none"}}>
+    return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{ display: activeTab == "linens" ? "block" : "none" }}>
         {/*         CARDS        */}
         <div id="cards_parent swiper" className="mt-4 mb-6">
             <Swiper
@@ -264,7 +318,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                             <div className="card-header" style={{ borderBottom: "0" }}>
                                 <div className="card-title d-flex flex-column justify-content-start align-items-start">
                                     <h4 style={{ fontWeight: "700" }}>Details</h4>
-                                    <p style={{ color: "#9a9b9d", fontWeight: "normal" }}>Last updated 10:30pm 02/07/2024</p>
+                                    <p style={{ color: "#9a9b9d", fontWeight: "normal" }}>Last updated {lastUpdatedAt}</p>
                                 </div>
                                 <div className="card-toolbar" style={{ gap: "10px" }}>
                                     <div style={{ position: "relative" }}>
@@ -280,13 +334,13 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                             width: "280px",
                                             paddingLeft: "40px",
                                             outline: "none"
-                                        }} 
+                                        }}
                                             onChange={(e) => setSearchKey(e.target.value)}
                                         />
                                     </div>
                                     <button
-                                    data-toggle="collapse"
-                                    data-target="#searchOptions"
+                                        data-toggle="collapse"
+                                        data-target="#searchOptions"
                                         className="position-relative btn btn-primary  mr-2"
                                         style={{
                                             border: "1px solid #e8e9eb",
@@ -304,7 +358,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                         <span className="ml-3">
                                             Filter
                                         </span>
-                                        {isFilteredApplied && <div className="position-absolute" style={{top: 0, right: "1px",height: "10px", width: "10px", borderRadius: "50%",background: "red"}}></div>}
+                                        {isFilteredApplied && <div className="position-absolute" style={{ top: 0, right: "1px", height: "10px", width: "10px", borderRadius: "50%", background: "red" }}></div>}
                                     </button>
                                 </div>
                             </div>
@@ -362,6 +416,19 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                             endDate: "dateTime",
                                         }}
                                         dontShowSort={["SKU"]}
+                                        toolTips={
+                                            {
+                                                "SKU": "Fill rate = Requested - In use - Clean stock",
+                                                "Fill rate": "Fill rate = Requested - In use - Clean stock",
+                                                "Location": "Fill rate = Requested - In use - Clean stock",
+                                                "Product name": "Fill rate = Requested - In use - Clean stock",
+                                                "In use": "Fill rate = Requested - In use - Clean stock",
+                                                "Clean stock": "Fill rate = Requested - In use - Clean stock",
+                                                "Par level": "Fill rate = Requested - In use - Clean stock",
+                                                "Dirty return": "Fill rate = Requested - In use - Clean stock",
+                                                "Del. qty": "Fill rate = Requested - In use - Clean stock",
+                                            }
+                                        }
                                     />
 
                                     {perPage !== 0 && (
@@ -372,7 +439,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                             perPage={perPage}
                                             defaultPerPage={records_per_page}
                                             perPageChangeHandler={perPageChangeHandler}
-                                            currentDocLength={tableData.length}
+                                            currentDocLength={tableData?.length}
                                         />
                                     )}
                                 </div>

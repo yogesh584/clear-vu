@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/sidebar.module.css"
 
 const ZeroLevel = ({ menu, pathname }) => {
-  const [active, setActive] = useState(false);
+  // const [active, setActive] = useState(false);
 
   const { name, Svg, path, highlight, subHighlight } = menu;
 
-  const updateActive = () => {
-    setActive((prev) => !prev);
-  };
+  // const updateActive = () => {
+  //   setActive((prev) => !prev);
+  // };
 
   useEffect(() => {
     if (
@@ -17,15 +17,15 @@ const ZeroLevel = ({ menu, pathname }) => {
       highlight.includes(pathname) ||
       subHighlight.includes(pathname.split("/").slice(0, 3).join("/"))
     ) {
-      setActive(true);
+      // setActive(true);
     } else {
-      setActive(false);
+      // setActive(false);
     }
   }, [pathname]);
 
   return (
     <li
-      onClick={updateActive}
+      // onClick={updateActive}
       className={`menu-item`}
     >
       <div className={`menu-link`} style={{margin: "9px 15px", padding: "0px 25px",borderRadius: "10px"}}>

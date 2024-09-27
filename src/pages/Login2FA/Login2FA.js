@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import useRequest from "../../hooks/useRequest";
 
 import "../Login/Login.css";
-import { authSuccess2FA } from "../../store/auth/action";
+import { authSuccess,authSuccess2FA } from "../../store/auth/action";
 import { HorizontalArrow } from "../../util/Svg";
 import ResendTimer from "../../components/ResendTimer/ResendTimer";
 import { BASEURL } from "../../constant/api";
@@ -15,8 +15,7 @@ const Login2FA = () => {
   const history = useHistory()
 
   const { request: verifyOtpRequest, response: verifyOtpResponse } = useRequest();
-  const { request: requestUserDetails, response: responseUserDetails } = useRequest();
-  const { request: requestUserAccessPermissions, response: responseUserAccessPermissions } = useRequest();
+  // const { request: requestUserDetails, response: responseUserDetails } = useRequest();
   const { token, email } = useSelector((state) => state.auth);
 
   const {
@@ -71,10 +70,6 @@ const Login2FA = () => {
           })
         )
 
-        let data = {
-          "emailId": email
-        };
-
         let config = {
           method: "get",
           url: `${BASEURL.PORT}/api/user/profile?emailId=${email}`,
@@ -83,58 +78,61 @@ const Login2FA = () => {
             'Content-Type': 'application/json',
           }
         };
-        
+
         axios(config)
-        .then((d) => {
-          const { responseCode, responseMessage, data } = d.data;
-          if (responseCode == "SGEN001") {
-            dispatch(
-              authSuccess2FA({
-                loggedIn: true,
-                // token: responseMessage,
-                userId: data.userId,
-                name: data.userName,
-                email: data.emailId,
-                user_role_id: data.userRoleList[0] === "USER" ? 1 : 0,
-                permissions: {},
-              })
-            )
-          }
-        })
+          .then((d) => {
+            const { responseCode, data } = d.data;
+            if (responseCode == "SGEN001") {
+              dispatch(
+                authSuccess2FA({
+                  loggedIn: true,
+                  token: responseMessage,
+                  userId: data.userId,
+                  name: data.userName,
+                  email: data.emailId,
+                  user_role_id: data.userRoleList[0] === "USER" ? 1 : 0,
+                  permissions: {},
+                })
+              )
+            }
+          })
 
         config.url = `${BASEURL.PORT}/api/user/access?emailId=${email}`
 
         axios(config)
-        .then((d) => {
-          const { responseCode, responseMessage, data } = d.data;
-          // if (responseCode == "SGEN001") {
-          // }
-        })
-
-        // Getting User Details
-        // requestUserDetails("get", "api/user/profile")
+          .then((d) => {
+            const { data,responseCode } = d.data;
+            if (responseCode == "SGEN001") {
+              dispatch(authSuccess({
+                productDetails: data.productDetails,
+                locationDetails: data.locationDetails,
+                floorDetails: data.floorDetails,
+                roomDetails: data.roomDetails
+              }))
+            }
+          })
       }
     }
   }, [verifyOtpResponse])
 
-  useEffect(() => {
-    if (responseUserDetails) {
-      const { responseCode, responseMessage, data } = responseUserDetails;
-      if (responseCode == "SGEN001") {
-        dispatch(
-          authSuccess2FA({
-            loggedIn: true,
-            token: responseMessage,
-            userId: data.userId,
-            name: data.userName,
-            email: data.emailId,
-            user_role_id: userRoleList[0] === "USER" ? 1 : 0,
-            permissions: {},
-          })
-        )
-      }
-    }
-  }, [responseUserDetails])
+  // useEffect(() => {
+  //   if (responseUserDetails) {
+  //     const { responseCode, responseMessage, data } = responseUserDetails;
+  //     if (responseCode == "SGEN001") {
+  //       dispatch(
+  //         authSuccess2FA({
+  //           loggedIn: true,
+  //           token: responseMessage,
+  //           userId: data.userId,
+  //           name: data.userName,
+  //           email: data.emailId,
+  //           user_role_id: data.userRoleList[0] === "USER" ? 1 : 0,
+  //           permissions: {},
+  //         })
+  //       )
+  //     }
+  //   }
+  // }, [responseUserDetails])
 
   return (
     <div className="d-flex justify-content-center align-items-center w-100" style={{ height: "100vh", backgroundImage: "url(auth-bg.png)", backgroundSize: "cover" }}>

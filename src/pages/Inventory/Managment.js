@@ -11,11 +11,11 @@ const Dashboard = () => {
         setActiveTab(tabName);
     };
 
-    const [linenCall, setLinenCall] = useState({card: false, table: false})
+    const [linenCall, setLinenCall] = useState({card: false, table: false, filters: {productName: false,location: false}})
 
-    const [garmentCall, setGarmentCall] = useState({card: false, table: false})
+    const [garmentCall, setGarmentCall] = useState({card: false, table: false, filters: {productName: false,location: false}})
 
-    const [curtainCall, setCurtainCall] = useState({card: false, table: false})
+    const [curtainCall, setCurtainCall] = useState({card: false, table: false, filters: {productName: false,location: false}})
 
     useEffect(() => {
         document.title = "Inventory Managment - Clear vu";

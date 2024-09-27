@@ -6,7 +6,6 @@ import useRequest from "../../hooks/useRequest";
 
 import "../Login/Login.css";
 import { HorizontalArrow } from "../../util/Svg";
-import { toast } from "react-toastify";
 import ResendTimer from "../../components/ResendTimer/ResendTimer"
 const ForgotPasswordCode = () => {
   const history = useHistory();
@@ -18,7 +17,6 @@ const ForgotPasswordCode = () => {
   } = useForm();
 
   const { request: verifyOtpRequest, response: verifyOtpResponse } = useRequest();
-  const { request: resendOtpRequest, response: resendOtpResponse } = useRequest();
 
   useEffect(() => {
     document.title = "Forgot Password - Clear vu";
@@ -59,16 +57,6 @@ const ForgotPasswordCode = () => {
       history.push("/reset-password")
     }
   }, [verifyOtpResponse])
-
-  // const resendOtp = () => {
-  //   resendOtpRequest("post", "api/otp/resend", {"emailId":email})
-  // }
-
-  useEffect(() => {
-    if (resendOtpResponse) {
-      toast.success("OTP sent successfully.")
-    }
-  }, [resendOtpResponse])
 
   return (
     <div className="d-flex justify-content-center align-items-center w-100" style={{ height: "100vh", backgroundImage: "url(auth-bg.png)", backgroundSize: "cover" }}>

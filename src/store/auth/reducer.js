@@ -14,6 +14,19 @@ const initialState = {
   name: null,
   isMobileSidebarOpen: false,
   loading: false,
+  productDetails: {
+    facilityId: -1,
+    productsList: []
+  },
+  locationDetails: {
+    facilityId: -1,
+    locationList: []
+  },
+  floorDetails: {
+    facilityId: -1,
+    floorList: []
+  },
+  roomDetails: []
 };
 
 const authReducer = (state = initialState, action) => {

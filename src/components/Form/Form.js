@@ -460,8 +460,9 @@ export const SearchInput = ({
         ) : (
           <select
             name={name}
+            style={{ border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
             {...register(name, { required })}
-            className={`form-control ${errors[name] && "is-invalid"}`}
+            className={`form-control form-control-solid h-auto py-3 px-6 rounded-xl ${errors[name] && "is-invalid"}`}
             onChange={(e) => onChange && onChange(e.target.value)}
             {...extras}
           >
