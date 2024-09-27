@@ -311,6 +311,7 @@ const Table = ({
                     sortingHandler(heading)
                   }
                 }}
+                data-toggle="tooltip" data-placement="top" title="Tooltip on top"
                 key={index}
                 className={`${currentSort.sortBy == heading
                   ? `sorting_${currentSort.order}`

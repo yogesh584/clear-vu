@@ -64,6 +64,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     const [isFilteredApplied, setIsFiltersApplied] = useState(false);
     
     let { records_per_page } = useSelector((state) => state.setting);
+    let { userId } = useSelector((state) => state.auth);
     
 
     useEffect(()=>{
@@ -88,11 +89,11 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     useEffect(() => {
         if (activeTab == "linens") {
             if (!isDataAlreadyFetched.card) {
-                requestLineansCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=1&size=${records_per_page}&page=0`);
+                requestLineansCards("get", `api/inventory/get-summaryCard?userId=${userId}&categoryId=1&size=${records_per_page}&page=0`);
             }
 
             if (!isDataAlreadyFetched.table) {
-                requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${records_per_page}&page=0`);
+                requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${records_per_page}&page=0`);
             }
         }
     }, [activeTab])
@@ -125,7 +126,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             querySearchString += `&location=${location}`
         }
 
-        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
+        requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
         setPage(0);
         setIsFiltersApplied(true)
     };
@@ -136,7 +137,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         resetField("productName");
         resetField("location");
         setPage(0);
-        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
+        requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
         setIsFiltersApplied(false);
     };
 
@@ -144,10 +145,10 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`);
+            requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
+            requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -155,14 +156,14 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     const fetchMoreData = ({ selected }) => {
         console.log("selected : ", selected)
         setPage(selected + 1);
-        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${perPage}&page=${selected}`);
+        requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${perPage}&page=${selected}`);
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(0);
         setPerPage(event.target.value);
-        requestLinensData("get", `api/inventory/management?userId=1&categoryId=1&size=${event.target.value}&page=0`);
+        requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${event.target.value}&page=0`);
     };
 
     const InputFields = [
@@ -325,7 +326,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                                 <div className="row mb-6">
                                                     {InputFields.map((inputMain, index) => (
                                                         <SearchInput
-                                                            key={index}
+                                                            key={inputMain.name + index + Math.ceil(Math.random())}
                                                             {...inputMain}
                                                             errors={errors}
                                                             register={register}

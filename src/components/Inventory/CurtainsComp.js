@@ -72,6 +72,8 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     const [isFilteredApplied, setIsFiltersApplied] = useState(false);
 
     let { records_per_page } = useSelector((state) => state.setting);
+    let { userId } = useSelector((state) => state.auth);
+
     const {
         register,
         handleSubmit,
@@ -95,11 +97,11 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     useEffect(() => {
         if (activeTab == "curtains") {
             if (!isDataAlreadyFetched.card) {
-                requestCurtainsCards("get", `api/inventory/get-summaryCard?userId=1&categoryId=2&page=0&size=0`);
+                requestCurtainsCards("get", `api/inventory/get-summaryCard?userId=${userId}&categoryId=2&page=0&size=0`);
             }
 
             if (!isDataAlreadyFetched.table) {
-                requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${10}&page=0`);
+                requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${10}&page=0`);
             }
         }
     }, [activeTab])
@@ -133,7 +135,7 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         if(location){
             querySearchString += `&location=${location}`
         }
-        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
+        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
         setPage(0);
         setIsFiltersApplied(true)
     };
@@ -144,7 +146,7 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         resetField("productName");
         resetField("location");
         setPage(0);
-        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
+        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
         setIsFiltersApplied(false);
     };
 
@@ -152,24 +154,24 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy === sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&size=${perPage}&page=${1}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
+            requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${perPage}&page=${1}&orderByField=${finalSortField}&ascending=${newOrder == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=3&size=${perPage}&page=${1}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
+            requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${perPage}&page=${1}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc" ? true : false}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
 
     const fetchMoreData = ({ selected }) => {
         setPage(selected);
-        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${perPage}&page=${selected}`);
+        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${selected}`);
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(0);
         setPerPage(event.target.value);
-        requestCurtainsData("get", `api/inventory/management?userId=1&categoryId=2&size=${records_per_page}&page=1`);
+        requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${records_per_page}&page=1`);
     };
 
     const InputFields = [
@@ -323,7 +325,7 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                                                 <div className="row mb-6">
                                                     {InputFields.map((inputMain, index) => (
                                                         <SearchInput
-                                                            key={inputMain + index + Math.ceil(Math.random())}
+                                                            key={inputMain.name + index + Math.ceil(Math.random())}
                                                             {...inputMain}
                                                             errors={errors}
                                                             register={register}
