@@ -104,7 +104,7 @@ const Header = ({ setToggleSidebar }) => {
         </div>
       </div>
       <div id="kt_header" className="header  header-fixed ">
-        <div className="container-fluid  d-flex align-items-stretch justify-content-between align-items-center">
+        <div className="container-fluid  d-flex align-items-stretch justify-content-between align-items-center" style={{ borderBottom: "1px solid #999" }}>
           <div className={`${styles.customHamburger}`}>
             <button
               className={`brand-toggle btn btn-sm px-0`}
@@ -132,15 +132,15 @@ const Header = ({ setToggleSidebar }) => {
                 className="topbar-item"
                 data-toggle="dropdown"
                 data-offset="10px,0px"
-                style={{cursor:"pointer"}}
+                style={{ cursor: "pointer" }}
               >
                 <a className="d-flex align-items-center">
                   <div className="symbol symbol-30 symbol-circle symbol-primary mr-3">
                     <span className="symbol-label">
                       {
-                        name ? 
-                        `${name[0]?.toUpperCase()}${String(name)?.split(" ")?.length > 1 ? name.split(" ").pop().trim()[0].toUpperCase() : ""}` 
-                       : ""
+                        name ?
+                          `${name[0]?.toUpperCase()}${String(name)?.split(" ")?.length > 1 ? name.split(" ").pop().trim()[0].toUpperCase() : ""}`
+                          : ""
                       }
                     </span>
                   </div>

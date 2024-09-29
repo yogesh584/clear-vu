@@ -17,8 +17,7 @@ const useRequest = () => {
   const [response, setResponse] = useState(null);
 
   const { token, email } = useSelector((state) => state.auth);
-  console.log("token", token);
-  
+
 
   const history = useHistory();
   const dispatch = useDispatch();

@@ -4,18 +4,18 @@ import GarmentsComp from "../../components/Inventory/GarmentsComp";
 import CurtainsComp from "../../components/Inventory/CurtainsComp";
 
 
-const Dashboard = () => {
+const Managment = () => {
     const [activeTab, setActiveTab] = useState("linens");
 
     const handleTabClick = (tabName) => {
         setActiveTab(tabName);
     };
 
-    const [linenCall, setLinenCall] = useState({card: false, table: false, filters: {productName: false,location: false}})
+    const [linenCall, setLinenCall] = useState({ card: false, table: false, filters: { productName: false, location: false } })
 
-    const [garmentCall, setGarmentCall] = useState({card: false, table: false, filters: {productName: false,location: false}})
+    const [garmentCall, setGarmentCall] = useState({ card: false, table: false, filters: { productName: false, location: false } })
 
-    const [curtainCall, setCurtainCall] = useState({card: false, table: false, filters: {productName: false,location: false}})
+    const [curtainCall, setCurtainCall] = useState({ card: false, table: false, filters: { productName: false, location: false } })
 
     useEffect(() => {
         document.title = "Inventory Managment - Clear vu";
@@ -25,11 +25,13 @@ const Dashboard = () => {
         <div
             className="content  d-flex flex-column flex-column-fluid"
             id="kt_content"
+
             style={{ background: "#fafafa" }}
         >
             <div
                 className="subheader py-4 py-lg-4 subheader-solid "
                 id="kt_subheader"
+                style={{ position: "relative", top: "0px", left: "0px" }}
             >
                 <div className=" container-fluid  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
                     <div className="d-flex align-items-center flex-wrap mr-1 justify-content-between w-100 mt-3">
@@ -81,7 +83,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div className="tab-content mt-3">
+            <div className="tab-content">
                 <LinensComp activeTab={activeTab} isDataAlreadyFetched={linenCall} changeLinenStatus={setLinenCall} />
                 <GarmentsComp activeTab={activeTab} isDataAlreadyFetched={garmentCall} changeLinenStatus={setGarmentCall} />
                 <CurtainsComp activeTab={activeTab} isDataAlreadyFetched={curtainCall} changeLinenStatus={setCurtainCall} />
@@ -90,4 +92,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Managment;

@@ -1,0 +1,17 @@
+.modal-content {
+    border-radius: 10px;
+}
+
+
+.p {
+    text-align: left;
+    color: #000;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.modal_title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #25324B;
+}

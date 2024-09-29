@@ -241,7 +241,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
 
     return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{ display: activeTab == "linens" ? "block" : "none" }}>
         {/*         CARDS        */}
-        <div id="cards_parent swiper" className="mt-4 mb-6">
+        <div id="cards_parent swiper" className="mt-4">
             <Swiper
                 modules={[SwiperPagination]}
                 slidesPerView={3}
@@ -277,7 +277,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             >
                 {Array.isArray(cardData) && cardData.map((d, index) => {
                     return <SwiperSlide key={index + "lineans_card"} id="card" className={`${cardStyles.new_card} card`} style={{ border: "1px solid #fb6464", borderRadius: "10px" }}>
-                        <div id="row1" className="d-flex justify-content-between">
+                        <div id="row1" className="d-flex justify-content-between" style={{ gap: "10px" }}>
                             <div>
                                 <span style={{ fontSize: "18px", textTransform: "capitalize" }}>{d.location}</span>
                             </div>

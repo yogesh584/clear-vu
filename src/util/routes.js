@@ -7,11 +7,13 @@ import ResetPassword from "../pages/ResetPassword/ResetPassword";
 
 import Dashboard from "../pages/Dashboard/Dashboard";
 import InventoryManagment from "../pages/Inventory/Managment";
+import InventoryRequests from "../pages/Inventory/Requests";
 import ChangePassword from "../pages/ChangePassword/ChangePassword";
 
 export const privateRoutes = [
   { path: "/", component: Dashboard, key: "0" },
   { path: "/inventory-managment", component: InventoryManagment, key: "1" },
+  { path: "/inventory-requests", component: InventoryRequests, key: "1_1" },
   { path: "/change-password", component: ChangePassword, key: "2" }
 ];
 

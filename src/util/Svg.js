@@ -31,9 +31,9 @@ export const ClosedEyeIcon = () => {
   )
 }
 
-export const CrossIcon = ({svgStyle={}, pathStyle={}}) =>{
+export const CrossIcon = ({ svgStyle = {}, pathStyle = {} }) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" style={{...svgStyle}} viewBox="0 0 384 512"><path style={{...pathStyle}} d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" style={{ ...svgStyle }} viewBox="0 0 384 512"><path style={{ ...pathStyle }} d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" /></svg>
   )
 }
 
@@ -145,10 +145,10 @@ export const CircleIcon = ({ svgStyle = {}, pathStyle = {}, commonStyle = {}, cu
   )
 }
 
-export const HeaderSearchIcon = ({ svgStyle = {},pathStyle={} }) => {
+export const HeaderSearchIcon = ({ svgStyle = {}, pathStyle = {} }) => {
   return <svg width="20" height="20" style={{ ...svgStyle }} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path style={{...pathStyle}} d="M9.25134 15.9978C12.9787 15.9978 16.0002 12.9762 16.0002 9.2489C16.0002 5.52159 12.9787 2.5 9.25134 2.5C5.52403 2.5 2.50244 5.52159 2.50244 9.2489C2.50244 12.9762 5.52403 15.9978 9.25134 15.9978Z" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path style={{...pathStyle}} d="M15.1978 16.515C15.5952 17.7148 16.5026 17.8348 17.2 16.785C17.8374 15.8252 17.4174 15.0378 16.2626 15.0378C15.4078 15.0303 14.9278 15.6977 15.1978 16.515Z" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path style={{ ...pathStyle }} d="M9.25134 15.9978C12.9787 15.9978 16.0002 12.9762 16.0002 9.2489C16.0002 5.52159 12.9787 2.5 9.25134 2.5C5.52403 2.5 2.50244 5.52159 2.50244 9.2489C2.50244 12.9762 5.52403 15.9978 9.25134 15.9978Z" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path style={{ ...pathStyle }} d="M15.1978 16.515C15.5952 17.7148 16.5026 17.8348 17.2 16.785C17.8374 15.8252 17.4174 15.0378 16.2626 15.0378C15.4078 15.0303 14.9278 15.6977 15.1978 16.515Z" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 }
 
@@ -412,6 +412,22 @@ export const HorizontalArrow = ({ dir, svgStyle }) => {
   return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" height={"18px"} width={"18px"} style={{ transform: dir == 'right' ? `rotate(0deg)` : `rotate(180deg)`, ...svgStyle }}><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" /></svg>
 }
 
+export const VerticalArrow = ({ dir, svgStyle }) => {
+  return <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: dir == 'top' ? `rotate(180deg)` : `rotate(0deg)`, ...svgStyle }}>
+    <path d="M13.6774 0.622546C13.4878 0.418662 13.2209 0.302734 12.9412 0.302734C12.6616 0.302734 12.3947 0.418656 12.205 0.622546L7.00621 5.78774L1.77744 0.622546C1.51444 0.361669 1.13102 0.259836 0.771729 0.355326C0.412356 0.450803 0.131706 0.729097 0.035511 1.08538C-0.0607723 1.44167 0.0419142 1.82186 0.304986 2.08268L6.25502 7.98292C6.44462 8.18681 6.71161 8.30273 6.99124 8.30273C7.27087 8.30273 7.53786 8.18681 7.72746 7.98292L13.6775 2.08268C13.8831 1.89467 14 1.62991 14 1.35262C14 1.07525 13.883 0.810551 13.6774 0.622546Z" fill="#1A1A1A" />
+  </svg>
+
+}
+
 export const FilterIcon = () => {
   return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height={"18px"} width={"18px"}><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z" /></svg>
+}
+
+export const SwapIcon = () => {
+  return <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13.6 11.58V14.31C13.6 16.59 12.69 17.5 10.41 17.5H7.69C5.42 17.5 4.5 16.59 4.5 14.31V11.58C4.5 9.31002 5.41 8.40002 7.69 8.40002H10.42C12.69 8.40002 13.6 9.31002 13.6 11.58Z" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M17.4999 7.68V10.41C17.4999 12.69 16.5899 13.6 14.3099 13.6H13.5999V11.58C13.5999 9.31 12.6899 8.4 10.4099 8.4H8.3999V7.68C8.3999 5.4 9.3099 4.5 11.5899 4.5H14.3199C16.5899 4.5 17.4999 5.41 17.4999 7.68Z" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M21 14C21 17.87 17.87 21 14 21L15.05 19.25" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M1 8C1 4.13 4.13 1 8 1L6.95 2.75" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
 }
