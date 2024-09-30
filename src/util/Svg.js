@@ -14,6 +14,14 @@ export const OpenEyeIcon = () => {
   )
 }
 
+export const EyeIcon = () => {
+  return <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13.4833 9.99993C13.4833 11.6499 12.1499 12.9833 10.4999 12.9833C8.84993 12.9833 7.5166 11.6499 7.5166 9.99993C7.5166 8.34993 8.84993 7.0166 10.4999 7.0166C12.1499 7.0166 13.4833 8.34993 13.4833 9.99993Z" stroke="#289A77" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10.4999 16.8918C13.4415 16.8918 16.1832 15.1584 18.0915 12.1584C18.8415 10.9834 18.8415 9.00843 18.0915 7.83343C16.1832 4.83343 13.4415 3.1001 10.4999 3.1001C7.5582 3.1001 4.81654 4.83343 2.9082 7.83343C2.1582 9.00843 2.1582 10.9834 2.9082 12.1584C4.81654 15.1584 7.5582 16.8918 10.4999 16.8918Z" stroke="#289A77" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+
+}
+
 export const ClosedEyeIcon = () => {
   return (
     <svg
@@ -28,6 +36,20 @@ export const ClosedEyeIcon = () => {
       <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z" />
       <path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z" />
     </svg>
+  )
+}
+
+export const TrashIcon = ({ svgStyle = {}, pathStyle = {} }) => {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ ...svgStyle }}>
+      <path d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998" fill="#FB6464" style={{ ...pathStyle }} />
+      <path d="M21 5.97998C17.67 5.64998 14.32 5.47998 10.98 5.47998C9 5.47998 7.02 5.57998 5.04 5.77998L3 5.97998" stroke="#FB6464" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ ...pathStyle }} />
+      <path d="M8.5 4.97L8.72 3.66C8.88 2.71 9 2 10.69 2H13.31C15 2 15.13 2.75 15.28 3.67L15.5 4.97" stroke="#FB6464" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ ...pathStyle }} />
+      <path d="M18.8499 9.14014L18.1999 19.2101C18.0899 20.7801 17.9999 22.0001 15.2099 22.0001H8.7899C5.9999 22.0001 5.9099 20.7801 5.7999 19.2101L5.1499 9.14014" stroke="#FB6464" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ ...pathStyle }} />
+      <path d="M10.3301 16.5H13.6601" stroke="#FB6464" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ ...pathStyle }} />
+      <path d="M9.5 12.5H14.5" stroke="#FB6464" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ ...pathStyle }} />
+    </svg>
+
   )
 }
 
@@ -423,11 +445,31 @@ export const FilterIcon = () => {
   return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height={"18px"} width={"18px"}><path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z" /></svg>
 }
 
+export const PlusIcon = ({ svgStyle = {}, pathStyle = {} }) => {
+  return <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ ...svgStyle }}>
+    <path d="M17.1668 10.8335H11.3335V16.6668H9.66683V10.8335H3.8335V9.16683H9.66683V3.3335H11.3335V9.16683H17.1668V10.8335Z" fill="white" style={{ ...pathStyle }} />
+  </svg>
+
+}
+
 export const SwapIcon = () => {
   return <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M13.6 11.58V14.31C13.6 16.59 12.69 17.5 10.41 17.5H7.69C5.42 17.5 4.5 16.59 4.5 14.31V11.58C4.5 9.31002 5.41 8.40002 7.69 8.40002H10.42C12.69 8.40002 13.6 9.31002 13.6 11.58Z" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M17.4999 7.68V10.41C17.4999 12.69 16.5899 13.6 14.3099 13.6H13.5999V11.58C13.5999 9.31 12.6899 8.4 10.4099 8.4H8.3999V7.68C8.3999 5.4 9.3099 4.5 11.5899 4.5H14.3199C16.5899 4.5 17.4999 5.41 17.4999 7.68Z" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M21 14C21 17.87 17.87 21 14 21L15.05 19.25" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M1 8C1 4.13 4.13 1 8 1L6.95 2.75" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+}
+
+export const RoleIcon = () => {
+  return <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="40" height="40" rx="12" fill="#E8E9EB" />
+    <path d="M13.8364 24.8462C13.8364 25.3962 14.2864 25.8462 14.8364 25.8462C15.3864 25.8462 15.8364 25.3962 15.8364 24.8462C15.8364 24.2962 15.3864 23.8462 14.8364 23.8462C14.2864 23.8462 13.8364 24.2962 13.8364 24.8462Z" fill="#1A1A1A" />
+    <rect x="18.8364" y="24.0962" width="7.3271" height="1.5" rx="0.75" fill="#1A1A1A" />
+    <path d="M13.8364 15.1543C13.8364 15.7043 14.2864 16.1543 14.8364 16.1543C15.3864 16.1543 15.8364 15.7043 15.8364 15.1543C15.8364 14.6043 15.3864 14.1543 14.8364 14.1543C14.2864 14.1543 13.8364 14.6043 13.8364 15.1543Z" fill="#1A1A1A" />
+    <rect x="18.8364" y="14.4043" width="7.3271" height="1.5" rx="0.75" fill="#1A1A1A" />
+    <path d="M13.8364 20C13.8364 20.55 14.2864 21 14.8364 21C15.3864 21 15.8364 20.55 15.8364 20C15.8364 19.45 15.3864 19 14.8364 19C14.2864 19 13.8364 19.45 13.8364 20Z" fill="#1A1A1A" />
+    <rect x="18.8364" y="19.25" width="7.3271" height="1.5" rx="0.75" fill="#1A1A1A" />
+    <path d="M17 30H23C28 30 30 28 30 23V17C30 12 28 10 23 10H17C12 10 10 12 10 17V23C10 28 12 30 17 30Z" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 }

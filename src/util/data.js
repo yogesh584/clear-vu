@@ -55,7 +55,7 @@ export const menu = [
   },
   {
     name: "User management",
-    path: "/",
+    path: "/user-management",
     Svg: UserSideBar,
     subMenu: [],
     highlight: [],

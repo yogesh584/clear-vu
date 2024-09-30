@@ -22,6 +22,8 @@ import {
   SystemManagements,
   SubTask,
   SortingIcon,
+  PencilIcon,
+  TrashIcon,
 } from "../../util/Svg";
 import { API } from "../../constant/api";
 
@@ -250,7 +252,7 @@ const Table = ({
   sorting,
   changeOrderHandler,
   // status,
-  toolTips={}
+  toolTips = {}
 }) => {
   const [filteredLinks, setFilteredLinks] = useState([]);
   // const { permissions, user_role_id } = useSelector((store) => store.auth);
@@ -342,7 +344,7 @@ const Table = ({
                     <a className="no_sort">{heading}</a>
                   </OverlayTrigger>
                 </span> : <a className="no_sort">{heading}</a>}
-                
+
                 {/*  */}
 
                 {!dontShowSort.includes(heading) && <div style={{ display: "inline-block", marginLeft: "6px" }}>
@@ -380,7 +382,28 @@ const Table = ({
                 <tr key={data.id}>
                   {tableData.map((tData, index) => {
                     let value;
-                    if (tData == "description") {
+                    console.log("tData : ", tData);
+                    if(tData == "userDetails" || tData == "createdBy"){
+                      value = (
+                        <div className="d-flex align-items-center" style={{gap: "7px"}}>
+                          <div style={{height: "35px"}}>
+                            <img src={data[tData].image} style={{height: "100%"}} alt="User Image"/>
+                          </div>
+                          <div className="d-flex flex-column">
+                            <span style={{fontSize:"13px"}}>{data[tData].name}</span>
+                            <span style={{fontSize:"13px",fontWeight:"normal"}}>{data[tData].email}</span>
+                          </div>
+                        </div>
+                      )
+                    }
+                    else if (tData == "status") {
+                      value = (
+                        <div className="form-check form-switch custom-toggle">
+                          <input className="form-check-input" type="checkbox" />
+                        </div>
+                      );
+                    }
+                    else if (tData == "description") {
                       value = (
                         <p
                           dangerouslySetInnerHTML={{
@@ -508,9 +531,9 @@ const Table = ({
                       let svg;
 
                       if (name == "Edit") {
-                        svg = <Edit />;
+                        svg = <PencilIcon />;
                       } else if (name == "Delete") {
-                        svg = <Delete />;
+                        svg = <TrashIcon />;
                       } else if (name == "View") {
                         svg = <View />;
                       } else if (
@@ -547,7 +570,6 @@ const Table = ({
                       }
 
                       if (link.isLink) {
-                        { console.log("extra : ", data, data[link.extraKeyName], link); }
                         return (
                           <Link
                             key={index}
@@ -556,7 +578,7 @@ const Table = ({
                                 ? link.extraKeyName ? { pathname: `${link.to}/${data[link.extraKeyName]}/${data.id}`, page } : { pathname: `${link.to}/${data.id}`, page }
                                 : link.extraKeyName ? `${link.to}/${data[link.extraKeyName]}/${data.id}` : `${link.to}/${data.id}`
                             }
-                            className="btn btn-icon btn-light btn-hover-primary btn-sm mr-2"
+                            className="mr-2"
                             data-toggle="tooltip"
                             data-placement="top"
                             data-container="body"
@@ -575,10 +597,11 @@ const Table = ({
                             {svg && (
                               <a
                                 key={index}
-                                className={`btn btn-icon btn-light mr-2 ${name === "Delete"
+                                className={`mr-2 ${name === "Delete"
                                   ? "btn-hover-danger confirmDelete"
                                   : "btn-hover-primary"
                                   }  btn-sm `}
+                                style={{ cursor: "pointer" }}
                                 data-toggle="tooltip"
                                 data-placement="top"
                                 data-container="body"
