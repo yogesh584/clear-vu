@@ -85106,8 +85106,8 @@ code {
 }
 
 .page-loading * {
-  -webkit-transition: none !important;
-  transition: none !important;
+  /* -webkit-transition: none !important; */
+  /* transition: none !important; */
 }
 
 .page-loader {

@@ -12,7 +12,6 @@ import "../../styles/slider.css"
 
 
 const Requests = () => {
-
     const [showTransferLinensModal, setShowTransferLinensModal] = useState(false);
     const handleShowTransferLinensModal = () => setShowTransferLinensModal(true)
     const handleCloseTransferLinensModal = () => setShowTransferLinensModal(false)

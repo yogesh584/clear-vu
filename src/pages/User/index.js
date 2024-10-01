@@ -106,7 +106,7 @@ const Index = () => {
         order: "",
     });
     // const [searchKey, setSearchKey] = useState(null);
-    const [isFilteredApplied, setIsFiltersApplied] = useState(false);
+    const [isFiltersApplied, setIsFiltersApplied] = useState(false);
 
     let { records_per_page } = useSelector((state) => state.setting);
 
@@ -355,7 +355,7 @@ const Index = () => {
                                                 <span className="ml-3">
                                                     Filter
                                                 </span>
-                                                {isFilteredApplied && <div className="position-absolute" style={{ top: 0, right: "1px", height: "10px", width: "10px", borderRadius: "50%", background: "red" }}></div>}
+                                                {isFiltersApplied && <div className="position-absolute" style={{ top: 0, right: "1px", height: "10px", width: "10px", borderRadius: "50%", background: "red" }}></div>}
                                             </button>
 
                                             <button

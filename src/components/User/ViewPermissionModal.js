@@ -1,7 +1,7 @@
 import React from 'react'
 import Modal from "react-bootstrap/Modal";
 
-const TransferLinensModel = ({ show, onHide }) => {
+const ViewPermissionModal = ({ show, onHide }) => {
     return (
         <Modal
             show={show}
@@ -13,13 +13,12 @@ const TransferLinensModel = ({ show, onHide }) => {
             <Modal.Body closeButton>
                 <div>
                     <h4>
-                        Transfer linens
+                        Permissions for Warehouse
                     </h4>
-                    <p style={{ fontSize: "12px", fontWeight: "normal" }}>Select products and locations from and to where you wish to transfer</p>
                 </div>
             </Modal.Body>
         </Modal>
     )
 }
 
-export default TransferLinensModel
+export default ViewPermissionModal
