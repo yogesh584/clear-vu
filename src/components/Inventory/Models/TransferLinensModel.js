@@ -19,7 +19,7 @@ const TransferLinensModel = ({ show, onHide }) => {
 
     return (
         <Modal
-            show={show}
+            show={false && show}
             onHide={onHide}
             size="md"
             centered
