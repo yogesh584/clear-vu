@@ -480,3 +480,13 @@ export const RoleIcon = () => {
     <path d="M17 30H23C28 30 30 28 30 23V17C30 12 28 10 23 10H17C12 10 10 12 10 17V23C10 28 12 30 17 30Z" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 }
+
+export const MinusIcon = () => {
+  return <svg width="14" height="4" viewBox="0 0 14 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M8.26817 0.5L12.7414 0.5C13.4365 0.5 14 1.06349 14 1.75859C14 2.45368 13.4365 3.01717 12.7414 3.01717L8.26817 3.01717L5.7175 3.01717L1.25859 3.01717C0.563488 3.01717 0 2.45368 0 1.75859C0 1.06349 0.563488 0.5 1.25859 0.5L5.7175 0.5L8.26817 0.5Z" fill="#FB6464"/>
+  </svg>  
+}
+
+// export const PlusIcon = () =>{
+//   return 
+// }
