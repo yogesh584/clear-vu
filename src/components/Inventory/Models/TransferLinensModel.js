@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 
 import { useForm, Controller } from "react-hook-form";
 import Select from 'react-select';
+import { MinusIcon, PlusIcon, TrashIcon } from '../../../util/Svg';
 
 
 const TransferLinensModel = ({ show, onHide }) => {
@@ -19,7 +20,7 @@ const TransferLinensModel = ({ show, onHide }) => {
 
     return (
         <Modal
-            show={false && show}
+            show={show}
             onHide={onHide}
             size="md"
             centered
@@ -90,8 +91,84 @@ const TransferLinensModel = ({ show, onHide }) => {
                                 />
                             )}
                         />
+                    </div>
 
+                    <div className='d-flex justify-content-between align-items-center'>
+                        <div>
+                            <span className='font-weight-normal'>Top fitted sheet</span>
+                        </div>
+                        <div className='d-flex align-items-center' style={{gap: "14px"}}>
+                            <button
+                                className='border-0 d-flex justify-content-center align-items-center rounded-lg'
+                                style={{
+                                    color: "#FB6464",
+                                    background: "#FAFAFA",
+                                    height:"40px",
+                                    width: "40px"
+                                }}
+                            >
+                                <MinusIcon />
+                            </button>
+                            <span>1</span>
+                            <button
+                                className='border-0 d-flex justify-content-center align-items-center rounded-lg'
+                                style={{
+                                    color: "#FB6464",
+                                    background: "#FAFAFA",
+                                    height:"40px",
+                                    width: "40px"
+                                }}
+                            >
+                                <PlusIcon pathStyle={{fill: "green"}}/>
+                            </button>
 
+                            <button className='border-0 d-flex justify-content-center align-items-center rounded-lg'
+                                style={{
+                                    color: "#FB6464",
+                                    background: "#FB64641A",
+                                    height:"40px",
+                                    width: "40px"
+                                }}><TrashIcon /></button>
+                        </div>
+                    </div>
+
+                    <div className='d-flex justify-content-between align-items-center'>
+                        <div>
+                            <span className='font-weight-normal'>Pillow case</span>
+                        </div>
+                        <div className='d-flex align-items-center' style={{gap: "14px"}}>
+                            <button
+                                className='border-0 d-flex justify-content-center align-items-center rounded-lg'
+                                style={{
+                                    color: "#FB6464",
+                                    background: "#FAFAFA",
+                                    height:"40px",
+                                    width: "40px"
+                                }}
+                            >
+                                <MinusIcon />
+                            </button>
+                            <span>2</span>
+                            <button
+                                className='border-0 d-flex justify-content-center align-items-center rounded-lg'
+                                style={{
+                                    color: "#FB6464",
+                                    background: "#FAFAFA",
+                                    height:"40px",
+                                    width: "40px"
+                                }}
+                            >
+                                <PlusIcon pathStyle={{fill: "green"}}/>
+                            </button>
+
+                            <button className='border-0 d-flex justify-content-center align-items-center rounded-lg'
+                                style={{
+                                    color: "#FB6464",
+                                    background: "#FB64641A",
+                                    height:"40px",
+                                    width: "40px"
+                                }}><TrashIcon /></button>
+                        </div>
                     </div>
 
                     <div className="d-flex flex-column">
