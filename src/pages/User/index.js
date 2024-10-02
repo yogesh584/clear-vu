@@ -13,6 +13,11 @@ import { Pagination as SwiperPagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import "../../styles/slider.css"
+import ViewPermissionModal from "../../components/User/ViewPermissionModal";
+import AddNewUserModal from "../../components/User/AddNewUserModal";
+import EditUserModal from "../../components/User/EditUserModal";
+import DeleteModal from "../../components/CommonModals/DeleteModal";
+import useRequest from "../../hooks/useRequest";
 
 const OBJ_TABLE = {
     "User ID": "userId",
@@ -20,7 +25,7 @@ const OBJ_TABLE = {
     "Role": "role",
     "Location": "location",
     "Created date": "createdDate",
-    "Last login": "lastLogin",
+    "Last login": "dateTime",
     "Created by": "createdBy",
     "Status": "status"
 };
@@ -58,38 +63,6 @@ const OBJ_TABLE = {
 //     return finalSortField;
 // }
 
-const tableData = [
-    {
-        userId: "#158ARD",
-        userDetails:{name: "Cristian Bale",email: "Cris_bale@email.com", image: "Avatar.png"},
-        role: "Services",
-        location: "Floor 1 - 2",
-        createdDate: "Sept 12, 2023",
-        lastLogin: "Sept 12, 2023 10:48 AM",
-        createdBy:{name: "Joseph Trifler",email: "Joseph_Trif@email.com", image: "Avatar.png"},
-        status: true
-    },
-    {
-        userId: "#158ARD",
-        userDetails:{name: "Cristian Bale",email: "Cris_bale@email.com", image: "Avatar (2).png"},
-        role: "Services",
-        location: "Floor 1 - 2",
-        createdDate: "Sept 12, 2023",
-        lastLogin: "Sept 12, 2023 10:48 AM",
-        createdBy:{name: "Joseph Trifler",email: "Joseph_Trif@email.com", image: "Avatar (2).png"},
-        status: true
-    },
-    {
-        userId: "#158ARD",
-        userDetails:{name: "Cristian Bale",email: "Cris_bale@email.com", image: "Avatar (3).png"},
-        role: "Services",
-        location: "Floor 1 - 2",
-        createdDate: "Sept 12, 2023",
-        lastLogin: "Sept 12, 2023 10:48 AM",
-        createdBy:{name: "Joseph Trifler",email: "Joseph_Trif@email.com", image: "Avatar (3).png"},
-        status: true
-    },
-];
 const userRoles = [
     { name: "Admin" }, 
     { name: "Warehouse" }, 
@@ -107,9 +80,30 @@ const Index = () => {
     });
     // const [searchKey, setSearchKey] = useState(null);
     const [isFiltersApplied, setIsFiltersApplied] = useState(false);
+    const [tableData,setTableData] = useState([])
+    
+    /*      MODAL HANDLING STATES        */
+    const [isShowPermissionsModal, setIsShowPermissionsModal] = useState(false);
+    const showPermissionsModal = () => setIsShowPermissionsModal(true)
+    const closePermissionsModal = () => setIsShowPermissionsModal(false)
 
+    const [isShowAddNewUserModal, setIsShowAddNewUserModal] = useState(false);
+    const showAddNewUserModal = () => setIsShowAddNewUserModal(true)
+    const closeAddNewUserModal = () => setIsShowAddNewUserModal(false)
+
+    const [isShowEditUserModal, setIsShowEditUserModal] = useState(false);
+    const showEditUserModal = () => setIsShowEditUserModal(true)
+    const closeEditUserModal = () => setIsShowEditUserModal(false)
+
+    const [isShowDeleteUserModal, setIsShowDeleteUserModal] = useState(false);
+    const showDeleteUserModal = () => setIsShowDeleteUserModal(true)
+    const closeDeleteUserModal = () => setIsShowDeleteUserModal(false)
+
+
+    /*      REQUESTS         */
+    const {request: requestUserList, response: responseUserList} = useRequest()
     let { records_per_page } = useSelector((state) => state.setting);
-
+    let { userId } = useSelector((state) => state.auth);
 
     useEffect(() => {
         if (!records_per_page) {
@@ -119,6 +113,8 @@ const Index = () => {
             setPerPage(records_per_page)
         }
     }, [records_per_page])
+
+
     const {
         register,
         handleSubmit,
@@ -128,7 +124,36 @@ const Index = () => {
     } = useForm();
 
 
+    useEffect(()=>{
+        requestUserList("get",`api/admin/list?userId=${userId}`)
+    },[userId])
 
+    useEffect(()=>{
+        if(responseUserList){
+            const {data,responseCode} = responseUserList;
+            if(responseCode == "SGEN001"){
+                const parsedData = data.map(d => ({
+                    ...d,
+                    userId: "#" + d.userId,
+                    role: Array.isArray(d.role) && d.role.length > 0 ? d.role[0] : "-",
+                    userDetails:{
+                        name: d.userName ?? "-",
+                        image: "/Avatar%20(3).png",
+                        email: "-"
+                    },
+                    location: "-",
+                    createdDate:d.createdDate && new Date(d.createdAt) instanceof Date ? moment(d.createdDate).format('MMM D, YYYY') : "-",
+                    dateTime: d.lastLogin ,
+                    createdBy: {
+                        name: "-",
+                        email: d.createdBy ?? "-",
+                        image: "Avatar%20(3).png"
+                    }
+                }))
+                setTableData(parsedData);
+            }
+        }
+    },[responseUserList])
 
 
     const onSearchHandler = () => {
@@ -185,7 +210,9 @@ const Index = () => {
         },
     ];
 
-    const deleteHandler = () => {}
+    const deleteHandler = () => {
+        showDeleteUserModal()
+    }
 
     const filteredTableData = tableData?.filter(() => {
         return true;
@@ -236,7 +263,6 @@ const Index = () => {
                                 slidesPerView: 2,
                                 spaceBetween: 20,
                             },
-                            // when window width is >= 1024px
                             1200: {
                                 slidesPerView: 3,
                                 spaceBetween: 20,
@@ -280,8 +306,6 @@ const Index = () => {
                                 </div>
                                 <div id="row3" className="mt-4">
                                     <button
-                                        data-toggle="collapse"
-                                        data-target="#searchOptions"
                                         className="position-relative btn btn-primary  mr-2"
                                         style={{
                                             border: "1px solid #289A77",
@@ -296,10 +320,11 @@ const Index = () => {
                                             background: "transparent",
                                             width: "100%",
                                         }}
+                                        onClick={showPermissionsModal}
                                     >
                                         <EyeIcon />
                                         <span className="ml-3">
-                                            Add new user
+                                            View permissions
                                         </span>
                                     </button>
                                 </div>
@@ -359,8 +384,6 @@ const Index = () => {
                                             </button>
 
                                             <button
-                                                data-toggle="collapse"
-                                                data-target="#searchOptions"
                                                 className="position-relative btn btn-primary  mr-2"
                                                 style={{
                                                     border: "1px solid #39D9A7",
@@ -373,6 +396,7 @@ const Index = () => {
                                                     paddingRight: "18px",
                                                     background: "#39D9A7"
                                                 }}
+                                                onClick={showAddNewUserModal}
                                             >
                                                 <PlusIcon />
                                                 <span className="ml-3">
@@ -430,11 +454,13 @@ const Index = () => {
                                                 }}
                                                 links={[
                                                     {
-                                                        isLink: true,
-                                                        to: "/candidate/edit",
+                                                        isLink: false,
                                                         name: "Edit",
                                                         extraData: true,
                                                         key: ["10_4"],
+                                                        click : () => {
+                                                            showEditUserModal();
+                                                        }
                                                       },
                                                       {
                                                         isLink: false,
@@ -451,15 +477,6 @@ const Index = () => {
                                                 dontShowSort={["SKU"]}
                                                 toolTips={
                                                     {
-                                                        "SKU": "Fill rate = Requested - In use - Clean stock",
-                                                        "Fill rate": "Fill rate = Requested - In use - Clean stock",
-                                                        "Location": "Fill rate = Requested - In use - Clean stock",
-                                                        "Product name": "Fill rate = Requested - In use - Clean stock",
-                                                        "In use": "Fill rate = Requested - In use - Clean stock",
-                                                        "Clean stock": "Fill rate = Requested - In use - Clean stock",
-                                                        "Par level": "Fill rate = Requested - In use - Clean stock",
-                                                        "Dirty return": "Fill rate = Requested - In use - Clean stock",
-                                                        "Del. qty": "Fill rate = Requested - In use - Clean stock",
                                                     }
                                                 }
                                             />
@@ -484,6 +501,10 @@ const Index = () => {
                 </div>
             </div>
         </div>
+        <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal}/>
+        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal}/>
+        <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal}/>
+        <DeleteModal show={isShowDeleteUserModal} onHide={closeDeleteUserModal} headingText="Delete User" bodyText={"Are you sure you want to delete this user ?"} onClickFunc={()=>{}}/>
     </div>
 }
 

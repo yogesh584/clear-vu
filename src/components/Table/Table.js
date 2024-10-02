@@ -26,6 +26,7 @@ import {
   TrashIcon,
 } from "../../util/Svg";
 import { API } from "../../constant/api";
+import moment from "moment";
 
 const DragHandle = sortableHandle(() => (
   <span className="drag">
@@ -382,8 +383,17 @@ const Table = ({
                 <tr key={data.id}>
                   {tableData.map((tData, index) => {
                     let value;
-                    console.log("tData : ", tData);
-                    if(tData == "userDetails" || tData == "createdBy"){
+                    if(tData == "dateTime"){
+                      {value = data[tData] && new Date(data[tData]) instanceof Date ? (<div>
+                        <div>
+                          {moment(data[tData]).format('MMM D, YYYY')}
+                        </div>
+                        <div style={{fontSize: "11px"}}>
+                          {moment(data[tData]).format('hh:mm A')}
+                        </div>
+                      </div>) : "-"}
+                    }
+                    else if(tData == "userDetails" || tData == "createdBy"){
                       value = (
                         <div className="d-flex align-items-center" style={{gap: "7px"}}>
                           <div style={{height: "35px"}}>

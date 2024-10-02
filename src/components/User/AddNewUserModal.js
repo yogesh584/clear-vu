@@ -5,10 +5,11 @@ import { useForm, Controller } from "react-hook-form";
 import Select from 'react-select';
 
 
-const TransferLinensModel = ({ show, onHide }) => {
+const AddNewUserModal = ({ show, onHide }) => {
     const {
+        register,
         handleSubmit,
-        // formState: { errors },
+        formState: { errors },
         control
     } = useForm();
 
@@ -25,19 +26,51 @@ const TransferLinensModel = ({ show, onHide }) => {
             centered
             animation={true}
         >
-            <Modal.Header style={{ borderBottom: "none", paddingTop: "1.75rem", padding: "1.25rem" }} className='d-flex flex-column align-items-start'>
+            <Modal.Header style={{ borderBottom: "none", paddingTop: "1.75rem", padding: "1.25rem" }}>
                 <h4 style={{ fontWeight: "400" }}>
-                    Transfer linens
+                    Add new user
                 </h4>
-                <p style={{fontWeight: "400", fontSize: "13px"}}>Select products and locations from and to where you wish to transfer</p>
             </Modal.Header>
             <Modal.Body style={{ padding: "1.25rem" }} closeButton>
                 <form onSubmit={handleSubmit(onSubmit)} className='d-flex flex-column' style={{ gap: "20px" }}>
                     <div className="d-flex flex-column">
-                        <label htmlFor='products' style={{ fontSize: "13px" }}>Product/s</label>
+                        <label htmlFor='fullName' style={{ fontSize: "13px" }}>Full name</label>
+                        <input
+                            className={`form-control form-control-solid h-auto py-3 px-6 ${errors.fullname && "is-invalid"
+                                }`}
+                            style={{ borderRadius: "8px", border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
+                            type="text"
+                            name="fullname"
+                            autoComplete="off"
+                            placeholder="Enter full name"
+                            {...register("fullname", {
+                                required: true
+                            })}
+                        />
+                    </div>
+
+                    <div className="d-flex flex-column">
+                        <label htmlFor='email' style={{ fontSize: "13px" }}>Email</label>
+                        <input
+                            className={`form-control form-control-solid h-auto py-3 px-6 ${errors.email && "is-invalid"
+                                }`}
+                            style={{ borderRadius: "8px", border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
+                            type="text"
+                            name="email"
+                            autoComplete="off"
+                            placeholder="Enter email address"
+                            {...register("email", {
+                                required: true,
+                                pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                            })}
+                        />
+                    </div>
+
+                    <div className="d-flex flex-column">
+                        <label htmlFor='userRole' style={{ fontSize: "13px" }}>User Role</label>
                         <Controller
-                            name={"products"}
-                            id="products"
+                            name={"userRole"}
+                            id="userRole"
                             control={control}
                             rules={{
                                 required: true,
@@ -45,8 +78,8 @@ const TransferLinensModel = ({ show, onHide }) => {
                             render={({ field }) => (
                                 <Select
                                     {...field}
-                                    placeholder="Select Product/s"
-                                    inputId="products"
+                                    placeholder="Select role"
+                                    inputId="userRole"
                                     options={[
                                         { label: "Option 1", value: "1" },
                                         { label: "Option 2", value: "2" },
@@ -95,10 +128,10 @@ const TransferLinensModel = ({ show, onHide }) => {
                     </div>
 
                     <div className="d-flex flex-column">
-                        <label htmlFor='fromLocation' style={{ fontSize: "13px" }}>From Location</label>
+                        <label htmlFor='location' style={{ fontSize: "13px" }}>Location</label>
                         <Controller
-                            name={"fromLocation"}
-                            id="fromLocation"
+                            name={"location"}
+                            id="location"
                             control={control}
                             rules={{
                                 required: true,
@@ -106,67 +139,8 @@ const TransferLinensModel = ({ show, onHide }) => {
                             render={({ field }) => (
                                 <Select
                                     {...field}
-                                    placeholder="select From Location"
-                                    inputId="fromLocation"
-                                    options={[
-                                        { label: "Option 1", value: "1" },
-                                        { label: "Option 2", value: "2" },
-                                        { label: "Option 3", value: "3" },
-                                        { label: "Option 4", value: "4" },
-                                    ]}
-                                    components={{
-                                        IndicatorSeparator: () => null,
-                                    }}
-                                    styles={{
-                                        control: (provided) => ({
-                                            ...provided,
-                                            borderRadius: '8px',
-                                            border: '2px solid #e6e8ea',
-                                            backgroundColor: '#fff',
-                                            letterSpacing: '0.03em',
-                                            textTransform: "capitalize",
-                                            padding: "0.1rem",
-                                            paddingLeft: "1rem"
-                                        }),
-                                        option: (provided, { isDisabled, isFocused, isSelected }) => ({
-                                            ...provided,
-                                            backgroundColor: isSelected
-                                                ? "#39d9a7"
-                                                : isFocused
-                                                    ? "#39d9a7"
-                                                    : "white",
-                                            color: isSelected || isFocused ? "#fff" : "#000",
-                                            cursor: isDisabled ? "not-allowed" : "pointer",
-                                            textTransform: "capitalize"
-                                        }),
-                                        menu: (provided) => ({
-                                            ...provided,
-                                            borderRadius: '8px',
-                                            border: "1px solid #e6e8ea",
-                                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                                        }),
-                                    }}
-                                    menuPlacement="auto"
-                                    menuPosition="fixed"
-                                />
-                            )}
-                        />
-                    </div>
-
-                    <div className="d-flex flex-column">
-                        <label htmlFor='toLocation' style={{ fontSize: "13px" }}>To Location</label>
-                        <Controller
-                            name={"toLocation"}
-                            id="toLocation"
-                            control={control}
-                            rules={{
-                                required: true,
-                            }}
-                            render={({ field }) => (
-                                <Select
-                                    {...field}
-                                    placeholder="select To Location"
-                                    inputId="toLocation"
+                                    placeholder="Location"
+                                    inputId="location"
                                     options={[
                                         { label: "Option 1", value: "1" },
                                         { label: "Option 2", value: "2" },
@@ -245,11 +219,11 @@ const TransferLinensModel = ({ show, onHide }) => {
                     }}
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    Transfer linens
+                    Save changes
                 </button>
             </Modal.Footer>
         </Modal>
     )
 }
 
-export default TransferLinensModel;
+export default AddNewUserModal;
