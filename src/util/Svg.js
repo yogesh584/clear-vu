@@ -147,14 +147,20 @@ export const Arrow = () => {
   return <svg xmlns="http://www.w3.org/2000/svg" height={"13px"} width={"13px"} viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" /></svg>
 }
 
-export const PencilIcon = () => {
-  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M16.04 3.02001L8.16 10.9C7.86 11.2 7.56 11.79 7.5 12.22L7.07 15.23C6.91 16.32 7.68 17.08 8.77 16.93L11.78 16.5C12.2 16.44 12.79 16.14 13.1 15.84L20.98 7.96001C22.34 6.60001 22.98 5.02001 20.98 3.02001C18.98 1.02001 17.4 1.66001 16.04 3.02001Z" stroke="#1A1A1A" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M14.91 4.1499C15.58 6.5399 17.45 8.4099 19.85 9.0899" stroke="#1A1A1A" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+export const PencilIcon = ({svgStyle={}, pathStyle={}}) => {
+  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{...svgStyle}}>
+    <path style={{...pathStyle}} d="M11 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22H15C20 22 22 20 22 15V13" stroke="#1A1A1A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path style={{...pathStyle}} d="M16.04 3.02001L8.16 10.9C7.86 11.2 7.56 11.79 7.5 12.22L7.07 15.23C6.91 16.32 7.68 17.08 8.77 16.93L11.78 16.5C12.2 16.44 12.79 16.14 13.1 15.84L20.98 7.96001C22.34 6.60001 22.98 5.02001 20.98 3.02001C18.98 1.02001 17.4 1.66001 16.04 3.02001Z" stroke="#1A1A1A" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+    <path style={{...pathStyle}} d="M14.91 4.1499C15.58 6.5399 17.45 8.4099 19.85 9.0899" stroke="#1A1A1A" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 }
 
+export const ChangeRoomIcon = () => {
+  return <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M8.3501 3.72506L10.0001 1.66675" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  <path d="M4.09181 6.49995C3.16681 7.73328 2.5918 9.25828 2.5918 10.9249C2.5918 15.0166 5.90848 18.3333 10.0001 18.3333C14.0918 18.3333 17.4085 15.0166 17.4085 10.9249C17.4085 6.83328 14.0918 3.5166 10.0001 3.5166C9.43348 3.5166 8.88347 3.59164 8.35013 3.71664" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+}
 export const MenuBulletRadio = ({ svgStyle = {}, pathStyle = {}, commonStyle = {}, customClass = "" }) => {
   return (
     <svg style={{ ...svgStyle, ...commonStyle }} className={customClass} viewBox="0 0 256 256" fill="#39D9A7" xmlns="http://www.w3.org/2000/svg"><rect fill="none" height="256" width="256" /><path style={{ ...pathStyle, ...commonStyle }} d="M128,24A104,104,0,1,0,232,128,104.2,104.2,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a64,64,0,1,1-64-64A64.1,64.1,0,0,1,192,128Z" /></svg>
