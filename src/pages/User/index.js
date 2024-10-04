@@ -78,7 +78,7 @@ const Index = () => {
         sortBy: "",
         order: "",
     });
-    // const [searchKey, setSearchKey] = useState(null);
+    const [searchKey, setSearchKey] = useState(null);
     const [isFiltersApplied, setIsFiltersApplied] = useState(false);
     const [tableData,setTableData] = useState([])
     
@@ -139,7 +139,7 @@ const Index = () => {
                     userDetails:{
                         name: d.userName ?? "-",
                         image: "/Avatar%20(3).png",
-                        email: "-"
+                        email: d.emailId
                     },
                     location: "-",
                     createdDate:d.createdDate && new Date(d.createdAt) instanceof Date ? moment(d.createdDate).format('MMM D, YYYY') : "-",
@@ -189,7 +189,6 @@ const Index = () => {
     };
 
     const fetchMoreData = ({ selected }) => {
-        console.log("selected : ", selected)
         setPage(selected + 1);
     };
 
@@ -214,8 +213,12 @@ const Index = () => {
         showDeleteUserModal()
     }
 
-    const filteredTableData = tableData?.filter(() => {
-        return true;
+    const filteredTableData = tableData?.filter((u) => {
+        return (
+            u.userDetails.name?.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+            u.userDetails.email?.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+            u.userDetails.location?.toLowerCase().includes(searchKey?.toLowerCase() || "")
+        );
     });
 
     return <div
@@ -357,7 +360,7 @@ const Index = () => {
                                                     paddingLeft: "40px",
                                                     outline: "none"
                                                 }}
-                                                    // onChange={(e) => setSearchKey(e.target.value)}
+                                                    onChange={(e) => setSearchKey(e.target.value)}
                                                 />
                                             </div>
                                             <button
