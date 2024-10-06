@@ -5,8 +5,9 @@ import { ChangeRoomIcon, PencilIcon } from "../../util/Svg";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
 
-import AddNewUserModal from "../../components/User/AddNewUserModal";
-import EditUserModal from "../../components/User/EditUserModal";
+// import AddLineansModal from "../../components/Inventory/Models/AddLineansModal";
+import EditLineansModal from "../../components/Inventory/Models/EditLineansModal";
+import ChangeRoomModal from "../../components/Inventory/Models/ChangeRoomModal";
 
 const OBJ_TABLE = {
     "Room": "room",
@@ -105,13 +106,13 @@ const InventoryChangeRoom = () => {
 
     /*      MODAL HANDLING STATES        */
 
-    const [isShowAddNewUserModal, setIsShowAddNewUserModal] = useState(false);
-    const showAddNewUserModal = () => setIsShowAddNewUserModal(true)
-    const closeAddNewUserModal = () => setIsShowAddNewUserModal(false)
+    const [isShowAddNewLineanModal, setIsShowAddNewLineanModal] = useState(false);
+    const showAddNewLineanModal = () => setIsShowAddNewLineanModal(true)
+    const closeAddNewLineanModal = () => setIsShowAddNewLineanModal(false)
 
-    const [isShowEditUserModal, setIsShowEditUserModal] = useState(false);
-    const showEditUserModal = () => setIsShowEditUserModal(true)
-    const closeEditUserModal = () => setIsShowEditUserModal(false)
+    const [isShowEditLineanModal, setIsShowEditLineanModal] = useState(false);
+    const showEditLineanModal = () => setIsShowEditLineanModal(true)
+    const closeEditLineanModal = () => setIsShowEditLineanModal(false)
 
 
     let { records_per_page } = useSelector((state) => state.setting);
@@ -183,7 +184,7 @@ const InventoryChangeRoom = () => {
                                                     paddingRight: "18px",
                                                     background: "#e8e9eb"
                                                 }}
-                                                onClick={showEditUserModal}
+                                                onClick={showEditLineanModal}
                                             >
                                                 <PencilIcon svgStyle={{ height: "17px" }} />
                                                 <span className="ml-3">
@@ -204,7 +205,7 @@ const InventoryChangeRoom = () => {
                                                     paddingRight: "18px",
                                                     background: "#39D9A7"
                                                 }}
-                                                onClick={showAddNewUserModal}
+                                                onClick={showAddNewLineanModal}
                                             >
                                                 <ChangeRoomIcon />
                                                 <span className="ml-3">
@@ -214,7 +215,7 @@ const InventoryChangeRoom = () => {
                                         </div>
                                     </div>
                                     <div className="card-body py-0" >
-                                        
+
                                         <div className="dataTables_wrapper block-table mb-10">
                                             <Table
                                                 currentSort={currentSort}
@@ -259,8 +260,9 @@ const InventoryChangeRoom = () => {
                 </div>
             </div>
         </div>
-        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} />
-        <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal} />
+        {/* <AddLineansModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} /> */}
+        <EditLineansModal show={isShowEditLineanModal} onHide={closeEditLineanModal} />
+        <ChangeRoomModal show={isShowAddNewLineanModal} onHide={closeAddNewLineanModal} />
     </div>
 }
 

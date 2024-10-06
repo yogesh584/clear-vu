@@ -1,100 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import moment from "moment";
-import Pagination from "../../../components/Pagination/Pagination";
-import Table from "../../../components/Table/Table";
+import React from "react";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { InfoIcon } from "../../../util/Svg";
+import { ChangeRoomIcon, InfoIcon } from "../../../util/Svg";
+import Select from 'react-select';
 
-const OBJ_TABLE = {
-    "Item name": "itemName",
-    "In use": "inUse",
-    "Par level": "parLevel",
-    "Order QTY": "orderQty",
-    "Request (AI Predicted)": "requestData"
-};
-
-// const getSortingField = (sortBy) => {
-//     let finalSortField = sortBy;
-//     if (sortBy == "Location") {
-//         finalSortField = "location";
-//     } else if (sortBy == "Product name") {
-//         finalSortField = "productName";
-//     } else if (sortBy == "In use") {
-//         finalSortField = "countInUse"
-//     } else if (sortBy == "Clean stock") {
-//         finalSortField = "cleanStock"
-//     } else if (sortBy == "Par level") {
-//         finalSortField = "parLevel"
-//     } else if (sortBy == "Dirty return") {
-//         finalSortField = "dirtyReturn"
-//     } else if (sortBy == "Del. qty") {
-//         finalSortField = "deliveredQuantity"
-//     } else if (sortBy == "Fill rate") {
-//         finalSortField = "fillRate"
-//     } else if (sortBy == "Last Washed") {
-//         finalSortField = "lastWashed"
-//     } else if (sortBy == "Total Washed") {
-//         finalSortField = "totalWashed"
-//     } else if (sortBy == "Next Wash cycle") {
-//         finalSortField = "nextWashCycle"
-//     } else if (sortBy == "Status") {
-//         finalSortField = "status"
-//     } else if (sortBy == "Installation Date") {
-//         finalSortField = "installationDate"
-//     }
-
-//     return finalSortField;
-// }
-const totalDocuments = 0;
-
-const tableData = [];
+import { useFieldArray, useForm } from "react-hook-form";
 
 const RequestLineans = () => {
-    const [page, setPage] = useState(0);
-    const [perPage, setPerPage] = useState(0);
-    const [currentSort, setCurrentSort] = useState({
-        sortBy: "",
-        order: "",
-    });
-    let { records_per_page } = useSelector((state) => state.setting);
 
-    useEffect(() => {
-        if (!records_per_page) {
-            records_per_page = 10;
-            setPerPage(10)
-        } else {
-            setPerPage(records_per_page)
+    const { control } = useForm({
+        defaultValues: {
+            lineans: [
+                {
+                    name: "",
+                    inUse: 0,
+                    parLevel: 0,
+                    orderQty: 0,
+                    suggested: 0
+                }
+            ]
         }
-    }, [records_per_page])
-
-
-    const sortingHandler = (sortBy) => {
-        //let finalSortField = getSortingField(sortBy);
-        if (currentSort.sortBy == sortBy) {
-            const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            setCurrentSort({ sortBy, order: newOrder });
-        } else {
-            setCurrentSort({ sortBy, order: "desc" });
-        }
-    };
-
-    const fetchMoreData = ({ selected }) => {
-        console.log("selected : ", selected)
-        setPage(selected + 1);
-    };
-
-
-    const perPageChangeHandler = (event) => {
-        setPage(0);
-        setPerPage(event.target.value);
-    };
-
-
-    const filteredTableData = tableData?.filter(() => {
-        return true;
     });
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "lineans"
+    })
 
     return <div
         className="content  d-flex flex-column flex-column-fluid"
@@ -111,7 +41,7 @@ const RequestLineans = () => {
                             <div className="col-12" style={{ padding: "0px" }}>
                                 <div className="card card-custom card-stretch card-shadowless">
                                     <div className="card-header align-items-center" style={{ borderBottom: "0" }}>
-                                        <div className="card-title d-flex flex-row justify-content-start align-items-start" style={{gap: "9px"}}>
+                                        <div className="card-title d-flex flex-row justify-content-start align-items-start" style={{ gap: "9px" }}>
                                             <h4 style={{ fontWeight: "700" }}>Request linens</h4>
                                             <OverlayTrigger
                                                 delay={{ hide: 450, show: 300 }}
@@ -126,48 +56,187 @@ const RequestLineans = () => {
                                                     <InfoIcon />
                                                 </span>
                                             </OverlayTrigger>
-
                                         </div>
                                     </div>
                                     <div className="card-body py-0" >
                                         <div className="dataTables_wrapper block-table mb-10">
-                                            <Table
-                                                currentSort={currentSort}
-                                                sortingHandler={sortingHandler}
-                                                mainData={filteredTableData}
-                                                tableHeading={Object.keys(OBJ_TABLE)}
-                                                tableData={Object.values(OBJ_TABLE)}
-                                                renderAs={{
-                                                    created_at: (val) => moment(val).format("DD-MM-YYYY"),
-                                                    fillRate: (val) => Number(val).toFixed(2)
-                                                }}
-                                                links={[
+                                            <div className="table-responsive">
+                                                <table
+                                                    className="table dataTable table-head-custom table-head-bg table-borderless table-vertical-center"
+                                                    id="taskTable"
+                                                >
+                                                    <thead>
+                                                        <tr style={{ whiteSpace: "nowrap" }}>
+                                                            <th className="py-4">Item name</th>
+                                                            <th className="py-4">In use</th>
+                                                            <th className="py-4">Par level</th>
+                                                            <th className="py-4">Order QTY</th>
+                                                            <th className="py-4">Suggested (AI Predicted)</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {fields.map((data, index) => {
+                                                            console.log("data : ", data)
+                                                            return <tr key={index + "__"}>
+                                                                <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
+                                                                    <div className="d-flex align-items-center">
+                                                                        <div className="text-dark-75 mb-1  font-size-lg">
+                                                                            <Select
+                                                                                placeholder="Select item name"
+                                                                                inputId="userRole"
+                                                                                options={[
+                                                                                    { label: "Option 1", value: "1" },
+                                                                                    { label: "Option 2", value: "2" },
+                                                                                    { label: "Option 3", value: "3" },
+                                                                                    { label: "Option 4", value: "4" },
+                                                                                ]}
+                                                                                components={{
+                                                                                    IndicatorSeparator: () => null,
+                                                                                }}
+                                                                                styles={{
+                                                                                    control: (provided) => ({
+                                                                                        ...provided,
+                                                                                        borderRadius: '8px',
+                                                                                        border: '2px solid #e6e8ea',
+                                                                                        backgroundColor: '#fff',
+                                                                                        letterSpacing: '0.03em',
+                                                                                        textTransform: "capitalize",
+                                                                                        padding: "0.1rem",
+                                                                                        fontSize: "11px",
+                                                                                        minWidth: "200px"
+                                                                                    }),
+                                                                                    option: (provided, { isDisabled, isFocused, isSelected }) => ({
+                                                                                        ...provided,
+                                                                                        backgroundColor: isSelected
+                                                                                            ? "#39d9a7"
+                                                                                            : isFocused
+                                                                                                ? "#39d9a7"
+                                                                                                : "white",
+                                                                                        color: isSelected || isFocused ? "#fff" : "#000",
+                                                                                        cursor: isDisabled ? "not-allowed" : "pointer",
+                                                                                        textTransform: "capitalize"
+                                                                                    }),
+                                                                                    menu: (provided) => ({
+                                                                                        ...provided,
+                                                                                        borderRadius: '8px',
+                                                                                        border: "1px solid #e6e8ea",
+                                                                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                                                                    }),
+                                                                                }}
+                                                                                menuPlacement="auto"
+                                                                                menuPosition="fixed"
+                                                                            />
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
+                                                                    <div className="d-flex align-items-center">
+                                                                        <div className="text-dark-75 mb-1  font-size-lg">
+                                                                            {data.inUse}
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
+                                                                    <div className="d-flex align-items-center">
+                                                                        <div className="text-dark-75 mb-1  font-size-lg">
+                                                                            {data.parLevel}
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
+                                                                    <div className="d-flex align-items-center">
+                                                                        <div className="text-dark-75 mb-1  font-size-lg">
+                                                                            {data.orderQty}
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
+                                                                    <div className="d-flex align-items-center">
+                                                                        <div className="text-dark-75 mb-1  font-size-lg d-flex align-items-center" style={{ gap: "9px" }}>
+                                                                            <div className="py-2 px-5" style={{ borderRadius: "12px", border: "1px solid #39D9A7", color: "#39D9A7" }}>
+                                                                                {data.suggested}
+                                                                            </div>
+                                                                            <button className="border-0 bg-transparent" onClick={() => { remove(index) }}>
+                                                                                <ChangeRoomIcon pathStyle={{ stroke: "#17397F" }} />
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        })}
 
-                                                ]}
-                                                onlyDate={{
-                                                    createdAt: "date",
-                                                    startDate: "dateTime",
-                                                    endDate: "dateTime",
-                                                }}
-                                                dontShowSort={["SKU"]}
-                                                toolTips={
-                                                    {
-                                                    }
-                                                }
-                                            />
-
-                                            {perPage !== 0 && (
-                                                <Pagination
-                                                    page={page}
-                                                    totalDocuments={totalDocuments}
-                                                    getNewData={fetchMoreData}
-                                                    perPage={perPage}
-                                                    defaultPerPage={records_per_page}
-                                                    perPageChangeHandler={perPageChangeHandler}
-                                                    currentDocLength={tableData?.length}
-                                                />
-                                            )}
+                                                        <tr>
+                                                            <td className={`pb-4 ${fields.length == 0 ? "pt-4" : "pt-1"} border-0`}>
+                                                                <div className="d-flex align-items-center">
+                                                                    <button
+                                                                        className="position-relative btn btn-primary  mr-2"
+                                                                        style={{
+                                                                            border: "1px solid #39D9A7",
+                                                                            borderRadius: "8px",
+                                                                            color: "#39D9A7",
+                                                                            display: "flex",
+                                                                            alignItems: "center",
+                                                                            padding: "10px",
+                                                                            paddingLeft: "18px",
+                                                                            paddingRight: "18px",
+                                                                            background: "transparent",
+                                                                        }}
+                                                                        onClick={() => append({
+                                                                            name: "",
+                                                                            inUse: 0,
+                                                                            parLevel: 0,
+                                                                            orderQty: 0,
+                                                                            suggested: 0
+                                                                        })}
+                                                                    >
+                                                                        Add item
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div className="d-flex justify-content-end mt-2" style={{ padding: "0px 1.25rem" }}>
+                                                <div className="row" style={{ gap: "10px" }}>
+                                                    <button
+                                                        className="position-relative px-5 btn btn-primary  mr-2"
+                                                        style={{
+                                                            border: "1px solid #39D9A7",
+                                                            borderRadius: "8px",
+                                                            color: "#39D9A7",
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            padding: "10px",
+                                                            paddingLeft: "18px",
+                                                            paddingRight: "18px",
+                                                            background: "transparent",
+                                                            minWidth: "100px"
+                                                        }}
+                                                    >
+                                                        Save
+                                                    </button>
+                                                    <button
+                                                        className="position-relative btn btn-primary  mr-2"
+                                                        style={{
+                                                            border: "1px solid #39D9A7",
+                                                            borderRadius: "8px",
+                                                            color: "#fff",
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            padding: "10px",
+                                                            paddingLeft: "18px",
+                                                            paddingRight: "18px",
+                                                            background: "#39D9A7",
+                                                            minWidth: "100px"
+                                                        }}
+                                                    >
+                                                        Save & Next
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>

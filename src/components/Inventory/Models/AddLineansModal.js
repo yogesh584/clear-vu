@@ -3,13 +3,13 @@ import Modal from "react-bootstrap/Modal";
 
 import { useForm, Controller } from "react-hook-form";
 import Select from 'react-select';
+import { MinusIcon, PlusIcon, TrashIcon } from '../../../util/Svg';
 
 
-const AddNewUserModal = ({ show, onHide }) => {
+const AddLineansModal = ({ show, onHide }) => {
     const {
-        register,
+
         handleSubmit,
-        formState: { errors },
         control
     } = useForm();
 
@@ -26,48 +26,16 @@ const AddNewUserModal = ({ show, onHide }) => {
             centered
             animation={true}
         >
-            <Modal.Header style={{ borderBottom: "none", paddingTop: "1.75rem", padding: "1.25rem" }}>
+            <Modal.Header style={{ borderBottom: "none", paddingTop: "1.75rem", padding: "1.25rem", paddingBottom: "0px" }} className='d-flex flex-column align-items-start'>
                 <h4 style={{ fontWeight: "400" }}>
-                    Add new user
+                    Add additional linens
                 </h4>
+                <p style={{ fontWeight: "400", fontSize: "13px" }}>Select products and location to add</p>
             </Modal.Header>
             <Modal.Body style={{ padding: "1.25rem" }} closeButton>
                 <form onSubmit={handleSubmit(onSubmit)} className='d-flex flex-column' style={{ gap: "20px" }}>
                     <div className="d-flex flex-column">
-                        <label htmlFor='fullName' style={{ fontSize: "13px" }}>Full name</label>
-                        <input
-                            className={`form-control form-control-solid h-auto py-3 px-6 ${errors.fullname && "is-invalid"
-                                }`}
-                            style={{ borderRadius: "8px", border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
-                            type="text"
-                            name="fullname"
-                            autoComplete="off"
-                            placeholder="Enter full name"
-                            {...register("fullname", {
-                                required: true
-                            })}
-                        />
-                    </div>
-
-                    <div className="d-flex flex-column">
-                        <label htmlFor='email' style={{ fontSize: "13px" }}>Email</label>
-                        <input
-                            className={`form-control form-control-solid h-auto py-3 px-6 ${errors.email && "is-invalid"
-                                }`}
-                            style={{ borderRadius: "8px", border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
-                            type="text"
-                            name="email"
-                            autoComplete="off"
-                            placeholder="Enter email address"
-                            {...register("email", {
-                                required: true,
-                                pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                            })}
-                        />
-                    </div>
-
-                    <div className="d-flex flex-column">
-                        <label htmlFor='userRole' style={{ fontSize: "13px" }}>User Role</label>
+                        <label htmlFor='userRole' style={{ fontSize: "13px" }}>Product/s</label>
                         <Controller
                             name={"userRole"}
                             id="userRole"
@@ -78,8 +46,8 @@ const AddNewUserModal = ({ show, onHide }) => {
                             render={({ field }) => (
                                 <Select
                                     {...field}
-                                    placeholder="Select role"
-                                    inputId="userRole"
+                                    placeholder="Select Product/s"
+                                    inputId="products"
                                     options={[
                                         { label: "Option 1", value: "1" },
                                         { label: "Option 2", value: "2" },
@@ -127,10 +95,49 @@ const AddNewUserModal = ({ show, onHide }) => {
 
                     </div>
 
+                    <div className='d-flex justify-content-between align-items-center'>
+                        <div>
+                            <span className='font-weight-normal'>Top fitted sheet</span>
+                        </div>
+                        <div className='d-flex align-items-center' style={{ gap: "14px" }}>
+                            <button
+                                className='border-0 d-flex justify-content-center align-items-center rounded-lg'
+                                style={{
+                                    color: "#FB6464",
+                                    background: "#FAFAFA",
+                                    height: "40px",
+                                    width: "40px"
+                                }}
+                            >
+                                <MinusIcon />
+                            </button>
+                            <span>1</span>
+                            <button
+                                className='border-0 d-flex justify-content-center align-items-center rounded-lg'
+                                style={{
+                                    color: "#FB6464",
+                                    background: "#FAFAFA",
+                                    height: "40px",
+                                    width: "40px"
+                                }}
+                            >
+                                <PlusIcon pathStyle={{ fill: "green" }} />
+                            </button>
+
+                            <button className='border-0 d-flex justify-content-center align-items-center rounded-lg'
+                                style={{
+                                    color: "#FB6464",
+                                    background: "#FB64641A",
+                                    height: "40px",
+                                    width: "40px"
+                                }}><TrashIcon /></button>
+                        </div>
+                    </div>
+
                     <div className="d-flex flex-column">
                         <label htmlFor='location' style={{ fontSize: "13px" }}>Location</label>
                         <Controller
-                            name={"Select location"}
+                            name={"location"}
                             id="location"
                             control={control}
                             rules={{
@@ -139,7 +146,7 @@ const AddNewUserModal = ({ show, onHide }) => {
                             render={({ field }) => (
                                 <Select
                                     {...field}
-                                    placeholder="Location"
+                                    placeholder="Select Location"
                                     inputId="location"
                                     options={[
                                         { label: "Option 1", value: "1" },
@@ -219,11 +226,11 @@ const AddNewUserModal = ({ show, onHide }) => {
                     }}
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    Save changes
+                    Add linens
                 </button>
             </Modal.Footer>
         </Modal>
     )
 }
 
-export default AddNewUserModal;
+export default AddLineansModal;

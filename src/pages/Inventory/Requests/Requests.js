@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PencilIcon, SwapIcon, VerticalArrow } from "../../../util/Svg";
 import TransferLinensModel from "../../../components/Inventory/Models/TransferLinensModel";
-
+import { Link } from "react-router-dom";
 import cardStyles from "../../../styles/card.module.css"
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,6 +9,7 @@ import { Pagination as SwiperPagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import "../../../styles/slider.css"
+
 
 
 const Requests = () => {
@@ -56,7 +57,8 @@ const Requests = () => {
                                         <SwapIcon />{" "}Transfer linens
                                     </button>
 
-                                    <button
+                                    <Link
+                                        to="/inventory-requests/request-lineans"
                                         style={{
                                             background: "#39D9A7",
                                             color: "#fff",
@@ -65,7 +67,7 @@ const Requests = () => {
                                         className="px-4 py-2 mr-2 border-0"
                                     >
                                         Order linens
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -239,7 +241,8 @@ const Requests = () => {
                                         <SwapIcon />{" "}Transfer linens
                                     </button>
 
-                                    <button
+                                    <Link
+                                        to="/inventory-requests/request-lineans"
                                         style={{
                                             background: "#39D9A7",
                                             color: "#fff",
@@ -248,7 +251,7 @@ const Requests = () => {
                                         className="px-4 py-2 mr-2 border-0"
                                     >
                                         Order linens
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -422,7 +425,8 @@ const Requests = () => {
                                         <SwapIcon />{" "}Transfer linens
                                     </button>
 
-                                    <button
+                                    <Link
+                                        to="/inventory-requests/request-lineans"
                                         style={{
                                             background: "#39D9A7",
                                             color: "#fff",
@@ -431,7 +435,7 @@ const Requests = () => {
                                         className="px-4 py-2 mr-2 border-0"
                                     >
                                         Order linens
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
