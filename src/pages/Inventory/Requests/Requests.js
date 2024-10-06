@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { PencilIcon, SwapIcon, VerticalArrow } from "../../util/Svg";
-import TransferLinensModel from "../../components/Inventory/Models/TransferLinensModel";
+import { PencilIcon, SwapIcon, VerticalArrow } from "../../../util/Svg";
+import TransferLinensModel from "../../../components/Inventory/Models/TransferLinensModel";
 
-import cardStyles from "../../styles/card.module.css"
+import cardStyles from "../../../styles/card.module.css"
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination as SwiperPagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import "../../styles/slider.css"
+import "../../../styles/slider.css"
 
 
 const Requests = () => {
