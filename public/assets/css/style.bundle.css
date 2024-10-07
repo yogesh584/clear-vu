@@ -7754,6 +7754,7 @@ a.close.disabled {
   -webkit-box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
   outline: 0;
+  border-radius: 12px !important
 }
 
 .modal-backdrop {
@@ -85106,8 +85107,8 @@ code {
 }
 
 .page-loading * {
-  -webkit-transition: none !important;
-  transition: none !important;
+  /* -webkit-transition: none !important; */
+  /* transition: none !important; */
 }
 
 .page-loader {
