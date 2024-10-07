@@ -9,6 +9,7 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import InventoryManagment from "../pages/Inventory/Managment";
 import InventoryRequests from "../pages/Inventory/Requests/Requests";
 import RequestLineans from "../pages/Inventory/Requests/RequestLineans";
+import InventoryChangeRoom from "../pages/Inventory/ChangeRoom";
 import ChangePassword from "../pages/ChangePassword/ChangePassword";
 
 export const privateRoutes = [
@@ -16,9 +17,9 @@ export const privateRoutes = [
   { path: "/change-password", component: ChangePassword, key: "0" },
   { path: "/inventory-managment", component: InventoryManagment, key: "1" },
   { path: "/inventory-requests", component: InventoryRequests, key: "1_1" },
+  { path: "/inventory-change-room", component: InventoryChangeRoom, key: "1_2" },
   { path: "/inventory-requests/request-lineans", component: RequestLineans, key: "1_3" },
-  { path: "/user-management", component: UserManagment, key: "2_1" }
-  
+  { path: "/user-management", component: UserManagment, key: "2_1" }  
 ];
 
 export const notPrivateRoutes = [

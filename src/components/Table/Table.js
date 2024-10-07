@@ -383,25 +383,27 @@ const Table = ({
                 <tr key={data.id}>
                   {tableData.map((tData, index) => {
                     let value;
-                    if(tData == "dateTime"){
-                      {value = data[tData] && new Date(data[tData]) instanceof Date ? (<div>
-                        <div>
-                          {moment(data[tData]).format('MMM D, YYYY')}
-                        </div>
-                        <div style={{fontSize: "11px"}}>
-                          {moment(data[tData]).format('hh:mm A')}
-                        </div>
-                      </div>) : "-"}
+                    if (tData == "dateTime") {
+                      {
+                        value = data[tData] && new Date(data[tData]) instanceof Date ? (<div>
+                          <div>
+                            {moment(data[tData]).format('MMM D, YYYY')}
+                          </div>
+                          <div style={{ fontSize: "11px" }}>
+                            {moment(data[tData]).format('hh:mm A')}
+                          </div>
+                        </div>) : "-"
+                      }
                     }
-                    else if(tData == "userDetails" || tData == "createdBy"){
+                    else if (tData == "userDetails" || tData == "createdBy") {
                       value = (
-                        <div className="d-flex align-items-center" style={{gap: "7px"}}>
-                          <div style={{height: "35px"}}>
-                            <img src={data[tData].image} style={{height: "100%"}} alt="User Image"/>
+                        <div className="d-flex align-items-center" style={{ gap: "7px" }}>
+                          <div style={{ height: "35px" }}>
+                            <img src={data[tData].image} style={{ height: "100%" }} alt="User Image" />
                           </div>
                           <div className="d-flex flex-column">
-                            <span style={{fontSize:"13px"}}>{data[tData].name}</span>
-                            <span style={{fontSize:"13px",fontWeight:"normal"}}>{data[tData].email}</span>
+                            <span style={{ fontSize: "13px" }}>{data[tData].name}</span>
+                            <span style={{ fontSize: "13px", fontWeight: "normal" }}>{data[tData].email}</span>
                           </div>
                         </div>
                       )

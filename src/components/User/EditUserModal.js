@@ -139,7 +139,7 @@ const EditUserModal = ({ show, onHide }) => {
                             render={({ field }) => (
                                 <Select
                                     {...field}
-                                    placeholder="Location"
+                                    placeholder="Select Location"
                                     inputId="location"
                                     options={[
                                         { label: "Option 1", value: "1" },

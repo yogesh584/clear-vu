@@ -16,12 +16,7 @@
   align-items: center;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step {
   padding: 0.75rem 0;
   -webkit-transition: color 0.15s ease, background-color 0.15s ease,
     border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
@@ -35,13 +30,7 @@
   margin-bottom: 1.5rem;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step
-  .wizard-wrapper {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -50,13 +39,7 @@
   align-items: center;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step
-  .wizard-icon {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-icon {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -82,38 +65,18 @@
   margin-right: 1rem;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step
-  .wizard-icon
-  .wizard-check {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-icon .wizard-check {
   display: none;
   font-size: 1.4rem;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step
-  .wizard-icon
-  .wizard-number {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-icon .wizard-number {
   font-weight: 600;
   color: #3f4254;
   font-size: 1.35rem;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step
-  .wizard-label {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-label {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -126,38 +89,18 @@
   justify-content: center;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step
-  .wizard-label
-  .wizard-title {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-title {
   color: #181c32;
   font-weight: 600;
   font-size: 1.24rem;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step
-  .wizard-label
-  .wizard-desc {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step .wizard-label .wizard-desc {
   color: #b5b5c3;
   font-size: 0.925rem;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step[data-wizard-state="done"]
-  .wizard-icon {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state="done"] .wizard-icon {
   -webkit-transition: color 0.15s ease, background-color 0.15s ease,
     border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
   transition: color 0.15s ease, background-color 0.15s ease,
@@ -170,57 +113,24 @@
   background-color: #c9f7f5;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step[data-wizard-state="done"]
-  .wizard-icon
-  .wizard-check {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state="done"] .wizard-icon .wizard-check {
   color: #1bc5bd;
   display: inline-block;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step[data-wizard-state="done"]
-  .wizard-icon
-  .wizard-number {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state="done"] .wizard-icon .wizard-number {
   display: none;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step[data-wizard-state="done"]
-  .wizard-label
-  .wizard-title {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state="done"] .wizard-label .wizard-title {
   color: #b5b5c3;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step[data-wizard-state="done"]
-  .wizard-label
-  .wizard-desc {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state="done"] .wizard-label .wizard-desc {
   color: #d1d3e0;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step[data-wizard-state="current"] {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state="current"] {
   -webkit-transition: color 0.15s ease, background-color 0.15s ease,
     border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
   transition: color 0.15s ease, background-color 0.15s ease,
@@ -232,13 +142,7 @@
     -webkit-box-shadow 0.15s ease;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step[data-wizard-state="current"]
-  .wizard-icon {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state="current"] .wizard-icon {
   -webkit-transition: color 0.15s ease, background-color 0.15s ease,
     border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
   transition: color 0.15s ease, background-color 0.15s ease,
@@ -251,56 +155,28 @@
   background-color: #c9f7f5;
 }
 
-.login-container{
+.login-container {
   justify-content: flex-end;
 }
 
-.login-content{
+.login-content {
   padding: 3rem;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step[data-wizard-state="current"]
-  .wizard-icon
-  .wizard-check {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state="current"] .wizard-icon .wizard-check {
   color: #1bc5bd;
   display: none;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step[data-wizard-state="current"]
-  .wizard-icon
-  .wizard-number {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state="current"] .wizard-icon .wizard-number {
   color: #1bc5bd;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step[data-wizard-state="current"]
-  .wizard-label
-  .wizard-title {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state="current"] .wizard-label .wizard-title {
   color: #181c32;
 }
 
-.login.login-4
-  .login-container
-  .login-content
-  .wizard-nav
-  .wizard-steps
-  .wizard-step[data-wizard-state="current"]
-  .wizard-label
-  .wizard-desc {
+.login.login-4 .login-container .login-content .wizard-nav .wizard-steps .wizard-step[data-wizard-state="current"] .wizard-label .wizard-desc {
   color: #b5b5c3;
 }
 
@@ -318,7 +194,7 @@
 }
 
 .form-control.form-control-solid {
-  padding-right: 2.5rem !important;
+  padding-right: 2.5rem;
 }
 
 @media (min-width: 992px) {
@@ -358,16 +234,18 @@
 
 
 @media (max-width: 850px) {
-  #left-logo{
+  #left-logo {
     display: none;
   }
-  .login-container{
+
+  .login-container {
     width: 100% !important;
     margin: 0px !important;
     justify-content: center !important;
     padding: 0px !important;
   }
-  .login-content{
+
+  .login-content {
     width: 100% !important;
     max-width: 525px;
     margin: 0px !important;
@@ -394,13 +272,7 @@
     width: 100%;
   }
 
-  .login.login-4
-    .login-container
-    .wizard-nav
-    .wizard-steps
-    .wizard-step
-    .wizard-wrapper
-    .svg-icon {
+  .login.login-4 .login-container .wizard-nav .wizard-steps .wizard-step .wizard-wrapper .svg-icon {
     display: none;
   }
 
