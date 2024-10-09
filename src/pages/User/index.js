@@ -232,11 +232,12 @@ const Index = () => {
         showDeleteUserModal()
     }
 
-    const filteredTableData = tableData?.filter((item) => {
+    const filteredTableData = tableData?.filter((u) => {
         return (
-            item.userDetails.name.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
-            item.userDetails.email.toLowerCase().includes(searchKey?.toLowerCase() || "")
-        )
+            u.userDetails.name?.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+            u.userDetails.email?.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+            u.userDetails.location?.toLowerCase().includes(searchKey?.toLowerCase() || "")
+        );
     });
 
     return <div

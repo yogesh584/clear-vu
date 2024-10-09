@@ -421,7 +421,7 @@ const Table = ({
                     else if (tData == "status") {
                       value = (
                         <div className="form-check form-switch custom-toggle">
-                          <input className="form-check-input" type="checkbox" checked={data[tData]} />
+                          <input className="form-check-input" defaultChecked={data[tData]} type="checkbox" />
                         </div>
                       );
                     }
