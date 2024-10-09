@@ -30,38 +30,24 @@ const OBJ_TABLE = {
     "Status": "status"
 };
 
-// const getSortingField = (sortBy) => {
-//     let finalSortField = sortBy;
-//     if (sortBy == "Location") {
-//         finalSortField = "location";
-//     } else if (sortBy == "Product name") {
-//         finalSortField = "productName";
-//     } else if (sortBy == "In use") {
-//         finalSortField = "countInUse"
-//     } else if (sortBy == "Clean stock") {
-//         finalSortField = "cleanStock"
-//     } else if (sortBy == "Par level") {
-//         finalSortField = "parLevel"
-//     } else if (sortBy == "Dirty return") {
-//         finalSortField = "dirtyReturn"
-//     } else if (sortBy == "Del. qty") {
-//         finalSortField = "deliveredQuantity"
-//     } else if (sortBy == "Fill rate") {
-//         finalSortField = "fillRate"
-//     } else if (sortBy == "Last Washed") {
-//         finalSortField = "lastWashed"
-//     } else if (sortBy == "Total Washed") {
-//         finalSortField = "totalWashed"
-//     } else if (sortBy == "Next Wash cycle") {
-//         finalSortField = "nextWashCycle"
-//     } else if (sortBy == "Status") {
-//         finalSortField = "status"
-//     } else if (sortBy == "Installation Date") {
-//         finalSortField = "installationDate"
-//     }
+const getSortingField = (sortBy) => {
+    let finalSortField = sortBy;
+    if (sortBy == "User ID") {
+        finalSortField = "userId";
+    } else if(sortBy == "User details"){
+        finalSortField = "userName"
+    } else if(sortBy == "Location"){
+        finalSortField = "location"
+    } else if(sortBy == "Created by"){
+        finalSortField = "createdBy"
+    } else if(sortBy == "Last login"){
+        finalSortField = "lastLogin"
+    } else if(sortBy == "Created date"){
+        finalSortField = "createdAt"
+    }
 
-//     return finalSortField;
-// }
+    return finalSortField;
+}
 
 const userRoles = [
     { name: "Admin" }, 
@@ -69,16 +55,16 @@ const userRoles = [
     { name: 'Services' },
     { name: 'Floor manager' },
 ];
-const totalDocuments = 0;
 
 const Index = () => {
     const [page, setPage] = useState(0);
     const [perPage, setPerPage] = useState(0);
+    const [totalDocuments, setTotalDocuments] = useState(0);
     const [currentSort, setCurrentSort] = useState({
-        sortBy: "",
-        order: "",
+        sortBy: "createdAt",
+        order: "desc",
     });
-    // const [searchKey, setSearchKey] = useState(null);
+    const [searchKey, setSearchKey] = useState(null);
     const [isFiltersApplied, setIsFiltersApplied] = useState(false);
     const [tableData,setTableData] = useState([])
     
@@ -125,45 +111,55 @@ const Index = () => {
 
 
     useEffect(()=>{
-        requestUserList("get",`api/admin/list?userId=${userId}`)
+        requestUserList("get",`api/admin/users-list?userId=${userId}&page=${page}&pageSize=${records_per_page}`)
     },[userId])
 
     useEffect(()=>{
         if(responseUserList){
             const {data,responseCode} = responseUserList;
             if(responseCode == "SGEN001"){
-                const parsedData = data.map(d => ({
+                const parsedData = data.usersListingDTOList.map(d => ({
                     ...d,
                     userId: "#" + d.userId,
                     role: Array.isArray(d.role) && d.role.length > 0 ? d.role[0] : "-",
                     userDetails:{
                         name: d.userName ?? "-",
-                        image: "/Avatar%20(3).png",
-                        email: "-"
+                        hasImage: d.userImage ? true : false,
+                        image: d.userImage ? d.userImage : d.userName.length > 0 ? d.userName[0] : "-",
+                        email: d.emailId
                     },
                     location: "-",
-                    createdDate:d.createdDate && new Date(d.createdAt) instanceof Date ? moment(d.createdDate).format('MMM D, YYYY') : "-",
+                    createdDate:d.createdDate && new Date(d.createdDate) instanceof Date ? moment(d.createdDate).format('MMM D, YYYY') : "-",
                     dateTime: d.lastLogin ,
                     createdBy: {
-                        name: "-",
-                        email: d.createdBy ?? "-",
-                        image: "Avatar%20(3).png"
+                        name: d.createdBy,
+                        hasImage: d.createdByImage ? true : false,
+                        image: d.createdByImage ? d.createdByImage : d.createdBy.length > 0 ? d.createdBy[0] : "-",
+                        email: d.createdByEmail ?? "-",
                     }
                 }))
                 setTableData(parsedData);
+                setTotalDocuments(data.totalCount)
             }
         }
     },[responseUserList])
 
 
     const onSearchHandler = () => {
-        const { productName, location } = getValues();
-        if (productName) {
-            //querySearchString += `&productName=${productName}`
+        const { userId,role, status, location } = getValues();
+        console.log("currentSort.sortBy",currentSort.sortBy)
+        let finalSortField = getSortingField(currentSort.sortBy);
+        let querySearchString = "";
+        if (role) {
+            querySearchString += `&role=${role}`
+        }
+        if (status) {
+            querySearchString += `&status=${status}`
         }
         if (location) {
-            //querySearchString += `&location=${location}`
+            querySearchString += `&location=${location}`
         }
+        requestUserList("get",`api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`)
 
         setPage(0);
         setIsFiltersApplied(true)
@@ -171,51 +167,76 @@ const Index = () => {
 
     const onResetHandler = (e) => {
         e.preventDefault();
-        //let finalSortField = getSortingField(currentSort.sortBy);
-        resetField("productName");
+        let finalSortField = getSortingField(currentSort.sortBy);
+        requestUserList("get",`api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`)
+        resetField("role");
         resetField("location");
+        resetField("status");
         setPage(0);
         setIsFiltersApplied(false);
     };
 
     const sortingHandler = (sortBy) => {
-        //let finalSortField = getSortingField(sortBy);
+        let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
             setCurrentSort({ sortBy, order: newOrder });
+            requestUserList("get",`api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`)
         } else {
+            requestUserList("get",`api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`)
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
 
     const fetchMoreData = ({ selected }) => {
-        console.log("selected : ", selected)
         setPage(selected + 1);
+        requestUserList("get",`api/admin/users-list?userId=${userId}&page=${selected}&pageSize=${perPage}`)
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(0);
         setPerPage(event.target.value);
+        requestUserList("get",`api/admin/users-list?userId=${userId}&page=${0}&pageSize=${event.target.value}`)
+
     };
 
     const InputFields = [
         {
-            label: "Product Name",
-            name: "productName",
+            label: "Role",
+            name: "role",
+            isSelectInput: true,
+            children: <>
+                <option value={""}>Please Select Role</option>
+                <option value={"1"}>User</option>
+                <option value={"2"}>Admin</option>
+            </>
         },
         {
             label: "Location",
             name: "location",
         },
+        {
+            label: "Status",
+            name: "status",
+            isSelectInput: true,
+            children: <>
+                <option value={""}>Please Select Status</option>
+                <option value={"1"}>Active</option>
+                <option value={"0"}>Inactive</option>
+            </>
+        }
     ];
 
     const deleteHandler = () => {
         showDeleteUserModal()
     }
 
-    const filteredTableData = tableData?.filter(() => {
-        return true;
+    const filteredTableData = tableData?.filter((item) => {
+        return (
+            item.userDetails.name.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+            item.userDetails.email.toLowerCase().includes(searchKey?.toLowerCase() || "")
+        )
     });
 
     return <div
@@ -357,7 +378,7 @@ const Index = () => {
                                                     paddingLeft: "40px",
                                                     outline: "none"
                                                 }}
-                                                    // onChange={(e) => setSearchKey(e.target.value)}
+                                                    onChange={(e) => setSearchKey(e.target.value)}
                                                 />
                                             </div>
                                             <button
@@ -474,7 +495,7 @@ const Index = () => {
                                                     startDate: "dateTime",
                                                     endDate: "dateTime",
                                                 }}
-                                                dontShowSort={["SKU"]}
+                                                dontShowSort={["Role","Status"]}
                                                 toolTips={
                                                     {
                                                     }

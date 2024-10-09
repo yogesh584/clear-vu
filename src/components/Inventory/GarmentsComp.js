@@ -19,11 +19,11 @@ const OBJ_TABLE = {
     SKU: "SKU",
     Location: "location",
     "Product name": "productName",
-    "In use": "inUse",
+    "In use": "countInUse",
     "Last Washed": "lastWashed",
     "Total Washed": "totalWashed",
     "Next Wash cycle": "nextWashCycle",
-    "Status": "status",
+    "Status": "currentStatus",
 };
 
 const getSortingField = (sortBy) => {
@@ -104,11 +104,11 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     useEffect(() => {
         if (activeTab == "garments") {
             if (!isDataAlreadyFetched.card) {
-                requestGarmentsCards("get", `api/inventory/get-summaryCard?userId=${userId}&categoryId=2&size=${records_per_page}&page=0`);
+                requestGarmentsCards("get", `api/inventory/get-summaryCard?userId=${userId}&categoryId=2&size=${perPage}&page=0`);
             }
 
             if (!isDataAlreadyFetched.table) {
-                requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${records_per_page}&page=0`);
+                requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=0`);
             }
 
             if (!isDataAlreadyFetched.filters.productName) {

@@ -398,9 +398,19 @@ const Table = ({
                     else if (tData == "userDetails" || tData == "createdBy") {
                       value = (
                         <div className="d-flex align-items-center" style={{ gap: "7px" }}>
-                          <div style={{ height: "35px" }}>
-                            <img src={data[tData].image} style={{ height: "100%" }} alt="User Image" />
-                          </div>
+                          
+                            {
+                              data[tData].hasImage 
+                              ? 
+                                <div style={{ height: "35px" }}>
+                                  <img src={data[tData].image} style={{ height: "100%" }} alt="User Image" />
+                                </div>
+                              : 
+                                <div className="symbol symbol-30 symbol-circle symbol-primary">
+                                  <span className="symbol-label" style={{textTransform:"uppercase"}}>{data[tData].image}</span>
+                                </div>
+                            }
+                            
                           <div className="d-flex flex-column">
                             <span style={{ fontSize: "13px" }}>{data[tData].name}</span>
                             <span style={{ fontSize: "13px", fontWeight: "normal" }}>{data[tData].email}</span>
@@ -411,7 +421,7 @@ const Table = ({
                     else if (tData == "status") {
                       value = (
                         <div className="form-check form-switch custom-toggle">
-                          <input className="form-check-input" type="checkbox" />
+                          <input className="form-check-input" type="checkbox" checked={data[tData]} />
                         </div>
                       );
                     }

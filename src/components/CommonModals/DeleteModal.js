@@ -34,9 +34,11 @@ const DeleteModal = ({ headingText, bodyText, show, onHide, onClickFunc }) => {
                     padding: "10px",
                     paddingLeft: "18px",
                     paddingRight: "18px",
-                    // background: "#e8e9eb"
                 }}
-                    onClick={() => onClickFunc(false)}
+                    onClick={() => {
+                        onClickFunc(false);
+                        onHide()
+                    }}
                 >
                     Cancel
                 </button>
