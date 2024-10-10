@@ -49,13 +49,6 @@ const getSortingField = (sortBy) => {
     return finalSortField;
 }
 
-// const userRoles = [
-//     { name: "Admin" }, 
-//     { name: "Warehouse" }, 
-//     { name: 'Services' },
-//     { name: 'Floor manager' },
-// ];
-
 const Index = () => {
     const [page, setPage] = useState(0);
     const [perPage, setPerPage] = useState(0);
@@ -79,8 +72,9 @@ const Index = () => {
     const closeAddNewUserModal = () => setIsShowAddNewUserModal(false)
 
     const [isShowEditUserModal, setIsShowEditUserModal] = useState(false);
+    const [editModalContent, setEditModalContent] = useState({});
     const showEditUserModal = () => setIsShowEditUserModal(true)
-    const closeEditUserModal = () => setIsShowEditUserModal(false)
+    const closeEditUserModal = () => {setIsShowEditUserModal(false); setEditModalContent({})}
 
     const [isShowDeleteUserModal, setIsShowDeleteUserModal] = useState(false);
     const showDeleteUserModal = () => setIsShowDeleteUserModal(true)
@@ -332,18 +326,6 @@ const Index = () => {
                                                 }
                                             })
                                         }
-                                        {/* <div className="p-1">
-                                            <img src="/Avatar.png" alt="Avatar Img" />
-                                        </div>
-                                        <div className="p-1" style={{ marginLeft: "-18px" }}>
-                                            <img src="/Avatar (1).png" alt="Avatar Img" />
-                                        </div>
-                                        <div className="p-1" style={{ marginLeft: "-18px" }}>
-                                            <img src="/Avatar (2).png" alt="Avatar Img" />
-                                        </div>
-                                        <div className="p-1" style={{ marginLeft: "-18px" }}>
-                                            <img src="/Avatar (3).png" alt="Avatar Img" />
-                                        </div> */}
                                     </div>
                                     {role.totalCount > 5 && <div className="d-flex flex-column">
                                         <span>+{role.totalCount - 5} others</span>
@@ -503,8 +485,9 @@ const Index = () => {
                                                         name: "Edit",
                                                         extraData: true,
                                                         key: ["10_4"],
-                                                        click: () => {
+                                                        click : (v, data) => {
                                                             showEditUserModal();
+                                                            setEditModalContent(data)
                                                         }
                                                     },
                                                     {
@@ -528,7 +511,7 @@ const Index = () => {
 
                                             {perPage !== 0 && (
                                                 <Pagination
-                                                    page={page}
+                                                    page={page || 1}
                                                     totalDocuments={totalDocuments}
                                                     getNewData={fetchMoreData}
                                                     perPage={perPage}
@@ -546,10 +529,10 @@ const Index = () => {
                 </div>
             </div>
         </div>
-        <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal} />
-        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} />
-        <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal} />
-        <DeleteModal show={isShowDeleteUserModal} onHide={closeDeleteUserModal} headingText="Delete User" bodyText={"Are you sure you want to delete this user ?"} onClickFunc={() => { }} />
+        <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal}/>
+        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal}/>
+        <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal} data={editModalContent} />
+        <DeleteModal show={isShowDeleteUserModal} onHide={closeDeleteUserModal} headingText="Delete User" bodyText={"Are you sure you want to delete this user ?"} onClickFunc={()=>{}}/>
     </div>
 }
 

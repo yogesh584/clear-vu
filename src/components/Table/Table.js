@@ -308,7 +308,7 @@ const Table = ({
         id="taskTable"
       >
         <thead>
-          <tr style={{ whiteSpace: "nowrap" }}>
+          <tr style={{ whiteSpace: "nowrap",textAlign:"center" }}>
             {sorting && <th>ORDER</th>}
             {tableHeading.map((heading, index) => (
               <th
@@ -421,7 +421,12 @@ const Table = ({
                     else if (tData == "status") {
                       value = (
                         <div className="form-check form-switch custom-toggle">
-                          <input className="form-check-input" defaultChecked={data[tData]} type="checkbox" />
+                          <select className="form-control" style={{width:"90px"}}> 
+                            <option selected={data[tData] == "1"}>Active</option>
+                            <option selected={data[tData] == "0"}>Inactive</option>
+                            <option>Other</option>
+                          </select>
+                          {/* <input className="form-check-input" defaultChecked={data[tData]} type="checkbox" /> */}
                         </div>
                       );
                     }

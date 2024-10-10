@@ -58,8 +58,8 @@ export const menu = [
     path: "/user-management",
     Svg: UserSideBar,
     subMenu: [],
-    highlight: [],
-    subHighlight: [],
+    highlight: ["/user-management"],
+    subHighlight: ["/user-management"],
     key: ["0"],
   },
   {

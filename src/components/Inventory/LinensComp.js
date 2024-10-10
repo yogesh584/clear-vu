@@ -432,7 +432,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
 
                                     {perPage !== 0 && (
                                         <Pagination
-                                            page={page}
+                                            page={page || 1}
                                             totalDocuments={totalDocuments}
                                             getNewData={fetchMoreData}
                                             perPage={perPage}
