@@ -104,11 +104,11 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     useEffect(() => {
         if (activeTab == "curtains") {
             if (!isDataAlreadyFetched.card) {
-                requestCurtainsCards("get", `api/inventory/get-summaryCard?userId=${userId}&categoryId=3&size=${records_per_page}&page=0`);
+                requestCurtainsCards("get", `api/inventory/get-summaryCard?userId=${userId}&categoryId=3&size=${perPage}&page=0`);
             }
 
             if (!isDataAlreadyFetched.table) {
-                requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${records_per_page}&page=0`);
+                requestCurtainsData("get", `api/inventory/management?userId=${userId}&categoryId=3&size=${perPage}&page=0`);
             }
 
             if (!isDataAlreadyFetched.filters.productName) {
@@ -431,7 +431,7 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
 
                                     {perPage !== 0 && (
                                         <Pagination
-                                            page={page}
+                                            page={page || 1}
                                             totalDocuments={totalDocuments}
                                             getNewData={fetchMoreData}
                                             perPage={perPage}

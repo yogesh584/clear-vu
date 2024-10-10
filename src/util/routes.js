@@ -10,6 +10,7 @@ import InventoryManagment from "../pages/Inventory/Managment";
 import InventoryRequests from "../pages/Inventory/Requests/Requests";
 import RequestLineans from "../pages/Inventory/Requests/RequestLineans";
 import InventoryChangeRoom from "../pages/Inventory/ChangeRoom";
+// import DeliveryReceipt from "../pages/Inventory/Delivery/index";
 import ChangePassword from "../pages/ChangePassword/ChangePassword";
 
 export const privateRoutes = [
@@ -19,6 +20,7 @@ export const privateRoutes = [
   { path: "/inventory-requests", component: InventoryRequests, key: "1_1" },
   { path: "/inventory-change-room", component: InventoryChangeRoom, key: "1_2" },
   { path: "/inventory-requests/request-lineans", component: RequestLineans, key: "1_3" },
+  // { path: "/inventory-delivery-tracking", component: DeliveryReceipt, key: "1_4" },
   { path: "/user-management", component: UserManagment, key: "2_1" }  
 ];
 

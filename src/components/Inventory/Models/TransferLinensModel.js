@@ -304,6 +304,7 @@ const TransferLinensModel = ({ show, onHide }) => {
                         paddingRight: "18px",
                         background: "transparent"
                     }}
+                    onClick={onHide}
                 >
                     Cancel
                 </button>

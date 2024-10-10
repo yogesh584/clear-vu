@@ -311,6 +311,7 @@ const EditLineansModal = ({ show, onHide }) => {
                         background: "transparent",
                         margin: "0px"
                     }}
+                    onClick={onHide}
                 >
                     Cancel
                 </button>

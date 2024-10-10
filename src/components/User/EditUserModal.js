@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import Select from 'react-select';
 
 
-const EditUserModal = ({ show, onHide }) => {
+const EditUserModal = ({ show, onHide, data }) => {
     const {
         register,
         handleSubmit,
@@ -43,6 +43,8 @@ const EditUserModal = ({ show, onHide }) => {
                             name="fullname"
                             autoComplete="off"
                             placeholder="Enter full name"
+                            defaultValue={data.userName}
+                            readOnly={true}
                             {...register("fullname", {
                                 required: true
                             })}
@@ -59,6 +61,8 @@ const EditUserModal = ({ show, onHide }) => {
                             name="email"
                             autoComplete="off"
                             placeholder="Enter email address"
+                            defaultValue={data.emailId}
+                            readOnly={true}
                             {...register("email", {
                                 required: true,
                                 pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
@@ -201,6 +205,7 @@ const EditUserModal = ({ show, onHide }) => {
                         paddingRight: "18px",
                         background: "transparent"
                     }}
+                    onClick={onHide}
                 >
                     Cancel
                 </button>

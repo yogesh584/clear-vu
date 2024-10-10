@@ -193,7 +193,6 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     };
 
     const fetchMoreData = ({ selected }) => {
-        console.log("selected : ", selected)
         setPage(selected + 1);
         requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${perPage}&page=${selected}`);
     };
@@ -433,7 +432,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
 
                                     {perPage !== 0 && (
                                         <Pagination
-                                            page={page}
+                                            page={page || 1}
                                             totalDocuments={totalDocuments}
                                             getNewData={fetchMoreData}
                                             perPage={perPage}
