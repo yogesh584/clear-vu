@@ -34,27 +34,27 @@ const getSortingField = (sortBy) => {
     let finalSortField = sortBy;
     if (sortBy == "User ID") {
         finalSortField = "userId";
-    } else if(sortBy == "User details"){
+    } else if (sortBy == "User details") {
         finalSortField = "userName"
-    } else if(sortBy == "Location"){
+    } else if (sortBy == "Location") {
         finalSortField = "location"
-    } else if(sortBy == "Created by"){
+    } else if (sortBy == "Created by") {
         finalSortField = "createdBy"
-    } else if(sortBy == "Last login"){
+    } else if (sortBy == "Last login") {
         finalSortField = "lastLogin"
-    } else if(sortBy == "Created date"){
+    } else if (sortBy == "Created date") {
         finalSortField = "createdAt"
     }
 
     return finalSortField;
 }
 
-const userRoles = [
-    { name: "Admin" }, 
-    { name: "Warehouse" }, 
-    { name: 'Services' },
-    { name: 'Floor manager' },
-];
+// const userRoles = [
+//     { name: "Admin" }, 
+//     { name: "Warehouse" }, 
+//     { name: 'Services' },
+//     { name: 'Floor manager' },
+// ];
 
 const Index = () => {
     const [page, setPage] = useState(0);
@@ -66,8 +66,9 @@ const Index = () => {
     });
     const [searchKey, setSearchKey] = useState(null);
     const [isFiltersApplied, setIsFiltersApplied] = useState(false);
-    const [tableData,setTableData] = useState([])
-    
+    const [tableData, setTableData] = useState([])
+    const [userRoles, setUserRoles] = useState([])
+
     /*      MODAL HANDLING STATES        */
     const [isShowPermissionsModal, setIsShowPermissionsModal] = useState(false);
     const showPermissionsModal = () => setIsShowPermissionsModal(true)
@@ -87,7 +88,8 @@ const Index = () => {
 
 
     /*      REQUESTS         */
-    const {request: requestUserList, response: responseUserList} = useRequest()
+    const { request: requestUserList, response: responseUserList } = useRequest()
+    const { request: requestUserRoleList, response: responseUserRoleList } = useRequest()
     let { records_per_page } = useSelector((state) => state.setting);
     let { userId } = useSelector((state) => state.auth);
 
@@ -110,27 +112,35 @@ const Index = () => {
     } = useForm();
 
 
-    useEffect(()=>{
-        requestUserList("get",`api/admin/users-list?userId=${userId}&page=${page}&pageSize=${records_per_page}`)
-    },[userId])
+    useEffect(() => {
+        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${page}&pageSize=${records_per_page}`)
+        requestUserRoleList("get", `api/admin/rolecard?userId=${userId}`)
+    }, [userId])
 
-    useEffect(()=>{
-        if(responseUserList){
-            const {data,responseCode} = responseUserList;
-            if(responseCode == "SGEN001"){
+    useEffect(() => {
+        if (responseUserRoleList) {
+            const { data } = responseUserRoleList;
+            setUserRoles(data);
+        }
+    }, [responseUserRoleList])
+
+    useEffect(() => {
+        if (responseUserList) {
+            const { data, responseCode } = responseUserList;
+            if (responseCode == "SGEN001") {
                 const parsedData = data.usersListingDTOList.map(d => ({
                     ...d,
                     userId: "#" + d.userId,
                     role: Array.isArray(d.role) && d.role.length > 0 ? d.role[0] : "-",
-                    userDetails:{
+                    userDetails: {
                         name: d.userName ?? "-",
                         hasImage: d.userImage ? true : false,
                         image: d.userImage ? d.userImage : d.userName.length > 0 ? d.userName[0] : "-",
                         email: d.emailId
                     },
                     location: "-",
-                    createdDate:d.createdDate && new Date(d.createdDate) instanceof Date ? moment(d.createdDate).format('MMM D, YYYY') : "-",
-                    dateTime: d.lastLogin ,
+                    createdDate: d.createdDate && new Date(d.createdDate) instanceof Date ? moment(d.createdDate).format('MMM D, YYYY') : "-",
+                    dateTime: d.lastLogin,
                     createdBy: {
                         name: d.createdBy,
                         hasImage: d.createdByImage ? true : false,
@@ -142,12 +152,12 @@ const Index = () => {
                 setTotalDocuments(data.totalCount)
             }
         }
-    },[responseUserList])
+    }, [responseUserList])
 
 
     const onSearchHandler = () => {
-        const { userId,role, status, location } = getValues();
-        console.log("currentSort.sortBy",currentSort.sortBy)
+        const { userId, role, status, location } = getValues();
+        console.log("currentSort.sortBy", currentSort.sortBy)
         let finalSortField = getSortingField(currentSort.sortBy);
         let querySearchString = "";
         if (role) {
@@ -159,7 +169,7 @@ const Index = () => {
         if (location) {
             querySearchString += `&location=${location}`
         }
-        requestUserList("get",`api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`)
+        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`)
 
         setPage(0);
         setIsFiltersApplied(true)
@@ -168,7 +178,7 @@ const Index = () => {
     const onResetHandler = (e) => {
         e.preventDefault();
         let finalSortField = getSortingField(currentSort.sortBy);
-        requestUserList("get",`api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`)
+        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`)
         resetField("role");
         resetField("location");
         resetField("status");
@@ -181,23 +191,23 @@ const Index = () => {
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
             setCurrentSort({ sortBy, order: newOrder });
-            requestUserList("get",`api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`)
+            requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`)
         } else {
-            requestUserList("get",`api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`)
+            requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`)
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
 
     const fetchMoreData = ({ selected }) => {
         setPage(selected + 1);
-        requestUserList("get",`api/admin/users-list?userId=${userId}&page=${selected}&pageSize=${perPage}`)
+        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${selected}&pageSize=${perPage}`)
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(0);
         setPerPage(event.target.value);
-        requestUserList("get",`api/admin/users-list?userId=${userId}&page=${0}&pageSize=${event.target.value}`)
+        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${event.target.value}`)
 
     };
 
@@ -301,7 +311,7 @@ const Index = () => {
                                 <div id="row1" className="d-flex justify-content-between align-items-center" style={{ gap: "10px" }}>
                                     <div className="d-flex align-items-center" style={{ gap: "10px" }}>
                                         <RoleIcon />
-                                        <span style={{ fontSize: "18px", textTransform: "capitalize" }}>{role.name}</span>
+                                        <span style={{ fontSize: "18px", textTransform: "capitalize" }}>{role.roleName}</span>
                                     </div>
                                     <div className="d-flex align-items-center">
                                         <PencilIcon />
@@ -309,7 +319,20 @@ const Index = () => {
                                 </div>
                                 <div id="row2" className="d-flex mt-3 align-items-center" style={{ gap: "10px" }}>
                                     <div className="d-flex flex-row">
-                                        <div className="p-1">
+                                        {
+                                            Array.isArray(role.userRoleDetail) && role.userRoleDetail.slice(0, 5).map((roleDetail, index) => {
+                                                if (roleDetail.userImage) {
+                                                    return <div className="p-1" key={roleDetail.email + index} style={{ marginLeft: index == 0 ? "0px" : "-13px" }}>
+                                                        <img src={roleDetail.userImage} alt="AI" />
+                                                    </div>
+                                                } else {
+                                                    return <div className="symbol symbol-30 symbol-circle symbol-primary" style={{marginLeft:index == 0 ? "0px" : "-13px", border: "1px solid #fff"}} key={roleDetail.email + index}>
+                                                        <span className="symbol-label" style={{ textTransform: "uppercase" }}>{roleDetail.username[0]}</span>
+                                                    </div>
+                                                }
+                                            })
+                                        }
+                                        {/* <div className="p-1">
                                             <img src="/Avatar.png" alt="Avatar Img" />
                                         </div>
                                         <div className="p-1" style={{ marginLeft: "-18px" }}>
@@ -320,11 +343,11 @@ const Index = () => {
                                         </div>
                                         <div className="p-1" style={{ marginLeft: "-18px" }}>
                                             <img src="/Avatar (3).png" alt="Avatar Img" />
-                                        </div>
+                                        </div> */}
                                     </div>
-                                    <div className="d-flex flex-column">
-                                        <span>+5 others</span>
-                                    </div>
+                                    {role.totalCount > 5 && <div className="d-flex flex-column">
+                                        <span>+{role.totalCount - 5} others</span>
+                                    </div>}
                                 </div>
                                 <div id="row3" className="mt-4">
                                     <button
@@ -480,23 +503,23 @@ const Index = () => {
                                                         name: "Edit",
                                                         extraData: true,
                                                         key: ["10_4"],
-                                                        click : () => {
+                                                        click: () => {
                                                             showEditUserModal();
                                                         }
-                                                      },
-                                                      {
+                                                    },
+                                                    {
                                                         isLink: false,
                                                         name: "Delete",
                                                         click: deleteHandler,
                                                         key: ["10_5"],
-                                                      },
+                                                    },
                                                 ]}
                                                 onlyDate={{
                                                     createdAt: "date",
                                                     startDate: "dateTime",
                                                     endDate: "dateTime",
                                                 }}
-                                                dontShowSort={["Role","Status"]}
+                                                dontShowSort={["Role", "Status"]}
                                                 toolTips={
                                                     {
                                                     }
@@ -523,10 +546,10 @@ const Index = () => {
                 </div>
             </div>
         </div>
-        <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal}/>
-        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal}/>
-        <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal}/>
-        <DeleteModal show={isShowDeleteUserModal} onHide={closeDeleteUserModal} headingText="Delete User" bodyText={"Are you sure you want to delete this user ?"} onClickFunc={()=>{}}/>
+        <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal} />
+        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} />
+        <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal} />
+        <DeleteModal show={isShowDeleteUserModal} onHide={closeDeleteUserModal} headingText="Delete User" bodyText={"Are you sure you want to delete this user ?"} onClickFunc={() => { }} />
     </div>
 }
 
