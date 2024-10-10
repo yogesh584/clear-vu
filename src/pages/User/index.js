@@ -125,7 +125,7 @@ const Index = () => {
 
 
     useEffect(()=>{
-        requestUserList("get",`api/admin/list?userId=${userId}`)
+        requestUserList("get",`api/admin/users-list?userId=${userId}`)
     },[userId])
 
     useEffect(()=>{
