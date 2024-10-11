@@ -48,10 +48,7 @@ const EditLineansModal = ({ show, onHide }) => {
                                     placeholder="Select Location"
                                     inputId="location"
                                     options={[
-                                        { label: "Option 1", value: "1" },
-                                        { label: "Option 2", value: "2" },
-                                        { label: "Option 3", value: "3" },
-                                        { label: "Option 4", value: "4" },
+                                        // { label: "Option 1", value: "1" },
                                     ]}
                                     components={{
                                         IndicatorSeparator: () => null,
@@ -108,10 +105,7 @@ const EditLineansModal = ({ show, onHide }) => {
                                             placeholder="Select Product"
                                             inputId="product"
                                             options={[
-                                                { label: "Option 1", value: "1" },
-                                                { label: "Option 2", value: "2" },
-                                                { label: "Option 3", value: "3" },
-                                                { label: "Option 4", value: "4" },
+                                                // { label: "Option 1", value: "1" },
                                             ]}
                                             components={{
                                                 IndicatorSeparator: () => null,
@@ -209,10 +203,7 @@ const EditLineansModal = ({ show, onHide }) => {
                                             placeholder="Select Return"
                                             inputId="dirtyReturn"
                                             options={[
-                                                { label: "Option 1", value: "1" },
-                                                { label: "Option 2", value: "2" },
-                                                { label: "Option 3", value: "3" },
-                                                { label: "Option 4", value: "4" },
+                                                // { label: "Option 1", value: "1" },
                                             ]}
                                             components={{
                                                 IndicatorSeparator: () => null,

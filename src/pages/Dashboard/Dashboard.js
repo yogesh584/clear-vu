@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 const Dashboard = () => {
   useEffect(() => {
-    document.title = "Dashboard - Clear vu";
+    document.title = "Dashboard - ClearVu-IQ";
   }, []);
 
 

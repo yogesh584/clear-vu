@@ -61,6 +61,7 @@ const Index = () => {
     const [isFiltersApplied, setIsFiltersApplied] = useState(false);
     const [tableData, setTableData] = useState([])
     const [userRoles, setUserRoles] = useState([])
+    const [locationList, setLocationList] = useState([])
 
     /*      MODAL HANDLING STATES        */
     const [isShowPermissionsModal, setIsShowPermissionsModal] = useState(false);
@@ -84,8 +85,9 @@ const Index = () => {
     /*      REQUESTS         */
     const { request: requestUserList, response: responseUserList } = useRequest()
     const { request: requestUserRoleList, response: responseUserRoleList } = useRequest()
+    const { request: requestLocationList, response: responseLocationList } = useRequest()
     let { records_per_page } = useSelector((state) => state.setting);
-    let { userId } = useSelector((state) => state.auth);
+    let { userId, floorDetails } = useSelector((state) => state.auth);
 
     useEffect(() => {
         if (!records_per_page) {
@@ -107,8 +109,10 @@ const Index = () => {
 
 
     useEffect(() => {
+        document.title = "User Managment - ClearVu-IQ";
         requestUserList("get", `api/admin/users-list?userId=${userId}&page=${page}&pageSize=${records_per_page}`)
         requestUserRoleList("get", `api/admin/rolecard?userId=${userId}`)
+        requestLocationList("get", `api/floor?facilityId=${floorDetails.facilityId}`)
     }, [userId])
 
     useEffect(() => {
@@ -117,6 +121,12 @@ const Index = () => {
             setUserRoles(data);
         }
     }, [responseUserRoleList])
+
+    useEffect(() => {
+        if (responseLocationList) {
+            setLocationList(responseLocationList)
+        }
+    }, [responseLocationList])
 
     useEffect(() => {
         if (responseUserList) {
@@ -150,7 +160,7 @@ const Index = () => {
 
 
     const onSearchHandler = () => {
-        const { userId, role, status, location } = getValues();
+        const { role, status, location } = getValues();
         console.log("currentSort.sortBy", currentSort.sortBy)
         let finalSortField = getSortingField(currentSort.sortBy);
         let querySearchString = "";
@@ -219,6 +229,15 @@ const Index = () => {
         {
             label: "Location",
             name: "location",
+            isSelectInput: true,
+            children: <>
+                    <option value={"0"}>Please Select Location</option>
+                {
+                    locationList.map((d,i) => (
+                        <option value={d.floorId} key={i}>{d.floorName}</option>
+                    ))
+                }
+            </>
         },
         {
             label: "Status",

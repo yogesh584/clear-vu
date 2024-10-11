@@ -18,7 +18,7 @@ const Managment = () => {
     const [curtainCall, setCurtainCall] = useState({ card: false, table: false, filters: { productName: false, location: false } })
 
     useEffect(() => {
-        document.title = "Inventory Managment - Clear vu";
+        document.title = "Inventory Managment - ClearVu-IQ";
     }, []);
 
     return (

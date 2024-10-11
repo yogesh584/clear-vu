@@ -49,10 +49,7 @@ const TransferLinensModel = ({ show, onHide }) => {
                                     placeholder="Select Product/s"
                                     inputId="products"
                                     options={[
-                                        { label: "Option 1", value: "1" },
-                                        { label: "Option 2", value: "2" },
-                                        { label: "Option 3", value: "3" },
-                                        { label: "Option 4", value: "4" },
+                                        // { label: "Option 1", value: "1" },
                                     ]}
                                     components={{
                                         IndicatorSeparator: () => null,
@@ -186,10 +183,7 @@ const TransferLinensModel = ({ show, onHide }) => {
                                     placeholder="select From Location"
                                     inputId="fromLocation"
                                     options={[
-                                        { label: "Option 1", value: "1" },
-                                        { label: "Option 2", value: "2" },
-                                        { label: "Option 3", value: "3" },
-                                        { label: "Option 4", value: "4" },
+                                        // { label: "Option 1", value: "1" },
                                     ]}
                                     components={{
                                         IndicatorSeparator: () => null,
@@ -245,10 +239,7 @@ const TransferLinensModel = ({ show, onHide }) => {
                                     placeholder="select To Location"
                                     inputId="toLocation"
                                     options={[
-                                        { label: "Option 1", value: "1" },
-                                        { label: "Option 2", value: "2" },
-                                        { label: "Option 3", value: "3" },
-                                        { label: "Option 4", value: "4" },
+                                        // { label: "Option 1", value: "1" },
                                     ]}
                                     components={{
                                         IndicatorSeparator: () => null,

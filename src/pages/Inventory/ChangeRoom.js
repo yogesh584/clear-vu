@@ -10,16 +10,16 @@ import EditLineansModal from "../../components/Inventory/Models/EditLineansModal
 import ChangeRoomModal from "../../components/Inventory/Models/ChangeRoomModal";
 
 const OBJ_TABLE = {
-    "Room": "room",
-    "Top flat sheet": "topFlatSheet",
-    "Bottom sheet": "bottomSheet",
-    "Pillow case": "pillowCase",
-    "Bathe blanket": "batheBlanket",
-    "Thermal Blanket": "thermalBlanket",
-    "Underpad": "underpad",
-    "Bath towel": "bathTowel",
-    "Bath Mat": "bathMat",
-    "Wash cloth": "washCloth"
+    // "Room": "room",
+    // "Top flat sheet": "topFlatSheet",
+    // "Bottom sheet": "bottomSheet",
+    // "Pillow case": "pillowCase",
+    // "Bathe blanket": "batheBlanket",
+    // "Thermal Blanket": "thermalBlanket",
+    // "Underpad": "underpad",
+    // "Bath towel": "bathTowel",
+    // "Bath Mat": "bathMat",
+    // "Wash cloth": "washCloth"
 };
 
 // const getSortingField = (sortBy) => {
@@ -56,42 +56,42 @@ const OBJ_TABLE = {
 // }
 
 const tableData = [
-    {
-        room: "Room 1A",
-        topFlatSheet: "2",
-        bottomSheet: "2",
-        pillowCase: "2",
-        batheBlanket: "2",
-        thermalBlanket: "2",
-        underpad: "2",
-        bathTowel: "2",
-        bathMat: "2",
-        washCloth: "2",
-    },
-    {
-        room: "Room 1B",
-        topFlatSheet: "2",
-        bottomSheet: "2",
-        pillowCase: "2",
-        batheBlanket: "2",
-        thermalBlanket: "2",
-        underpad: "2",
-        bathTowel: "2",
-        bathMat: "2",
-        washCloth: "2"
-    },
-    {
-        room: "Room 2",
-        topFlatSheet: "1",
-        bottomSheet: "1",
-        pillowCase: "1",
-        batheBlanket: "1",
-        thermalBlanket: "1",
-        underpad: "1",
-        bathTowel: "1",
-        bathMat: "1",
-        washCloth: "1"
-    },
+    // {
+    //     room: "Room 1A",
+    //     topFlatSheet: "2",
+    //     bottomSheet: "2",
+    //     pillowCase: "2",
+    //     batheBlanket: "2",
+    //     thermalBlanket: "2",
+    //     underpad: "2",
+    //     bathTowel: "2",
+    //     bathMat: "2",
+    //     washCloth: "2",
+    // },
+    // {
+    //     room: "Room 1B",
+    //     topFlatSheet: "2",
+    //     bottomSheet: "2",
+    //     pillowCase: "2",
+    //     batheBlanket: "2",
+    //     thermalBlanket: "2",
+    //     underpad: "2",
+    //     bathTowel: "2",
+    //     bathMat: "2",
+    //     washCloth: "2"
+    // },
+    // {
+    //     room: "Room 2",
+    //     topFlatSheet: "1",
+    //     bottomSheet: "1",
+    //     pillowCase: "1",
+    //     batheBlanket: "1",
+    //     thermalBlanket: "1",
+    //     underpad: "1",
+    //     bathTowel: "1",
+    //     bathMat: "1",
+    //     washCloth: "1"
+    // },
 ];
 
 const totalDocuments = 0;

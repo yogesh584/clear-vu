@@ -4,48 +4,48 @@ import Modal from "react-bootstrap/Modal";
 import { useForm } from "react-hook-form";
 import { HorizontalArrow } from '../../../util/Svg';
 
-const tableData = [
-    {
-        room: "Room 1A (Restock)",
-        bedsheets: 0,
-        pillowcases: 0,
-        blankets: 0,
-        mattressProtector: 0,
-        towels: 0,
-        bathMats: 0,
-        napkins: 0
-    },
-    {
-        room: "Room 1A (Dirty returns)",
-        bedsheets: 0,
-        pillowcases: 0,
-        blankets: 0,
-        mattressProtector: 0,
-        towels: 0,
-        bathMats: 0,
-        napkins: 0
-    },
-    {
-        room: "Excess/lost Qty",
-        bedsheets: 0,
-        pillowcases: 0,
-        blankets: 0,
-        mattressProtector: 0,
-        towels: 0,
-        bathMats: 0,
-        napkins: 0
-    },
-    {
-        room: "In Use",
-        bedsheets: 0,
-        pillowcases: 0,
-        blankets: 0,
-        mattressProtector: 0,
-        towels: 0,
-        bathMats: 0,
-        napkins: 0
-    },
-]
+// const tableData = [
+    // {
+    //     room: "Room 1A (Restock)",
+    //     bedsheets: 0,
+    //     pillowcases: 0,
+    //     blankets: 0,
+    //     mattressProtector: 0,
+    //     towels: 0,
+    //     bathMats: 0,
+    //     napkins: 0
+    // },
+    // {
+    //     room: "Room 1A (Dirty returns)",
+    //     bedsheets: 0,
+    //     pillowcases: 0,
+    //     blankets: 0,
+    //     mattressProtector: 0,
+    //     towels: 0,
+    //     bathMats: 0,
+    //     napkins: 0
+    // },
+    // {
+    //     room: "Excess/lost Qty",
+    //     bedsheets: 0,
+    //     pillowcases: 0,
+    //     blankets: 0,
+    //     mattressProtector: 0,
+    //     towels: 0,
+    //     bathMats: 0,
+    //     napkins: 0
+    // },
+    // {
+    //     room: "In Use",
+    //     bedsheets: 0,
+    //     pillowcases: 0,
+    //     blankets: 0,
+    //     mattressProtector: 0,
+    //     towels: 0,
+    //     bathMats: 0,
+    //     napkins: 0
+    // },
+// ]
 
 const ChangeRoomModal = ({ show, onHide }) => {
     const {
@@ -76,7 +76,7 @@ const ChangeRoomModal = ({ show, onHide }) => {
                 <form onSubmit={handleSubmit(onSubmit)} className='d-flex flex-column' style={{ gap: "20px" }}>
                     <div className="dataTables_wrapper block-table">
                         <div className="table-responsive">
-                            <table
+                            {/* <table
                                 className="table dataTable table-head-custom table-head-bg table-borderless table-vertical-center"
                                 id="taskTable"
                             >
@@ -179,7 +179,7 @@ const ChangeRoomModal = ({ show, onHide }) => {
                                         </tr>
                                     })}
                                 </tbody>
-                            </table>
+                            </table> */}
                         </div>
                         <div className='d-flex justify-content-between align-items-center mt-2' style={{ flexWrap: "wrap", gap: "15px" }}>
                             <button className="position-relative btn btn-primary  mr-2"
