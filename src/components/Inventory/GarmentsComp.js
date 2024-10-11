@@ -161,7 +161,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
             querySearchString += `&productName=${productName}`
         }
         if (location) {
-            querySearchString += `&location=${location}`
+            querySearchString += `&locationName=${location}`
         }
 
         requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
@@ -194,14 +194,32 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     const fetchMoreData = ({ selected }) => {
         console.log("selected : ", selected)
         setPage(selected + 1);
-        requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${selected}`);
+        const { productName, location } = getValues();
+        let finalSortField = getSortingField(currentSort.sortBy);
+        let querySearchString = "";
+        if (productName) {
+            querySearchString += `&productName=${productName}`
+        }
+        if (location) {
+            querySearchString += `&locationName=${location}`
+        }
+        requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${selected}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(0);
         setPerPage(event.target.value);
-        requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${event.target.value}&page=0`);
+        const { productName, location } = getValues();
+        let finalSortField = getSortingField(currentSort.sortBy);
+        let querySearchString = "";
+        if (productName) {
+            querySearchString += `&productName=${productName}`
+        }
+        if (location) {
+            querySearchString += `&locationName=${location}`
+        }
+        requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${event.target.value}&page=0&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
     };
 
     const InputFields = [

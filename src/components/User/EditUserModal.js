@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Modal from "react-bootstrap/Modal";
 
 import { useForm, Controller } from "react-hook-form";
@@ -10,7 +10,8 @@ const EditUserModal = ({ show, onHide, data }) => {
         register,
         handleSubmit,
         formState: { errors },
-        control
+        control,
+        setValue
     } = useForm();
 
 
@@ -18,6 +19,11 @@ const EditUserModal = ({ show, onHide, data }) => {
 
     }
 
+    useEffect(() => {
+        setValue("fullname",data.userName);
+        setValue("email",data.emailId);
+    }, [data])
+    
     return (
         <Modal
             show={show}
@@ -43,7 +49,6 @@ const EditUserModal = ({ show, onHide, data }) => {
                             name="fullname"
                             autoComplete="off"
                             placeholder="Enter full name"
-                            defaultValue={data.userName}
                             readOnly={true}
                             {...register("fullname", {
                                 required: true
@@ -61,7 +66,6 @@ const EditUserModal = ({ show, onHide, data }) => {
                             name="email"
                             autoComplete="off"
                             placeholder="Enter email address"
-                            defaultValue={data.emailId}
                             readOnly={true}
                             {...register("email", {
                                 required: true,

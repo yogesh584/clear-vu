@@ -171,7 +171,7 @@ const Index = () => {
             querySearchString += `&status=${status}`
         }
         if (location) {
-            querySearchString += `&location=${location}`
+            querySearchString += `&floorId=${location}`
         }
         requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`)
 
@@ -204,14 +204,36 @@ const Index = () => {
 
     const fetchMoreData = ({ selected }) => {
         setPage(selected + 1);
-        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${selected}&pageSize=${perPage}`)
+        const { role, status, location } = getValues();
+        let querySearchString = "";
+        if (role) {
+            querySearchString += `&role=${role}`
+        }
+        if (status) {
+            querySearchString += `&status=${status}`
+        }
+        if (location) {
+            querySearchString += `&floorId=${location}`
+        }
+        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${selected}&pageSize=${perPage}${querySearchString}`)
     };
 
 
     const perPageChangeHandler = (event) => {
         setPage(0);
         setPerPage(event.target.value);
-        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${event.target.value}`)
+        const { role, status, location } = getValues();
+        let querySearchString = "";
+        if (role) {
+            querySearchString += `&role=${role}`
+        }
+        if (status) {
+            querySearchString += `&status=${status}`
+        }
+        if (location) {
+            querySearchString += `&floorId=${location}`
+        }
+        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${event.target.value}${querySearchString}`)
 
     };
 
@@ -231,7 +253,7 @@ const Index = () => {
             name: "location",
             isSelectInput: true,
             children: <>
-                    <option value={"0"}>Please Select Location</option>
+                    <option value={""}>Please Select Location</option>
                 {
                     locationList.map((d,i) => (
                         <option value={d.floorId} key={i}>{d.floorName}</option>
