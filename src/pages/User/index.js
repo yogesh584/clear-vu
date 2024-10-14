@@ -57,7 +57,7 @@ const Index = () => {
         sortBy: "createdAt",
         order: "desc",
     });
-    const [searchKey, setSearchKey] = useState(null);
+    const [searchKey, setSearchKey] = useState("");
     const [isFiltersApplied, setIsFiltersApplied] = useState(false);
     const [tableData, setTableData] = useState([])
     const [userRoles, setUserRoles] = useState([])
@@ -124,7 +124,7 @@ const Index = () => {
 
     useEffect(() => {
         if (responseLocationList) {
-            setLocationList(responseLocationList)
+            setLocationList(responseLocationList.data)
         }
     }, [responseLocationList])
 
@@ -142,7 +142,7 @@ const Index = () => {
                         image: d.userImage ? d.userImage : d.userName.length > 0 ? d.userName[0] : "-",
                         email: d.emailId
                     },
-                    location: "-",
+                    location: d.locationName,
                     createdDate: d.createdDate && new Date(d.createdDate) instanceof Date ? moment(d.createdDate).format('MMM D, YYYY') : "-",
                     dateTime: d.lastLogin,
                     createdBy: {
@@ -237,6 +237,8 @@ const Index = () => {
 
     };
 
+    console.log("locationList",locationList)
+
     const InputFields = [
         {
             label: "Role",
@@ -255,8 +257,8 @@ const Index = () => {
             children: <>
                     <option value={""}>Please Select Location</option>
                 {
-                    locationList.map((d,i) => (
-                        <option value={d.floorId} key={i}>{d.floorName}</option>
+                    locationList.map((d) => (
+                        <option value={d.floorId} key={d.floorId}>{d.floorName}</option>
                     ))
                 }
             </>
@@ -279,6 +281,7 @@ const Index = () => {
 
     const filteredTableData = tableData?.filter((u) => {
         return (
+            searchKey.length < 3 || 
             u.userDetails.name?.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
             u.userDetails.email?.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
             u.userDetails.location?.toLowerCase().includes(searchKey?.toLowerCase() || "")
@@ -352,7 +355,7 @@ const Index = () => {
                                         <PencilIcon />
                                     </div>
                                 </div>
-                                <div id="row2" className="d-flex mt-3 align-items-center" style={{ gap: "10px" }}>
+                                <div id="row2" className="d-flex mt-3 align-items-center" style={{ gap: "10px", minHeight: "32px" }}>
                                     <div className="d-flex flex-row">
                                         {
                                             Array.isArray(role.userRoleDetail) && role.userRoleDetail.slice(0, 5).map((roleDetail, index) => {

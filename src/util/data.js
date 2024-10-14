@@ -60,15 +60,15 @@ export const menu = [
     subMenu: [],
     highlight: ["/user-management"],
     subHighlight: ["/user-management"],
-    key: ["0"],
+    key: ["2"],
   },
   {
     name: "Reports",
-    path: "/",
+    path: "/reports",
     Svg: Report,
     subMenu: [],
     highlight: [],
     subHighlight: [],
-    key: ["0"],
+    key: ["3"],
   },
 ];

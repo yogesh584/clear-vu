@@ -5,12 +5,12 @@ const initialState = {
   date_format: null,
   date_time_format: null,
   title: null,
-  copyright : null,
+  copyright : `Copyright &copy; ${new Date().getFullYear()} ClearVu-IQ`,
   gst_percentage : null,
   gst_number : null,
 };
 
-const authReducer = (state = initialState, action) => {
+const settingReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_SETTING:
       return {
@@ -22,4 +22,4 @@ const authReducer = (state = initialState, action) => {
   }
 };
 
-export default authReducer;
+export default settingReducer;
