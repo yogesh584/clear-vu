@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
-import { EyeIcon, FilterIcon, HeaderSearchIcon, PencilIcon, PlusIcon, RoleIcon } from "../../util/Svg";
+import { EyeIcon, FilterIcon, HeaderSearchIcon, PlusIcon, RoleIcon } from "../../util/Svg";
 import { useForm } from "react-hook-form";
 import Pagination from "../../components/Pagination/Pagination";
 import Table from "../../components/Table/Table";
@@ -271,6 +271,7 @@ const Index = () => {
                 <option value={""}>Please Select Status</option>
                 <option value={"1"}>Active</option>
                 <option value={"0"}>Inactive</option>
+                <option value={"2"}>Pending</option>
             </>
         }
     ];
@@ -351,9 +352,9 @@ const Index = () => {
                                         <RoleIcon />
                                         <span style={{ fontSize: "18px", textTransform: "capitalize" }}>{role.roleName}</span>
                                     </div>
-                                    <div className="d-flex align-items-center">
+                                    {/* <div className="d-flex align-items-center">
                                         <PencilIcon />
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <div id="row2" className="d-flex mt-3 align-items-center" style={{ gap: "10px", minHeight: "32px" }}>
                                     <div className="d-flex flex-row">
