@@ -16,14 +16,14 @@ import 'swiper/css/pagination';
 import "../../styles/slider.css"
 
 const OBJ_TABLE = {
-    SKU: "SKU",
+    SKU: "sku",
     Location: "location",
     "Product name": "productName",
     "In use": "countInUse",
     "Last Washed": "lastWashed",
     "Total Washed": "totalWashed",
     "Next Wash cycle": "nextWashCycle",
-    "Status": "currentStatus",
+    "Status": "status",
 };
 
 const getSortingField = (sortBy) => {
@@ -180,13 +180,21 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     };
 
     const sortingHandler = (sortBy) => {
+        const { productName, location } = getValues();
+        let querySearchString = "";
+        if (productName) {
+            querySearchString += `&productName=${productName}`
+        }
+        if (location) {
+            querySearchString += `&locationName=${location}`
+        }
         let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`);
+            requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}${querySearchString}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
+            requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };

@@ -181,13 +181,21 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     };
 
     const sortingHandler = (sortBy) => {
+        const { productName, location } = getValues();
+        let querySearchString = "";
+        if (productName) {
+            querySearchString += `&productName=${productName}`
+        }
+        if (location) {
+            querySearchString += `&locationName=${location}`
+        }
         let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`);
+            requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}${querySearchString}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
+            requestLinensData("get", `api/inventory/management?userId=${userId}&categoryId=1&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };

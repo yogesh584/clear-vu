@@ -191,13 +191,25 @@ const Index = () => {
     };
 
     const sortingHandler = (sortBy) => {
+        const { role, status, location } = getValues();
+        let querySearchString = "";
+        if (role) {
+            querySearchString += `&role=${role}`
+        }
+        if (status) {
+            querySearchString += `&status=${status}`
+        }
+        if (location) {
+            querySearchString += `&floorId=${location}`
+        }
+
         let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
             setCurrentSort({ sortBy, order: newOrder });
-            requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`)
+            requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}${querySearchString}`)
         } else {
-            requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`)
+            requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`)
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -522,7 +534,8 @@ const Index = () => {
                                                 tableData={Object.values(OBJ_TABLE)}
                                                 renderAs={{
                                                     created_at: (val) => moment(val).format("DD-MM-YYYY"),
-                                                    fillRate: (val) => Number(val).toFixed(2)
+                                                    fillRate: (val) => Number(val).toFixed(2),
+                                                    status: (val) => (val == "0") ? <span className="text-danger">Inactive</span> : (val == "1") ? <span className="text-success">Active</span> : <span className="text-warning">Pending</span>
                                                 }}
                                                 links={[
                                                     {
