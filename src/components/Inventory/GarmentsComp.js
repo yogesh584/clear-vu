@@ -74,6 +74,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     const [locationList, setLocationList] = useState([]);
     const [productList, setProductList] = useState([]);
     const [lastUpdatedAt, setLastUpdatedAt] = useState([]);
+    const [extraQueryString, setExtraQueryString] = useState("")
 
     let { records_per_page } = useSelector((state) => state.setting);
     let { userId, floorDetails } = useSelector((state) => state.auth);
@@ -101,6 +102,10 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     const { request: requestProductList, response: responseProductList } = useRequest();
     const { request: requestLocationList, response: responseLocationList } = useRequest();
 
+    const getData = (page=0, perPage=records_per_page, sortBy="location", order="desc", extras=extraQueryString) => {
+        requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage ?? 10}&page=${page}&orderByField=${sortBy}&ascending=${order == "asc"}${extras}`);
+    }
+
     useEffect(() => {
         if (activeTab == "garments") {
             if (!isDataAlreadyFetched.card) {
@@ -108,7 +113,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
             }
 
             if (!isDataAlreadyFetched.table) {
-                requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=0`);
+                getData(0,records_per_page);
             }
 
             if (!isDataAlreadyFetched.filters.productName) {
@@ -138,7 +143,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     useEffect(() => {
         if (responseGarmentsData) {
             changeLinenStatus({ ...isDataAlreadyFetched, table: true })
-            const { inventoryDTOPage: { content, totalElements }, lastUpdatedDateTime } = responseGarmentsData;
+            const { content, totalElements, lastUpdatedDateTime } = responseGarmentsData;
             setTableData(content)
             setLastUpdatedAt(lastUpdatedDateTime)
             setTotalDocuments(totalElements)
@@ -163,8 +168,8 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         if (location) {
             querySearchString += `&locationName=${location}`
         }
-
-        requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
+        setExtraQueryString(querySearchString)
+        getData(0,perPage, finalSortField,currentSort.order, querySearchString);
         setPage(0);
         setIsFiltersApplied(true)
     };
@@ -175,7 +180,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         resetField("productName");
         resetField("location");
         setPage(0);
-        requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
+        getData(0,perPage, finalSortField,currentSort.order, "");
         setIsFiltersApplied(false);
     };
 
@@ -183,10 +188,10 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`);
+            getData(0, perPage, finalSortField, newOrder)
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${0}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`);
+            getData(0, perPage, finalSortField, currentSort.order)
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -203,7 +208,8 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         if (location) {
             querySearchString += `&locationName=${location}`
         }
-        requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${perPage}&page=${selected}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
+        setExtraQueryString(querySearchString)
+        getData(selected,perPage, finalSortField,currentSort.order, querySearchString);
     };
 
 
@@ -219,7 +225,8 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         if (location) {
             querySearchString += `&locationName=${location}`
         }
-        requestGarmentsData("get", `api/inventory/management?userId=${userId}&categoryId=2&size=${event.target.value}&page=0&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`);
+        setExtraQueryString(querySearchString)
+        getData(0,event.target.value, finalSortField,currentSort.order, querySearchString);
     };
 
     const InputFields = [

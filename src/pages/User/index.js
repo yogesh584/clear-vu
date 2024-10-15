@@ -62,6 +62,7 @@ const Index = () => {
     const [tableData, setTableData] = useState([])
     const [userRoles, setUserRoles] = useState([])
     const [locationList, setLocationList] = useState([])
+    const [extraQueryString, setExtraQueryString] = useState("")
 
     /*      MODAL HANDLING STATES        */
     const [isShowPermissionsModal, setIsShowPermissionsModal] = useState(false);
@@ -107,10 +108,13 @@ const Index = () => {
         getValues
     } = useForm();
 
+    const getUserList = (page=0, perPage=records_per_page, sortBy="createdAt", order="desc", extras=extraQueryString) => {
+        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${page}&pageSize=${perPage}&orderByField=${sortBy}&ascending=${order == "asc"}${extras}`)
+    }
 
     useEffect(() => {
         document.title = "User Managment - ClearVu-IQ";
-        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${page}&pageSize=${records_per_page}`)
+        getUserList(page,records_per_page)
         requestUserRoleList("get", `api/admin/rolecard?userId=${userId}`)
         requestLocationList("get", `api/floor?facilityId=${floorDetails.facilityId}`)
     }, [userId])
@@ -173,8 +177,8 @@ const Index = () => {
         if (location) {
             querySearchString += `&floorId=${location}`
         }
-        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}${querySearchString}`)
-
+        setExtraQueryString(querySearchString)
+        getUserList(0,perPage, finalSortField, currentSort.order, querySearchString);
         setPage(0);
         setIsFiltersApplied(true)
     };
@@ -182,12 +186,13 @@ const Index = () => {
     const onResetHandler = (e) => {
         e.preventDefault();
         let finalSortField = getSortingField(currentSort.sortBy);
-        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`)
+        getUserList(0,perPage, finalSortField, currentSort.order,"");
         resetField("role");
         resetField("location");
         resetField("status");
         setPage(0);
         setIsFiltersApplied(false);
+        setExtraQueryString("")
     };
 
     const sortingHandler = (sortBy) => {
@@ -195,9 +200,9 @@ const Index = () => {
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
             setCurrentSort({ sortBy, order: newOrder });
-            requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${newOrder == "asc"}`)
+            getUserList(0,perPage, finalSortField, newOrder);
         } else {
-            requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${perPage}&orderByField=${finalSortField}&ascending=${currentSort.order == "asc"}`)
+            getUserList(0,perPage, finalSortField, currentSort.order);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -215,7 +220,8 @@ const Index = () => {
         if (location) {
             querySearchString += `&floorId=${location}`
         }
-        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${selected}&pageSize=${perPage}${querySearchString}`)
+        setExtraQueryString(querySearchString)
+        getUserList(selected,perPage, currentSort.sortBy, currentSort.order, querySearchString);
     };
 
 
@@ -233,11 +239,9 @@ const Index = () => {
         if (location) {
             querySearchString += `&floorId=${location}`
         }
-        requestUserList("get", `api/admin/users-list?userId=${userId}&page=${0}&pageSize=${event.target.value}${querySearchString}`)
-
+        setExtraQueryString(querySearchString)
+        getUserList(0,event.target.value, currentSort.sortBy, currentSort.order, querySearchString);
     };
-
-    console.log("locationList",locationList)
 
     const InputFields = [
         {
