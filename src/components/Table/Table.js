@@ -421,12 +421,13 @@ const Table = ({
                     else if (tData == "status") {
                       value = (
                         <div className="form-check form-switch custom-toggle">
-                          <select className="form-control" style={{width:"90px"}}> 
+                          {(data[tData] == "0") ? <span className="text-danger">Inactive</span> : (data[tData] == "1") ? <span className="text-success">Active</span> : <span className="text-warning">Pending</span>}
+                          {/* <select className="form-control" style={{width:"90px"}}> 
                             <option selected={data[tData] == "1"}>Active</option>
                             <option selected={data[tData] == "0"}>Inactive</option>
-                            <option selected={data[tData] == "2"}>Pending</option>
+                            <option selected={data[tData] == "2"}>Pending</option> */}
                             {/* <option>Other</option> */}
-                          </select>
+                          {/* </select> */}
                           {/* <input className="form-check-input" defaultChecked={data[tData]} type="checkbox" /> */}
                         </div>
                       );

@@ -57,11 +57,11 @@ const Pagination = ({
           </div>
 
           <div className="d-flex">
-            <button className="pagination_button previous_button mr-3" disabled={page < Math.ceil(totalDocuments / perPage) || totalDocuments == 0} onClick={() => { getNewData({ selected: page - 2 }) }}>
+            <button className={`${(page <= Math.ceil(totalDocuments / perPage) || totalDocuments == 0) ? "pagination_button" : "pagination_button_active"} previous_button mr-3`} disabled={page < Math.ceil(totalDocuments / perPage) || totalDocuments == 0} onClick={() => { getNewData({ selected: page - 2 }) }}>
               <HorizontalArrow dir={"left"} />
               <span className="ml-4">Previous</span>
             </button>
-            <button className="pagination_button next_button" disabled={page + 1 >= Math.ceil(totalDocuments / perPage)} onClick={() => getNewData({ selected: page })}>
+            <button className={`${(page + 1 > Math.ceil(totalDocuments / perPage)) ? "pagination_button" : "pagination_button_active"} next_button`} disabled={page + 1 > Math.ceil(totalDocuments / perPage)} onClick={() => getNewData({ selected: page })}>
               <span className="mr-4">Next</span>
               <HorizontalArrow dir={"right"} />
             </button>
