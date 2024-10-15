@@ -18,15 +18,41 @@
   background: #fff;
 }
 
+.pagination_button_active {
+  border: 1px solid #8f9091;
+  border-radius: 13px;
+  color: #565d69;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background: #fff;
+}
+
 .pagination_button svg path {
   fill: #c6c9ce;
+}
+
+.pagination_button_active svg path {
+  fill: #565d69;
 }
 
 .pagination_button:hover svg path {
   fill: #39D9A7;
 }
 
+.pagination_button_active:hover svg path {
+  fill: #39D9A7;
+}
+
 .pagination_button:hover {
+  border: 1px solid #39D9A7;
+  color: #39D9A7;
+  background: #effffa;
+}
+
+.pagination_button_active:hover {
   border: 1px solid #39D9A7;
   color: #39D9A7;
   background: #effffa;

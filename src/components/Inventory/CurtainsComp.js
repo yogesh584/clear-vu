@@ -128,14 +128,14 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
 
     useEffect(() => {
         if (responseLocationList) {
-            setLocationList(responseLocationList)
+            setLocationList(responseLocationList.data)
             changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: isDataAlreadyFetched.filters.productName, location: true } })
         }
     }, [responseLocationList])
 
     useEffect(() => {
         if (responseProductList) {
-            setProductList(responseProductList)
+            setProductList(responseProductList.data)
             changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: true, location: isDataAlreadyFetched.filters.location } })
         }
     }, [responseProductList])

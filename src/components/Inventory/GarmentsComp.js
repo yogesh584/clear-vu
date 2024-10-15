@@ -16,14 +16,14 @@ import 'swiper/css/pagination';
 import "../../styles/slider.css"
 
 const OBJ_TABLE = {
-    SKU: "SKU",
+    SKU: "sku",
     Location: "location",
     "Product name": "productName",
     "In use": "countInUse",
     "Last Washed": "lastWashed",
     "Total Washed": "totalWashed",
     "Next Wash cycle": "nextWashCycle",
-    "Status": "currentStatus",
+    "Status": "status",
 };
 
 const getSortingField = (sortBy) => {
@@ -121,21 +121,21 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
             }
 
             if (!isDataAlreadyFetched.filters.location) {
-                requestLocationList("get", `api/floor?facilityId=${floorDetails.facilityId}`)
+                requestLocationList("get", `api/floor?facilityId=${floorDetails.facilityId}&allData=false&categoryId=2`)
             }
         }
     }, [activeTab])
 
     useEffect(() => {
         if (responseLocationList) {
-            setLocationList(responseLocationList)
+            setLocationList(responseLocationList.data)
             changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: isDataAlreadyFetched.filters.productName, location: true } })
         }
     }, [responseLocationList])
 
     useEffect(() => {
         if (responseProductList) {
-            setProductList(responseProductList)
+            setProductList(responseProductList.data)
             changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: true, location: isDataAlreadyFetched.filters.location } })
         }
     }, [responseProductList])
@@ -185,13 +185,21 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     };
 
     const sortingHandler = (sortBy) => {
+        const { productName, location } = getValues();
+        let querySearchString = "";
+        if (productName) {
+            querySearchString += `&productName=${productName}`
+        }
+        if (location) {
+            querySearchString += `&locationName=${location}`
+        }
         let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            getData(0, perPage, finalSortField, newOrder)
+            getData(0, perPage, finalSortField, newOrder,querySearchString)
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            getData(0, perPage, finalSortField, currentSort.order)
+            getData(0, perPage, finalSortField, currentSort.order,querySearchString)
             setCurrentSort({ sortBy, order: "desc" });
         }
     };

@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import Select from 'react-select';
 
 
-const EditUserModal = ({ show, onHide, data }) => {
+const EditUserModal = ({ show, onHide, data, roles }) => {
     const {
         register,
         handleSubmit,
@@ -88,12 +88,10 @@ const EditUserModal = ({ show, onHide, data }) => {
                                     {...field}
                                     placeholder="Select role"
                                     inputId="userRole"
-                                    options={[
-                                        { label: "Option 1", value: "1" },
-                                        { label: "Option 2", value: "2" },
-                                        { label: "Option 3", value: "3" },
-                                        { label: "Option 4", value: "4" },
-                                    ]}
+                                    options={roles.map(role => {
+                                        return {label:role.roleName, value: role.roleId}
+                                    })}
+                                    value={Array.isArray(data.role) && data.role.length > 0 && data.role[0]}
                                     components={{
                                         IndicatorSeparator: () => null,
                                     }}
