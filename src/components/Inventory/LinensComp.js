@@ -117,21 +117,21 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             }
 
             if (!isDataAlreadyFetched.filters.location) {
-                requestLocationList("get", `api/floor?facilityId=${floorDetails.facilityId}`)
+                requestLocationList("get", `api/floor?facilityId=${floorDetails.facilityId}&allData=false&categoryId=1`)
             }
         }
     }, [activeTab])
 
     useEffect(() => {
         if (responseLocationList) {
-            setLocationList(responseLocationList)
+            setLocationList(responseLocationList.data)
             changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: isDataAlreadyFetched.filters.productName, location: true } })
         }
     }, [responseLocationList])
 
     useEffect(() => {
         if (responseProductList) {
-            setProductList(responseProductList)
+            setProductList(responseProductList.data)
             changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: true, location: isDataAlreadyFetched.filters.location } })
         }
     }, [responseProductList])

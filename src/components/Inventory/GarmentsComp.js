@@ -116,21 +116,21 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
             }
 
             if (!isDataAlreadyFetched.filters.location) {
-                requestLocationList("get", `api/floor?facilityId=${floorDetails.facilityId}`)
+                requestLocationList("get", `api/floor?facilityId=${floorDetails.facilityId}&allData=false&categoryId=2`)
             }
         }
     }, [activeTab])
 
     useEffect(() => {
         if (responseLocationList) {
-            setLocationList(responseLocationList)
+            setLocationList(responseLocationList.data)
             changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: isDataAlreadyFetched.filters.productName, location: true } })
         }
     }, [responseLocationList])
 
     useEffect(() => {
         if (responseProductList) {
-            setProductList(responseProductList)
+            setProductList(responseProductList.data)
             changeLinenStatus({ ...isDataAlreadyFetched, filters: { productName: true, location: isDataAlreadyFetched.filters.location } })
         }
     }, [responseProductList])
@@ -138,7 +138,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
     useEffect(() => {
         if (responseGarmentsData) {
             changeLinenStatus({ ...isDataAlreadyFetched, table: true })
-            const { inventoryDTOPage: { content, totalElements }, lastUpdatedDateTime } = responseGarmentsData;
+            const {content, totalElements, lastUpdatedDateTime } = responseGarmentsData;
             setTableData(content)
             setLastUpdatedAt(lastUpdatedDateTime)
             setTotalDocuments(totalElements)
