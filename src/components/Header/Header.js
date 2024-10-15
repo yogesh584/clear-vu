@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { logout, sidebarToggle } from "../../store/auth/action";
+import { sidebarToggle } from "../../store/auth/action";
 import { Arrow, HamburgerMenu, HeaderSearchIcon, HeaderNotificationIcon } from "../../util/Svg";
-import useRequest from "../../hooks/useRequest"
-import notification from "../../util/toastifyNotifications"
+
 import styles from "../../styles/header.module.css"
+import LogoutModal from "./LogoutModal";
 
 
 const Header = ({ setToggleSidebar }) => {
   const dispatch = useDispatch();
-  const { name, isMobileSidebarOpen, userId } = useSelector((state) => state.auth);
-  const { request: logoutRequest, response: logoutResponse } = useRequest()
+  const { name, isMobileSidebarOpen } = useSelector((state) => state.auth);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isShowLogoutModal, setIsShowLogoutModal] = useState(false);
+  const showLogoutModal = () => setIsShowLogoutModal(true);
+  const closeLogoutModal = () => setIsShowLogoutModal(false);
 
   useEffect(() => {
     if (isMobileSidebarOpen === false) {
@@ -36,16 +38,6 @@ const Header = ({ setToggleSidebar }) => {
       .classList.toggle("active");
   };
 
-  const logoutHandler = () => {
-    logoutRequest("post", "api/user/logout", { userId: userId })
-  }
-
-  useEffect(() => {
-    if (logoutResponse) {
-      notification.success("Logout Successfully", "Your Account is logged out successfully.")
-      dispatch(logout())
-    }
-  }, [logoutResponse])
 
   return (
     <>
@@ -160,7 +152,7 @@ const Header = ({ setToggleSidebar }) => {
                 <div className="row row-paddingless">
                   <div className="col-12">
                     <a
-                      onClick={logoutHandler}
+                      onClick={showLogoutModal}
                       className="d-block py-6 px-5 text-center bg-hover-light border-bottom"
                     >
                       <span className="svg-icon svg-icon-3x svg-icon-success">
@@ -176,6 +168,7 @@ const Header = ({ setToggleSidebar }) => {
           </div>
         </div>
       </div>
+      <LogoutModal show={isShowLogoutModal} onHide={closeLogoutModal} />
     </>
   );
 };

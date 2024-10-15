@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import moment from "moment";
-import { FilterIcon, HeaderSearchIcon, PencilIcon } from "../../util/Svg";
+import { FilterIcon, HeaderSearchIcon } from "../../util/Svg";
 import { useForm } from "react-hook-form";
 import Pagination from "../Pagination/Pagination";
 import Table from "../Table/Table";
@@ -284,7 +284,6 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                                 <div className="mr-2 rounded px-2" style={{ padding: "1px", color: "#fb6464", border: "1px solid #fb6464" }}>
                                     <span>35.71%</span>
                                 </div>
-                                <PencilIcon />
                             </div>
                         </div>
                         <div id="row2" className="d-flex justify-content-between mt-3">
