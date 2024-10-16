@@ -439,7 +439,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{
                                             created_at: (val) => moment(val).format("DD-MM-YYYY"),
-                                            fillRate: (val) => Number(val).toFixed(2)
+                                            fillRate: (val) => (val > 50) ? <span className="text-success">{Number(val).toFixed(2)}%</span> : <span className="text-danger">{Number(val).toFixed(2)}%</span>
                                         }}
                                         links={[]}
                                         onlyDate={{

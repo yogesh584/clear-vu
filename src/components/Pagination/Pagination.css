@@ -38,19 +38,19 @@
   fill: #565d69;
 }
 
-.pagination_button:hover svg path {
+/* .pagination_button:hover svg path {
   fill: #39D9A7;
-}
+} */
 
 .pagination_button_active:hover svg path {
   fill: #39D9A7;
 }
 
-.pagination_button:hover {
+/* .pagination_button:hover {
   border: 1px solid #39D9A7;
   color: #39D9A7;
   background: #effffa;
-}
+} */
 
 .pagination_button_active:hover {
   border: 1px solid #39D9A7;

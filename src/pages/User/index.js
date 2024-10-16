@@ -109,6 +109,8 @@ const Index = () => {
     } = useForm();
 
     const getUserList = (page=0, perPage=records_per_page, sortBy="createdAt", order="desc", extras=extraQueryString) => {
+        console.log(">>>>>>>><<<<<<<", sortBy);
+        
         requestUserList("get", `api/admin/users-list?userId=${userId}&page=${page}&pageSize=${perPage}&orderByField=${sortBy}&ascending=${order == "asc"}${extras}`)
     }
 
@@ -233,7 +235,8 @@ const Index = () => {
             querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
-        getUserList(selected,perPage, currentSort.sortBy, currentSort.order, querySearchString);
+        let finalSortField = getSortingField(currentSort.sortBy);
+        getUserList(selected,perPage, finalSortField, currentSort.order, querySearchString);
     };
 
 
@@ -286,7 +289,7 @@ const Index = () => {
             children: <>
                 <option value={""}>Please Select Status</option>
                 <option value={"1"}>Active</option>
-                <option value={"0"}>Inactive</option>
+                <option value={"0"}>Deactivated</option>
                 <option value={"2"}>Pending</option>
             </>
         }
@@ -539,7 +542,7 @@ const Index = () => {
                                                 renderAs={{
                                                     created_at: (val) => moment(val).format("DD-MM-YYYY"),
                                                     fillRate: (val) => Number(val).toFixed(2),
-                                                    status: (val) => (val == "0") ? <span className="text-danger">Inactive</span> : (val == "1") ? <span className="text-success">Active</span> : <span className="text-warning">Pending</span>
+                                                    status: (val) => (val == "0") ? <span className="text-danger">Deactivated</span> : (val == "1") ? <span className="text-success">Active</span> : <span className="text-warning">Pending</span>
                                                 }}
                                                 links={[
                                                     {
