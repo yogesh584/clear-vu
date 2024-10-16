@@ -19,7 +19,6 @@ const OBJ_TABLE = {
     SKU: "sku",
     Location: "location",
     "Product name": "productName",
-    "In use": "countInUse",
     "Last Washed": "lastWashed",
     "Total Washed": "totalWashed",
     "Next Wash cycle": "nextWashCycle",
@@ -32,8 +31,6 @@ const getSortingField = (sortBy) => {
         finalSortField = "location";
     } else if (sortBy == "Product name") {
         finalSortField = "productName";
-    } else if (sortBy == "In use") {
-        finalSortField = "countInUse"
     } else if (sortBy == "Clean stock") {
         finalSortField = "cleanStock"
     } else if (sortBy == "Par level") {

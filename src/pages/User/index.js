@@ -36,8 +36,6 @@ const getSortingField = (sortBy) => {
         finalSortField = "userId";
     } else if (sortBy == "User details") {
         finalSortField = "userName"
-    } else if (sortBy == "Location") {
-        finalSortField = "location"
     } else if (sortBy == "Created by") {
         finalSortField = "createdBy"
     } else if (sortBy == "Last login") {
@@ -109,7 +107,6 @@ const Index = () => {
     } = useForm();
 
     const getUserList = (page=0, perPage=records_per_page, sortBy="createdAt", order="desc", extras=extraQueryString) => {
-        console.log(">>>>>>>><<<<<<<", sortBy);
         
         requestUserList("get", `api/admin/users-list?userId=${userId}&page=${page}&pageSize=${perPage}&orderByField=${sortBy}&ascending=${order == "asc"}${extras}`)
     }
@@ -265,8 +262,11 @@ const Index = () => {
             isSelectInput: true,
             children: <>
                 <option value={""}>Please Select Role</option>
-                <option value={"1"}>Clinical</option>
-                <option value={"2"}>Administrator</option>
+                {
+                    userRoles.filter((r) => r.totalCount > 0).map((d, i) => (
+                        <option value={d.roleId} key={i}>{d.roleName}</option>
+                    ))
+                }
             </>
         },
         {
@@ -288,9 +288,9 @@ const Index = () => {
             isSelectInput: true,
             children: <>
                 <option value={""}>Please Select Status</option>
+                <option value={"0"}>Pending</option>
                 <option value={"1"}>Active</option>
-                <option value={"0"}>Deactivated</option>
-                <option value={"2"}>Pending</option>
+                <option value={"2"}>Deactivated</option>
             </>
         }
     ];
@@ -542,7 +542,7 @@ const Index = () => {
                                                 renderAs={{
                                                     created_at: (val) => moment(val).format("DD-MM-YYYY"),
                                                     fillRate: (val) => Number(val).toFixed(2),
-                                                    status: (val) => (val == "0") ? <span className="text-danger">Deactivated</span> : (val == "1") ? <span className="text-success">Active</span> : <span className="text-warning">Pending</span>
+                                                    status: (val) => (val == "2") ? <span className="text-danger">Deactivated</span> : (val == "1") ? <span className="text-success">Active</span> : <span className="text-warning">Pending</span>
                                                 }}
                                                 links={[
                                                     {
@@ -567,7 +567,7 @@ const Index = () => {
                                                     startDate: "dateTime",
                                                     endDate: "dateTime",
                                                 }}
-                                                dontShowSort={["Role", "Status"]}
+                                                dontShowSort={["Role", "Status", "Location"]}
                                                 toolTips={
                                                     {
                                                     }
