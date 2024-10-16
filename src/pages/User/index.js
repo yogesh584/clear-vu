@@ -262,8 +262,8 @@ const Index = () => {
             isSelectInput: true,
             children: <>
                 <option value={""}>Please Select Role</option>
-                <option value={"1"}>User</option>
-                <option value={"2"}>Admin</option>
+                <option value={"1"}>Clinical</option>
+                <option value={"2"}>Administrator</option>
             </>
         },
         {
@@ -388,8 +388,8 @@ const Index = () => {
                                             })
                                         }
                                     </div>
-                                    {role.totalCount > 5 && <div className="d-flex flex-column">
-                                        <span>+{role.totalCount - 5} others</span>
+                                    {role.totalCount > 4 && <div className="d-flex flex-column">
+                                        <span>+{role.totalCount - 4} others</span>
                                     </div>}
                                 </div>
                                 <div id="row3" className="mt-4">
