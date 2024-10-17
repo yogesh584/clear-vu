@@ -3,9 +3,16 @@ import Modal from "react-bootstrap/Modal";
 
 import { useForm, Controller } from "react-hook-form";
 import Select from 'react-select';
+import { useSelector } from "react-redux";
+
+import useRequest from '../../hooks/useRequest';
 
 
-const EditUserModal = ({ show, onHide, data, roles,locationList }) => {
+const EditUserModal = ({ show, onHide, data, roles, locationList }) => {
+    let { userId } = useSelector((state) => state.auth);
+    
+    const {request: requestEditUser, response:responseEditUser} = useRequest()
+
     const {
         register,
         handleSubmit,
@@ -15,15 +22,34 @@ const EditUserModal = ({ show, onHide, data, roles,locationList }) => {
     } = useForm();
 
 
-    const onSubmit = () => {
+    const onSubmit = (data) => {
+        if(!data.userRole){
+            return;
+        }
 
+        requestEditUser("put","api/admin/edit-userdetail", {
+            roleId: data.userRole,
+            editUserId: userId
+        })
     }
 
+    useEffect(()=>{
+        if(responseEditUser){
+            console.log("responseEditUser",responseEditUser);            
+        }
+    },[responseEditUser])
+
     useEffect(() => {
-        setValue("fullname",data.userName);
-        setValue("email",data.emailId);
+        setValue("fullname", data.userName);
+        setValue("email", data.emailId);
     }, [data])
-    
+
+    const currentRole = roles.find(role => role.roleName == data.role);
+    const currentLocationId = data.locationId;
+
+    console.log("currentRole", currentRole);
+
+
     return (
         <Modal
             show={show}
@@ -76,10 +102,12 @@ const EditUserModal = ({ show, onHide, data, roles,locationList }) => {
 
                     <div className="d-flex flex-column">
                         <label htmlFor='userRole' style={{ fontSize: "13px" }}>User Role</label>
+                        {console.log("roles.find(role => role.roleName == data.role)", roles.find(role => role.roleName == data.role))}
                         <Controller
                             name={"userRole"}
                             id="userRole"
                             control={control}
+                            defaultValue={currentRole?.roleId || null}
                             rules={{
                                 required: true,
                             }}
@@ -88,10 +116,15 @@ const EditUserModal = ({ show, onHide, data, roles,locationList }) => {
                                     {...field}
                                     placeholder="Select role"
                                     inputId="userRole"
-                                    options={roles.map(role => {
-                                        return {label:role.roleName, value: role.roleId}
-                                    })}
-                                    value={Array.isArray(data.role) && data.role.length > 0 && data.role[0]}
+                                    options={roles.map(role => ({
+                                        label: role.roleName,
+                                        value: role.roleId
+                                    }))}
+                                    value={{
+                                        label: roles.find(role => role.roleId === field.value)?.roleName,
+                                        value: roles.find(role => role.roleId === field.value)?.roleId
+                                    }}
+                                    onChange={(selectedOption) => field.onChange(selectedOption.value)} 
                                     components={{
                                         IndicatorSeparator: () => null,
                                     }}
@@ -130,7 +163,6 @@ const EditUserModal = ({ show, onHide, data, roles,locationList }) => {
                             )}
                         />
 
-
                     </div>
 
                     <div className="d-flex flex-column">
@@ -139,6 +171,7 @@ const EditUserModal = ({ show, onHide, data, roles,locationList }) => {
                             name={"location"}
                             id="location"
                             control={control}
+                            defaultValue={currentLocationId || null}
                             rules={{
                                 required: true,
                             }}
@@ -148,8 +181,13 @@ const EditUserModal = ({ show, onHide, data, roles,locationList }) => {
                                     placeholder="Select Location"
                                     inputId="location"
                                     options={locationList.map(location => {
-                                        return {label: location.floorName, value: location.floorId}
+                                        return { label: location.floorName, value: location.floorId }
                                     })}
+                                    value={{
+                                        label: locationList.find(location => location.floorId === field.value)?.floorName,
+                                        value: locationList.find(location => location.floorId === field.value)?.floorId
+                                    }}
+                                    onChange={(selectedOption) => field.onChange(selectedOption.value)} 
                                     components={{
                                         IndicatorSeparator: () => null,
                                     }}
@@ -221,7 +259,7 @@ const EditUserModal = ({ show, onHide, data, roles,locationList }) => {
                         paddingRight: "18px",
                         background: "#39D9A7"
                     }}
-                    onSubmit={handleSubmit(onSubmit)}
+                    onClick={handleSubmit(onSubmit)}
                 >
                     Save changes
                 </button>

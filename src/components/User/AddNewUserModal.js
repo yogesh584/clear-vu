@@ -25,19 +25,15 @@ const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
     const {request: addUserReq, response: addUserResp} = useRequest()
 
     const onSubmit = (data) => {
-        event.preventDefault();
-
         data.locationId = data.location.value;
         data.userRole = data.userRole.value
         data.facilityId = floorDetails.facilityId;
         data.userId = userId;
         data.floorId = [1]
 
-        delete data.location
-
-        console.log(">>>>>>>Ssaa", data)
+        delete data.location;
         addUserReq("POST", "api/admin/adduser", data)
-    }
+    };
 
     useEffect(() => {
         if(addUserResp){

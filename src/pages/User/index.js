@@ -62,6 +62,7 @@ const Index = () => {
     const [locationList, setLocationList] = useState([])
     const [extraQueryString, setExtraQueryString] = useState("")
     const [userRolePermissionsList, setUserRolePermissonList] = useState({})
+    const [timer, setTimer] = useState(null);
 
     /*      MODAL HANDLING STATES        */
     const [modalContent, setModalContent] = useState({});
@@ -109,8 +110,9 @@ const Index = () => {
         getValues
     } = useForm();
 
+    console.log("errors",errors)
+
     const getUserList = (page=0, perPage=records_per_page, sortBy="createdAt", order="desc", extras=extraQueryString) => {
-        
         requestUserList("get", `api/admin/users-list?userId=${userId}&page=${page}&pageSize=${perPage}&orderByField=${sortBy}&ascending=${order == "asc"}${extras}`)
     }
 
@@ -318,14 +320,32 @@ const Index = () => {
         showDeleteUserModal()
     }
 
-    const filteredTableData = tableData?.filter((u) => {
-        return (
-            searchKey.length < 3 || 
-            u.userDetails.name?.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
-            u.userDetails.email?.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
-            u.userDetails.location?.toLowerCase().includes(searchKey?.toLowerCase() || "")
-        );
-    });
+    useEffect(()=>{
+        if (searchKey.length < 3) {
+            return;
+        }
+
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        const newTimer = setTimeout(() => {
+            getUserList(0, perPage, currentSort.sortBy, currentSort.order, `&searchKey=${searchKey}`)
+        }, 1000);
+
+        setTimer(newTimer);
+
+        return () => clearTimeout(newTimer);
+    },[searchKey])
+
+    // const filteredTableData = tableData?.filter((u) => {
+    //     return (
+    //         searchKey.length < 3 || 
+    //         u.userDetails.name?.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+    //         u.userDetails.email?.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+    //         u.userDetails.location?.toLowerCase().includes(searchKey?.toLowerCase() || "")
+    //     );
+    // });
 
     return <div
         className="content  d-flex flex-column flex-column-fluid"
@@ -555,7 +575,7 @@ const Index = () => {
                                             <Table
                                                 currentSort={currentSort}
                                                 sortingHandler={sortingHandler}
-                                                mainData={filteredTableData}
+                                                mainData={tableData}
                                                 tableHeading={Object.keys(OBJ_TABLE)}
                                                 tableData={Object.values(OBJ_TABLE)}
                                                 renderAs={{
