@@ -61,6 +61,7 @@ const Index = () => {
     const [userRoles, setUserRoles] = useState([])
     const [locationList, setLocationList] = useState([])
     const [extraQueryString, setExtraQueryString] = useState("")
+    const [userRolePermissionsList, setUserRolePermissonList] = useState({})
 
     /*      MODAL HANDLING STATES        */
     const [modalContent, setModalContent] = useState({});
@@ -86,6 +87,7 @@ const Index = () => {
     const { request: requestUserList, response: responseUserList } = useRequest()
     const { request: requestUserRoleList, response: responseUserRoleList } = useRequest()
     const { request: requestLocationList, response: responseLocationList } = useRequest()
+    const { request: requestRolePermissonList, response: responseRolePermissonList } = useRequest()
     let { records_per_page } = useSelector((state) => state.setting);
     let { userId, floorDetails } = useSelector((state) => state.auth);
 
@@ -115,9 +117,25 @@ const Index = () => {
     useEffect(() => {
         document.title = "User Managment - ClearVu-IQ";
         getUserList(page,records_per_page)
+        requestRolePermissonList("get", `api/admin/role-permission-list?userId=${userId}`)
         requestUserRoleList("get", `api/admin/rolecard?userId=${userId}`)
         requestLocationList("get", `api/floor?facilityId=${floorDetails.facilityId}`)
     }, [userId])
+
+    useEffect(()=> {
+        if(responseRolePermissonList){
+            const {data} = responseRolePermissonList;
+
+            const permissonList = {};
+            data.map(d => {
+                permissonList[d.roleId] = d;
+            })
+
+            setUserRolePermissonList(permissonList);
+        }
+    },[responseRolePermissonList])
+
+    console.log(">>>> ", userRolePermissionsList);
 
     useEffect(() => {
         if (responseUserRoleList) {
@@ -595,9 +613,9 @@ const Index = () => {
                 </div>
             </div>
         </div>
-        <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal} data={modalContent}/>
-        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} roles={userRoles}/>
-        <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal} data={editModalContent} roles={userRoles}/>
+        <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal} data={modalContent} userRolePermissionsList={userRolePermissionsList}/>
+        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} roles={userRoles} locationList={locationList}/>
+        <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal} data={editModalContent} roles={userRoles} locationList={locationList}/>
         <DeleteModal show={isShowDeleteUserModal} onHide={closeDeleteUserModal} headingText="Delete User" bodyText={"Are you sure you want to delete this user ?"} onClickFunc={()=>{}}/>
     </div>
 }

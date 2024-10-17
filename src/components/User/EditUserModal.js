@@ -5,7 +5,7 @@ import { useForm, Controller } from "react-hook-form";
 import Select from 'react-select';
 
 
-const EditUserModal = ({ show, onHide, data, roles }) => {
+const EditUserModal = ({ show, onHide, data, roles,locationList }) => {
     const {
         register,
         handleSubmit,
@@ -147,12 +147,9 @@ const EditUserModal = ({ show, onHide, data, roles }) => {
                                     {...field}
                                     placeholder="Select Location"
                                     inputId="location"
-                                    options={[
-                                        { label: "Option 1", value: "1" },
-                                        { label: "Option 2", value: "2" },
-                                        { label: "Option 3", value: "3" },
-                                        { label: "Option 4", value: "4" },
-                                    ]}
+                                    options={locationList.map(location => {
+                                        return {label: location.floorName, value: location.floorId}
+                                    })}
                                     components={{
                                         IndicatorSeparator: () => null,
                                     }}
