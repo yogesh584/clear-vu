@@ -23,8 +23,6 @@ const ZeroLevel = ({ menu, pathname }) => {
     }
   }, [pathname]);
 
-  console.log("active : ",active)
-
   return (
     <li
       onClick={updateActive}

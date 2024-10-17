@@ -596,7 +596,7 @@ const Index = () => {
             </div>
         </div>
         <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal} data={modalContent}/>
-        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} roles={userRoles}/>
+        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} roles={userRoles} location={locationList} />
         <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal} data={editModalContent} roles={userRoles}/>
         <DeleteModal show={isShowDeleteUserModal} onHide={closeDeleteUserModal} headingText="Delete User" bodyText={"Are you sure you want to delete this user ?"} onClickFunc={()=>{}}/>
     </div>

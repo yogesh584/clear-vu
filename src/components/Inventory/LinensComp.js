@@ -164,10 +164,10 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         let finalSortField = getSortingField(currentSort.sortBy);
         let querySearchString = "";
         if (productName) {
-            querySearchString += `&productName=${productName}`
+            querySearchString += `&productId=${productName}`
         }
         if (location) {
-            querySearchString += `&locationName=${location}`
+            querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
         getData(0,perPage, finalSortField,currentSort.order, querySearchString);
@@ -190,10 +190,10 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         const { productName, location } = getValues();
         let querySearchString = "";
         if (productName) {
-            querySearchString += `&productName=${productName}`
+            querySearchString += `&productId=${productName}`
         }
         if (location) {
-            querySearchString += `&locationName=${location}`
+            querySearchString += `&floorId=${location}`
         }
         let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
@@ -212,10 +212,10 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         let finalSortField = getSortingField(currentSort.sortBy);
         let querySearchString = "";
         if (productName) {
-            querySearchString += `&productName=${productName}`
+            querySearchString += `&productId=${productName}`
         }
         if (location) {
-            querySearchString += `&locationName=${location}`
+            querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
         getData(selected,perPage, finalSortField,currentSort.order,querySearchString);
@@ -229,10 +229,10 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         let finalSortField = getSortingField(currentSort.sortBy);
         let querySearchString = "";
         if (productName) {
-            querySearchString += `&productName=${productName}`
+            querySearchString += `&productId=${productName}`
         }
         if (location) {
-            querySearchString += `&locationName=${location}`
+            querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
         getData(0,event.target.value, finalSortField,currentSort.order);
@@ -246,7 +246,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             children: <>
                 <option value={""}>Please Select Product Name</option>
                 {Array.isArray(productList) && productList.map((l) => {
-                    return <option key={l.categoryId} value={l.productName}>{l.productName}</option>
+                    return <option key={l.productId} value={l.productId}>{l.productName}</option>
                 })}
             </>
         },
@@ -257,7 +257,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             children: <>
                 <option value={""}>Please Select Location</option>
                 {Array.isArray(locationList) && locationList.map((l) => {
-                    return <option key={l.locationId} value={l.floorName}>{l.floorName}</option>
+                    return <option key={l.floorId} value={l.floorId}>{l.floorName}</option>
                 })}
 
             </>

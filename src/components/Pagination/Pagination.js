@@ -11,7 +11,6 @@ const Pagination = ({
   perPage,
   perPageChangeHandler,
 }) => {
-  console.log(">>>><<<<<", page, Math.ceil(totalDocuments / perPage))
   return (
     <div className="row">
       <div className="col-xl-12 px-8">
