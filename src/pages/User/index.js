@@ -63,9 +63,10 @@ const Index = () => {
     const [extraQueryString, setExtraQueryString] = useState("")
 
     /*      MODAL HANDLING STATES        */
+    const [modalContent, setModalContent] = useState({});
     const [isShowPermissionsModal, setIsShowPermissionsModal] = useState(false);
     const showPermissionsModal = () => setIsShowPermissionsModal(true)
-    const closePermissionsModal = () => setIsShowPermissionsModal(false)
+    const closePermissionsModal = () => {setIsShowPermissionsModal(false); setModalContent({});}
 
     const [isShowAddNewUserModal, setIsShowAddNewUserModal] = useState(false);
     const showAddNewUserModal = () => setIsShowAddNewUserModal(true)
@@ -411,7 +412,7 @@ const Index = () => {
                                             background: "transparent",
                                             width: "100%",
                                         }}
-                                        onClick={showPermissionsModal}
+                                        onClick={() => {showPermissionsModal(); setModalContent(role);}}
                                     >
                                         <EyeIcon />
                                         <span className="ml-3">
@@ -594,7 +595,7 @@ const Index = () => {
                 </div>
             </div>
         </div>
-        <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal}/>
+        <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal} data={modalContent}/>
         <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} roles={userRoles}/>
         <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal} data={editModalContent} roles={userRoles}/>
         <DeleteModal show={isShowDeleteUserModal} onHide={closeDeleteUserModal} headingText="Delete User" bodyText={"Are you sure you want to delete this user ?"} onClickFunc={()=>{}}/>

@@ -2,7 +2,7 @@ import React from 'react'
 import Modal from "react-bootstrap/Modal";
 import { CheckIcon } from '../../util/Svg';
 
-const ViewPermissionModal = ({ show, onHide }) => {
+const ViewPermissionModal = ({ show, onHide, data }) => {
     return (
         <Modal
             show={show}
@@ -13,7 +13,7 @@ const ViewPermissionModal = ({ show, onHide }) => {
         >
             <Modal.Header style={{ borderBottom: "none", paddingTop: "1.75rem", padding: "1.25rem" }}>
                 <h4 style={{ fontWeight: "400" }}>
-                    Permissions for Warehouse
+                    Permissions for {data.roleName}
                 </h4>
             </Modal.Header>
             <Modal.Body style={{ padding: "1.25rem" }} closeButton>
