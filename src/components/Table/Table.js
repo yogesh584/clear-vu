@@ -379,7 +379,7 @@ const Table = ({
         ) : (
           <tbody>
             {mainData.length > 0 &&
-              mainData.map((data) => (
+              mainData.map((data, idx) => (
                 <tr key={data.id}>
                   {tableData.map((tData, index) => {
                     let value;
@@ -554,6 +554,7 @@ const Table = ({
                   <td
                     className="text-left pr-2"
                     style={{ whiteSpace: "nowrap" }}
+                    key={idx}
                   >
                     {filteredLinks?.map((link, index) => {
                       let name = link.name;

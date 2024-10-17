@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from "react-bootstrap/Modal";
 
 import { useForm, Controller } from "react-hook-form";
 import Select from 'react-select';
+import { ClosedEyeIcon, OpenEyeIcon } from '../../util/Svg';
+import { useSelector } from 'react-redux';
+import useRequest from '../../hooks/useRequest';
 
 
 const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
@@ -10,13 +13,37 @@ const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
         register,
         handleSubmit,
         formState: { errors },
-        control
+        control,
+        watch
     } = useForm();
 
+    let { floorDetails, userId } = useSelector((state) => state.auth);
+    
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isConfPasswordVisible, setIsConfPasswordVisible] = useState(false);
 
-    const onSubmit = () => {
+    const {request: addUserReq, response: addUserResp} = useRequest()
 
+    const onSubmit = (data) => {
+        event.preventDefault();
+
+        data.locationId = data.location.value;
+        data.userRole = data.userRole.value
+        data.facilityId = floorDetails.facilityId;
+        data.userId = userId;
+        data.floorId = [1]
+
+        delete data.location
+
+        console.log(">>>>>>>Ssaa", data)
+        addUserReq("POST", "api/admin/adduser", data)
     }
+
+    useEffect(() => {
+        if(addUserResp){
+            onHide();
+        }
+    }, [addUserResp])
 
     return (
         <Modal
@@ -50,16 +77,16 @@ const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
                     </div>
 
                     <div className="d-flex flex-column">
-                        <label htmlFor='email' style={{ fontSize: "13px" }}>Email</label>
+                        <label htmlFor='emailId' style={{ fontSize: "13px" }}>Email</label>
                         <input
                             className={`form-control form-control-solid h-auto py-3 px-6 ${errors.email && "is-invalid"
                                 }`}
                             style={{ borderRadius: "8px", border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
                             type="text"
-                            name="email"
+                            name="emailId"
                             autoComplete="off"
                             placeholder="Enter email address"
-                            {...register("email", {
+                            {...register("emailId", {
                                 required: true,
                                 pattern: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
                             })}
@@ -69,6 +96,7 @@ const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
                     <div className="d-flex flex-column">
                         <label htmlFor='userRole' style={{ fontSize: "13px" }}>User Role</label>
                         <Controller
+                            autoComplete="off"
                             name={"userRole"}
                             id="userRole"
                             control={control}
@@ -77,6 +105,7 @@ const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
                             }}
                             render={({ field }) => (
                                 <Select
+                                    autoComplete="off"
                                     {...field}
                                     placeholder="Select role"
                                     inputId="userRole"
@@ -130,7 +159,7 @@ const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
                     <div className="d-flex flex-column">
                         <label htmlFor='location' style={{ fontSize: "13px" }}>Location</label>
                         <Controller
-                            name={"Select location"}
+                            name={"location"}
                             id="location"
                             control={control}
                             rules={{
@@ -182,44 +211,166 @@ const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
                             )}
                         />
                     </div>
+
+                    <div className="d-flex flex-column">
+                        <label htmlFor='password' style={{ fontSize: "13px" }}>Password</label>
+                        <div className="position-relative">
+                            <input
+                                className={`form-control form-control-solid h-auto py-3 px-6 rounded-xl ${errors.password && "is-invalid" /*: "is-valid"*/
+                                    }`}
+                                style={{ border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
+                                type={isPasswordVisible ? "text" : "password"}
+                                name="password"
+                                autoComplete="new-password"
+                                placeholder="Password"
+                                {...register("password", {
+                                    required: true,
+                                })}
+                            />
+                            {isPasswordVisible ? (
+                            <span
+                                className="position-absolute" style={{ top: "50%", right: "15px", transform: "translateY(-50%)", cursor: "pointer" }}
+                                onClick={() =>
+                                setIsPasswordVisible(false)
+                                }
+                            >
+                                <ClosedEyeIcon />
+                            </span>
+                            ) : (
+                            <span
+                                className="position-absolute" style={{ top: "50%", right: "15px", transform: "translateY(-50%)", cursor: "pointer" }}
+                                onClick={() => setIsPasswordVisible(true)}
+                            >
+                                <OpenEyeIcon />
+                            </span>
+                            )}
+                        </div>
+                        {errors.password && (
+                            <div className="invalid-feedback">
+                                {errors.password.message}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="d-flex flex-column">
+                        <label htmlFor='confirmPassword' style={{ fontSize: "13px" }}>Confirm Password</label>
+                        <div className="position-relative">
+                            <input
+                                autoFill={false}
+                                className={`form-control form-control-solid h-auto py-3 px-6 rounded-xl ${errors.confirmPassword && "is-invalid" /*: "is-valid"*/
+                                    }`}
+                                style={{ border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
+                                type={isConfPasswordVisible ? "text" : "password"}
+                                name="confirmPassword"
+                                autoComplete="off"
+                                placeholder="Confirm Password"
+                                {...register("confirmPassword", {
+                                    required: {
+                                        value: true,
+                                        message: "Confirm password is required"
+                                    },
+                                    validate: (value) => value === watch('password') || "Password do not match"
+                                })}
+                            />
+                            {isConfPasswordVisible ? (
+                            <span
+                                className="position-absolute" style={{ top: "50%", right: "15px", transform: "translateY(-50%)", cursor: "pointer" }}
+                                onClick={() =>
+                                setIsConfPasswordVisible(false)
+                                }
+                            >
+                                <ClosedEyeIcon />
+                            </span>
+                            ) : (
+                            <span
+                                className="position-absolute" style={{ top: "50%", right: "15px", transform: "translateY(-50%)", cursor: "pointer" }}
+                                onClick={() => setIsConfPasswordVisible(true)}
+                            >
+                                <OpenEyeIcon />
+                            </span>
+                            )}
+                        </div>
+                        {errors.confirmPassword && (
+                            <div className="text-danger">
+                                {errors.confirmPassword.message}
+                            </div>
+                        )}
+                    </div>
+
+                    <div style={{ borderTop: "none", paddingBottom: "1.75rem", padding: "1.25rem", display: "flex"}}>
+                        <button
+                            className="position-relative btn btn-primary  mr-2"
+                            style={{
+                                border: "1px solid #FB6464",
+                                borderRadius: "8px",
+                                color: "#FB6464",
+                                display: "flex",
+                                alignItems: "center",
+                                padding: "10px",
+                                paddingLeft: "18px",
+                                paddingRight: "18px",
+                                background: "transparent"
+                            }}
+                            onClick={onHide}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className="position-relative btn btn-primary  mr-2"
+                            style={{
+                                border: "1px solid #39D9A7",
+                                borderRadius: "8px",
+                                color: "#fff",
+                                display: "flex",
+                                alignItems: "center",
+                                padding: "10px",
+                                paddingLeft: "18px",
+                                paddingRight: "18px",
+                                background: "#39D9A7"
+                            }}
+                            onSubmit={handleSubmit(onSubmit)}
+                        >
+                            Save changes
+                        </button>
+                    </div>
                 </form>
             </Modal.Body>
-            <Modal.Footer style={{ borderTop: "none", paddingBottom: "1.75rem", padding: "1.25rem" }}>
-                <button
-                    className="position-relative btn btn-primary  mr-2"
-                    style={{
-                        border: "1px solid #FB6464",
-                        borderRadius: "8px",
-                        color: "#FB6464",
-                        display: "flex",
-                        alignItems: "center",
-                        padding: "10px",
-                        paddingLeft: "18px",
-                        paddingRight: "18px",
-                        background: "transparent"
-                    }}
-                    onClick={onHide}
-                >
-                    Cancel
-                </button>
-                <button
-                    className="position-relative btn btn-primary  mr-2"
-                    style={{
-                        border: "1px solid #39D9A7",
-                        borderRadius: "8px",
-                        color: "#fff",
-                        display: "flex",
-                        alignItems: "center",
-                        padding: "10px",
-                        paddingLeft: "18px",
-                        paddingRight: "18px",
-                        background: "#39D9A7"
-                    }}
-                    onSubmit={handleSubmit(onSubmit)}
-                >
-                    Save changes
-                </button>
-            </Modal.Footer>
+            {/* <Modal.Footer style={{ borderTop: "none", paddingBottom: "1.75rem", padding: "1.25rem" }}>
+                        <button
+                            className="position-relative btn btn-primary  mr-2"
+                            style={{
+                                border: "1px solid #FB6464",
+                                borderRadius: "8px",
+                                color: "#FB6464",
+                                display: "flex",
+                                alignItems: "center",
+                                padding: "10px",
+                                paddingLeft: "18px",
+                                paddingRight: "18px",
+                                background: "transparent"
+                            }}
+                            onClick={onHide}
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            className="position-relative btn btn-primary  mr-2"
+                            style={{
+                                border: "1px solid #39D9A7",
+                                borderRadius: "8px",
+                                color: "#fff",
+                                display: "flex",
+                                alignItems: "center",
+                                padding: "10px",
+                                paddingLeft: "18px",
+                                paddingRight: "18px",
+                                background: "#39D9A7"
+                            }}
+                            onSubmit={handleSubmit(onSubmit)}
+                        >
+                            Save changes
+                        </button>
+            </Modal.Footer> */}
         </Modal>
     )
 }

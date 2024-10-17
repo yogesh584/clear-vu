@@ -242,7 +242,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
             children: <>
                 <option value={""}>Please Select Product Name</option>
                 {Array.isArray(productList) && productList.map((l) => {
-                    return <option key={l.categoryId} value={l.productName}>{l.productName}</option>
+                    return <option key={l.productId} value={l.productId}>{l.productName}</option>
                 })}
             </>
         },
@@ -253,7 +253,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
             children: <>
                 <option value={""}>Please Select Location</option>
                 {Array.isArray(locationList) && locationList.map((l) => {
-                    return <option key={l.locationId} value={l.floorName}>{l.floorName}</option>
+                    return <option key={l.floorId} value={l.floorId}>{l.floorName}</option>
                 })}
 
             </>
@@ -434,6 +434,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                                         tableHeading={Object.keys(OBJ_TABLE)}
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{
+                                            lastWashed: (val) => moment(val).format("MM/DD/YYYY"),
                                             created_at: (val) => moment(val).format("DD-MM-YYYY"),
                                             fillRate: (val) => Number(val).toFixed(2)
                                         }}
