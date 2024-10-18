@@ -200,13 +200,15 @@ const Index = () => {
             querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
-        getUserList(0,perPage, finalSortField, currentSort.order, querySearchString);
+        getUserList(0,perPage, finalSortField, currentSort.order, `${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
         setPage(0);
         setIsFiltersApplied(true)
     };
 
     const onResetHandler = (e) => {
         e.preventDefault();
+        setSearchKey("");
+        setTimer(null);
         let finalSortField = getSortingField(currentSort.sortBy);
         getUserList(0,perPage, finalSortField, currentSort.order,"");
         resetField("role");
@@ -234,9 +236,9 @@ const Index = () => {
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
             setCurrentSort({ sortBy, order: newOrder });
-            getUserList(0,perPage, finalSortField, newOrder,querySearchString);
+            getUserList(0,perPage, finalSortField, newOrder,`${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
         } else {
-            getUserList(0,perPage, finalSortField, currentSort.order,querySearchString);
+            getUserList(0,perPage, finalSortField, currentSort.order,`${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -256,7 +258,7 @@ const Index = () => {
         }
         setExtraQueryString(querySearchString)
         let finalSortField = getSortingField(currentSort.sortBy);
-        getUserList(selected,perPage, finalSortField, currentSort.order, querySearchString);
+        getUserList(selected,perPage, finalSortField, currentSort.order, `${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
     };
 
 
@@ -275,7 +277,7 @@ const Index = () => {
             querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
-        getUserList(0,event.target.value, currentSort.sortBy, currentSort.order, querySearchString);
+        getUserList(0,event.target.value, currentSort.sortBy, currentSort.order, `${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
     };
 
     const InputFields = [
@@ -329,8 +331,22 @@ const Index = () => {
 
     useEffect(()=>{
 
+        const {role, status, location} = getValues();
+
+        let finalSortField = getSortingField(currentSort.sortBy);
+        let querySearchString = "";
+        if (role) {
+            querySearchString += `&role=${role}`
+        }
+        if (status) {
+            querySearchString += `&status=${status}`
+        }
+        if (location) {
+            querySearchString += `&floorId=${location}`
+        }
+
         if (timer && searchKey.length == "0") {
-            getUserList(0, perPage, currentSort.sortBy, currentSort.order)
+            getUserList(0, perPage, finalSortField, currentSort.order, querySearchString)
             return;
         }
 
@@ -343,7 +359,8 @@ const Index = () => {
         }
 
         const newTimer = setTimeout(() => {
-            getUserList(0, perPage, currentSort.sortBy, currentSort.order, `&searchKey=${searchKey}`)
+            
+            getUserList(0, perPage, finalSortField, currentSort.order, `${querySearchString}&searchKey=${searchKey}`)
         }, 2000);
 
         setTimer(newTimer);
@@ -369,7 +386,7 @@ const Index = () => {
                 querySearchString += `&floorId=${location}`
             }
             setExtraQueryString(querySearchString)
-            getUserList(page,perPage, finalSortField, currentSort.order, querySearchString);
+            getUserList(page,perPage, finalSortField, currentSort.order, `${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
         }
     }, [statusChangeResp])
 
@@ -522,6 +539,7 @@ const Index = () => {
                                                     paddingLeft: "40px",
                                                     outline: "none"
                                                 }}
+                                                    value={searchKey}
                                                     onChange={(e) => setSearchKey(e.target.value)}
                                                 />
                                             </div>

@@ -171,13 +171,15 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
-        getData(0,perPage, finalSortField,currentSort.order, querySearchString);
+        getData(0,perPage, finalSortField,currentSort.order, `${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
         setPage(0);
         setIsFiltersApplied(true)
     };
 
     const onResetHandler = (e) => {
         e.preventDefault();
+        setSearchKey("");
+        setTimer(null);
         let finalSortField = getSortingField(currentSort.sortBy);
         resetField("productName");
         resetField("location");
@@ -199,10 +201,10 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            getData(0,perPage, finalSortField,newOrder,querySearchString);
+            getData(0,perPage, finalSortField,newOrder,`${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            getData(0,perPage, finalSortField,currentSort.order,querySearchString);
+            getData(0,perPage, finalSortField,currentSort.order,`${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -219,7 +221,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
-        getData(selected,perPage, finalSortField,currentSort.order,querySearchString);
+        getData(selected,perPage, finalSortField,currentSort.order,`${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
     };
 
 
@@ -236,7 +238,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
-        getData(0,event.target.value, finalSortField,currentSort.order);
+        getData(0,event.target.value, finalSortField,currentSort.order, `${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
     };
 
     const InputFields = [
@@ -274,8 +276,18 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
     // });
 
     useEffect(()=>{
+        const { productName, location } = getValues();
+        let finalSortField = getSortingField(currentSort.sortBy);
+        let querySearchString = "";
+        if (productName) {
+            querySearchString += `&productId=${productName}`
+        }
+        if (location) {
+            querySearchString += `&floorId=${location}`
+        }
+
         if (timer && searchKey.length == "0") {
-            getData(0,perPage, currentSort.sortBy,currentSort.order);
+            getData(0,perPage, finalSortField,currentSort.order, querySearchString);
             return;
         }
 
@@ -288,7 +300,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         }
 
         const newTimer = setTimeout(() => {
-            getData(0,perPage, currentSort.sortBy,currentSort.order, `&searchKey=${searchKey}`);
+            getData(0,perPage, finalSortField,currentSort.order, `${querySearchString}&searchKey=${searchKey}`);
             // getUserList(0, perPage, currentSort.sortBy, currentSort.order, `&searchKey=${searchKey}`)
         }, 2000);
 
@@ -392,6 +404,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                             paddingLeft: "40px",
                                             outline: "none"
                                         }}
+                                            value={searchKey}
                                             onChange={(e) => setSearchKey(e.target.value)}
                                         />
                                     </div>
