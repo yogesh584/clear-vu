@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import moment from "moment";
 import { FilterIcon, HeaderSearchIcon } from "../../util/Svg";
 import { useForm } from "react-hook-form";
 import Pagination from "../Pagination/Pagination";
@@ -429,8 +428,6 @@ const CurtainsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                                         tableHeading={Object.keys(OBJ_TABLE)}
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{
-                                            lastWashed: (val) => moment(val).format("MM/DD/YYYY"),
-                                            created_at: (val) => moment(val).format("DD-MM-YYYY"),
                                             fillRate: (val) => Number(val).toFixed(2)
                                         }}
                                         links={[]}

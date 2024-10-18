@@ -70,12 +70,13 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         sortBy: "",
         order: "",
     });
-    const [searchKey, setSearchKey] = useState(null);
+    const [searchKey, setSearchKey] = useState("");
     const [isFilteredApplied, setIsFiltersApplied] = useState(false);
     const [locationList, setLocationList] = useState([]);
     const [productList, setProductList] = useState([]);
     const [lastUpdatedAt, setLastUpdatedAt] = useState([]);
     const [extraQueryString, setExtraQueryString] = useState("")
+    const [timer, setTimer] = useState(null);
 
     let { records_per_page } = useSelector((state) => state.setting);
     let { userId, floorDetails } = useSelector((state) => state.auth);
@@ -264,13 +265,37 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         },
     ];
 
-    const filteredTableData = tableData?.filter((item) => {
-        return (
-            item.location.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
-            item.productName.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
-            item.sku.toLowerCase().includes(searchKey?.toLowerCase() || "")
-        );
-    });
+    // const filteredTableData = tableData?.filter((item) => {
+    //     return (
+    //         item.location.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+    //         item.productName.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+    //         item.sku.toLowerCase().includes(searchKey?.toLowerCase() || "")
+    //     );
+    // });
+
+    useEffect(()=>{
+        if (timer && searchKey.length == "0") {
+            getData(0,perPage, currentSort.sortBy,currentSort.order);
+            return;
+        }
+
+        if (searchKey.length < 3) {
+            return;
+        }
+
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        const newTimer = setTimeout(() => {
+            getData(0,perPage, currentSort.sortBy,currentSort.order, `&searchKey=${searchKey}`);
+            // getUserList(0, perPage, currentSort.sortBy, currentSort.order, `&searchKey=${searchKey}`)
+        }, 2000);
+
+        setTimer(newTimer);
+
+        return () => clearTimeout(newTimer);
+    },[searchKey])
 
     return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{ display: activeTab == "linens" ? "block" : "none" }}>
         {/*         CARDS        */}
@@ -434,7 +459,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                     <Table
                                         currentSort={currentSort}
                                         sortingHandler={sortingHandler}
-                                        mainData={filteredTableData}
+                                        mainData={tableData}
                                         tableHeading={Object.keys(OBJ_TABLE)}
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{

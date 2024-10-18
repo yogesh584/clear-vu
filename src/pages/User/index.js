@@ -18,6 +18,7 @@ import AddNewUserModal from "../../components/User/AddNewUserModal";
 import EditUserModal from "../../components/User/EditUserModal";
 import DeleteModal from "../../components/CommonModals/DeleteModal";
 import useRequest from "../../hooks/useRequest";
+import notification from "../../util/toastifyNotifications"
 
 const OBJ_TABLE = {
     "User ID": "userId",
@@ -79,9 +80,10 @@ const Index = () => {
     const showEditUserModal = () => setIsShowEditUserModal(true)
     const closeEditUserModal = () => {setIsShowEditUserModal(false); setEditModalContent({})}
 
+    const [deleteUserContent, setDeleteUserContent] = useState({})
     const [isShowDeleteUserModal, setIsShowDeleteUserModal] = useState(false);
     const showDeleteUserModal = () => setIsShowDeleteUserModal(true)
-    const closeDeleteUserModal = () => setIsShowDeleteUserModal(false)
+    const closeDeleteUserModal = () => {setIsShowDeleteUserModal(false); setDeleteUserContent({})}
 
 
     /*      REQUESTS         */
@@ -89,6 +91,10 @@ const Index = () => {
     const { request: requestUserRoleList, response: responseUserRoleList } = useRequest()
     const { request: requestLocationList, response: responseLocationList } = useRequest()
     const { request: requestRolePermissonList, response: responseRolePermissonList } = useRequest()
+    const { request: statusChangeReq, response: statusChangeResp } = useRequest()
+
+
+
     let { records_per_page } = useSelector((state) => state.setting);
     let { userId, floorDetails } = useSelector((state) => state.auth);
 
@@ -110,7 +116,6 @@ const Index = () => {
         getValues
     } = useForm();
 
-    console.log("errors",errors)
 
     const getUserList = (page=0, perPage=records_per_page, sortBy="createdAt", order="desc", extras=extraQueryString) => {
         requestUserList("get", `api/admin/users-list?userId=${userId}&page=${page}&pageSize=${perPage}&orderByField=${sortBy}&ascending=${order == "asc"}${extras}`)
@@ -136,8 +141,6 @@ const Index = () => {
             setUserRolePermissonList(permissonList);
         }
     },[responseRolePermissonList])
-
-    console.log(">>>> ", userRolePermissionsList);
 
     useEffect(() => {
         if (responseUserRoleList) {
@@ -185,7 +188,6 @@ const Index = () => {
 
     const onSearchHandler = () => {
         const { role, status, location } = getValues();
-        console.log("currentSort.sortBy", currentSort.sortBy)
         let finalSortField = getSortingField(currentSort.sortBy);
         let querySearchString = "";
         if (role) {
@@ -316,11 +318,22 @@ const Index = () => {
         }
     ];
 
-    const deleteHandler = () => {
+    const deleteHandler = (data) => {
         showDeleteUserModal()
+        setDeleteUserContent(data)
+    }
+
+    const userStatusUpdate = (status) => {
+        statusChangeReq("PUT", "api/admin/change-userstatus", {changeUserId: deleteUserContent.userId.replace("#", ""), status: status})
     }
 
     useEffect(()=>{
+
+        if (timer && searchKey.length == "0") {
+            getUserList(0, perPage, currentSort.sortBy, currentSort.order)
+            return;
+        }
+
         if (searchKey.length < 3) {
             return;
         }
@@ -331,12 +344,34 @@ const Index = () => {
 
         const newTimer = setTimeout(() => {
             getUserList(0, perPage, currentSort.sortBy, currentSort.order, `&searchKey=${searchKey}`)
-        }, 1000);
+        }, 2000);
 
         setTimer(newTimer);
 
         return () => clearTimeout(newTimer);
     },[searchKey])
+
+    useEffect(() => {
+        if (statusChangeResp) {
+            notification.success("Status Updated", "User status has been updated successfully.")
+            closeDeleteUserModal()
+
+            const { role, status, location } = getValues();
+            let finalSortField = getSortingField(currentSort.sortBy);
+            let querySearchString = "";
+            if (role) {
+                querySearchString += `&role=${role}`
+            }
+            if (status) {
+                querySearchString += `&status=${status}`
+            }
+            if (location) {
+                querySearchString += `&floorId=${location}`
+            }
+            setExtraQueryString(querySearchString)
+            getUserList(page,perPage, finalSortField, currentSort.order, querySearchString);
+        }
+    }, [statusChangeResp])
 
     // const filteredTableData = tableData?.filter((u) => {
     //     return (
@@ -353,7 +388,7 @@ const Index = () => {
 
         style={{ background: "#fafafa" }}
     >
-        <div
+        {(Array.isArray(userRoles) && userRoles.length > 0) && (<div
             className="subheader py-4 py-lg-4 subheader-solid "
             id="kt_subheader"
             style={{ position: "relative", top: "0px", left: "0px" }}
@@ -367,7 +402,7 @@ const Index = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>)}
         <div className="tab-content">
             <div>
                 <div id="cards_parent swiper" className="mt-4">
@@ -597,7 +632,7 @@ const Index = () => {
                                                     {
                                                         isLink: false,
                                                         name: "Delete",
-                                                        click: deleteHandler,
+                                                        click: (v, data) => deleteHandler(data),
                                                         key: ["10_5"],
                                                     },
                                                 ]}
@@ -636,7 +671,7 @@ const Index = () => {
         <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal} data={modalContent} userRolePermissionsList={userRolePermissionsList}/>
         <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} roles={userRoles} locationList={locationList}/>
         <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal} data={editModalContent} roles={userRoles} locationList={locationList}/>
-        <DeleteModal show={isShowDeleteUserModal} onHide={closeDeleteUserModal} headingText="Delete User" bodyText={"Are you sure you want to delete this user ?"} onClickFunc={()=>{}}/>
+        <DeleteModal show={isShowDeleteUserModal} onHide={closeDeleteUserModal} headingText="Deactivate User" bodyText={`Are you sure you want to deactivate this user ?`} onClickFunc={userStatusUpdate}/>
     </div>
 }
 

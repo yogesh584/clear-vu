@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import moment from "moment";
 import { FilterIcon, HeaderSearchIcon } from "../../util/Svg";
 import { useForm } from "react-hook-form";
 import Pagination from "../Pagination/Pagination";
@@ -66,12 +65,13 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         sortBy: "",
         order: "",
     });
-    const [searchKey, setSearchKey] = useState(null);
+    const [searchKey, setSearchKey] = useState("");
     const [isFilteredApplied, setIsFiltersApplied] = useState(false);
     const [locationList, setLocationList] = useState([]);
     const [productList, setProductList] = useState([]);
     const [lastUpdatedAt, setLastUpdatedAt] = useState([]);
     const [extraQueryString, setExtraQueryString] = useState("")
+    const [timer, setTimer] = useState(null);
 
     let { records_per_page } = useSelector((state) => state.setting);
     let { userId, floorDetails } = useSelector((state) => state.auth);
@@ -260,13 +260,37 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         },
     ];
 
-    const filteredTableData = tableData?.filter((item) => {
-        return (
-            item.location.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
-            item.productName.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
-            item.sku.toLowerCase().includes(searchKey?.toLowerCase() || "")
-        );
-    });
+    // const filteredTableData = tableData?.filter((item) => {
+    //     return (
+    //         item.location.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+    //         item.productName.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+    //         item.sku.toLowerCase().includes(searchKey?.toLowerCase() || "")
+    //     );
+    // });
+
+    useEffect(()=>{
+        if (timer && searchKey.length == "0") {
+            getData(0,perPage, currentSort.sortBy,currentSort.order);
+            return;
+        }
+
+        if (searchKey.length < 3) {
+            return;
+        }
+
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        const newTimer = setTimeout(() => {
+            getData(0,perPage, currentSort.sortBy,currentSort.order, `&searchKey=${searchKey}`);
+            // getUserList(0, perPage, currentSort.sortBy, currentSort.order, `&searchKey=${searchKey}`)
+        }, 2000);
+
+        setTimer(newTimer);
+
+        return () => clearTimeout(newTimer);
+    },[searchKey])
 
     return <div id="garments" role="tabpanel" aria-labelledby="garments-tab" style={{ display: activeTab == "garments" ? "block" : "none" }}>
         {/*         CARDS        */}
@@ -430,12 +454,10 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                                     <Table
                                         currentSort={currentSort}
                                         sortingHandler={sortingHandler}
-                                        mainData={filteredTableData}
+                                        mainData={tableData}
                                         tableHeading={Object.keys(OBJ_TABLE)}
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{
-                                            lastWashed: (val) => moment(val).format("MM/DD/YYYY"),
-                                            created_at: (val) => moment(val).format("DD-MM-YYYY"),
                                             fillRate: (val) => Number(val).toFixed(2)
                                         }}
                                         links={[]}

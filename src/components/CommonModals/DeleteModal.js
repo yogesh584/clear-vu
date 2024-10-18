@@ -36,7 +36,6 @@ const DeleteModal = ({ headingText, bodyText, show, onHide, onClickFunc }) => {
                     paddingRight: "18px",
                 }}
                     onClick={() => {
-                        onClickFunc(false);
                         onHide()
                     }}
                 >
@@ -55,7 +54,7 @@ const DeleteModal = ({ headingText, bodyText, show, onHide, onClickFunc }) => {
                     paddingRight: "18px",
                     background: "#FB6464"
                 }}
-                    onClick={() => onClickFunc(true)}
+                    onClick={() => onClickFunc("DEACTIVATED")}
                 >
                     Delete
                 </button>
