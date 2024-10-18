@@ -347,6 +347,7 @@ const Index = () => {
 
         if (timer && searchKey.length == "0") {
             getUserList(0, perPage, finalSortField, currentSort.order, querySearchString)
+            setPage(0)
             return;
         }
 
@@ -361,6 +362,7 @@ const Index = () => {
         const newTimer = setTimeout(() => {
             
             getUserList(0, perPage, finalSortField, currentSort.order, `${querySearchString}&searchKey=${searchKey}`)
+            setPage(0)
         }, 2000);
 
         setTimer(newTimer);

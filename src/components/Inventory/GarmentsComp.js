@@ -160,10 +160,10 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         let finalSortField = getSortingField(currentSort.sortBy);
         let querySearchString = "";
         if (productName) {
-            querySearchString += `&productName=${productName}`
+            querySearchString += `&productId=${productName}`
         }
         if (location) {
-            querySearchString += `&locationName=${location}`
+            querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
         getData(0,perPage, finalSortField,currentSort.order, querySearchString);
@@ -187,10 +187,10 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         const { productName, location } = getValues();
         let querySearchString = "";
         if (productName) {
-            querySearchString += `&productName=${productName}`
+            querySearchString += `&productId=${productName}`
         }
         if (location) {
-            querySearchString += `&locationName=${location}`
+            querySearchString += `&floorId=${location}`
         }
         let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
@@ -210,10 +210,10 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         let finalSortField = getSortingField(currentSort.sortBy);
         let querySearchString = "";
         if (productName) {
-            querySearchString += `&productName=${productName}`
+            querySearchString += `&productId=${productName}`
         }
         if (location) {
-            querySearchString += `&locationName=${location}`
+            querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
         getData(selected,perPage, finalSortField,currentSort.order, `${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
@@ -227,10 +227,10 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
         let finalSortField = getSortingField(currentSort.sortBy);
         let querySearchString = "";
         if (productName) {
-            querySearchString += `&productName=${productName}`
+            querySearchString += `&productId=${productName}`
         }
         if (location) {
-            querySearchString += `&locationName=${location}`
+            querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
         getData(0,event.target.value, finalSortField,currentSort.order, `${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
@@ -284,6 +284,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
 
         if (timer && searchKey.length == "0") {
             getData(0,perPage, currentSort.sortBy,currentSort.order);
+            setPage(0)
             return;
         }
 
@@ -297,6 +298,7 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
 
         const newTimer = setTimeout(() => {
             getData(0,perPage, finalSortField,currentSort.order, `${querySearchString}&searchKey=${searchKey}`);
+            setPage(0)
             // getUserList(0, perPage, currentSort.sortBy, currentSort.order, `&searchKey=${searchKey}`)
         }, 2000);
 

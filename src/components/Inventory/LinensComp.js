@@ -288,6 +288,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
 
         if (timer && searchKey.length == "0") {
             getData(0,perPage, finalSortField,currentSort.order, querySearchString);
+            setPage(0)
             return;
         }
 
@@ -301,6 +302,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
 
         const newTimer = setTimeout(() => {
             getData(0,perPage, finalSortField,currentSort.order, `${querySearchString}&searchKey=${searchKey}`);
+            setPage(0)
             // getUserList(0, perPage, currentSort.sortBy, currentSort.order, `&searchKey=${searchKey}`)
         }, 2000);
 
