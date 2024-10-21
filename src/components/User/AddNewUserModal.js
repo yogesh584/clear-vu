@@ -6,15 +6,17 @@ import Select from 'react-select';
 import { ClosedEyeIcon, OpenEyeIcon } from '../../util/Svg';
 import { useSelector } from 'react-redux';
 import useRequest from '../../hooks/useRequest';
+import notification from "../../util/toastifyNotifications"
 
 
-const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
+const AddNewUserModal = ({ show, onHide, roles,locationList, listRefresh}) => {
     const {
         register,
         handleSubmit,
         formState: { errors },
         control,
-        watch
+        watch,
+        reset
     } = useForm();
 
     let { floorDetails, userId } = useSelector((state) => state.auth);
@@ -26,7 +28,7 @@ const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
 
     const onSubmit = (data) => {
         data.locationId = data.location.value;
-        data.userRole = data.userRole.value
+        data.userRole = [data.userRole.value]
         data.facilityId = floorDetails.facilityId;
         data.userId = userId;
         data.floorId = [1]
@@ -37,14 +39,17 @@ const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
 
     useEffect(() => {
         if(addUserResp){
+            notification.success("User Created", "User has been created successfully.")
             onHide();
+            reset()
+            listRefresh();
         }
     }, [addUserResp])
 
     return (
         <Modal
             show={show}
-            onHide={onHide}
+            onHide={() => {onHide(); reset();}}
             size="md"
             centered
             animation={true}
@@ -59,14 +64,14 @@ const AddNewUserModal = ({ show, onHide, roles,locationList }) => {
                     <div className="d-flex flex-column">
                         <label htmlFor='fullName' style={{ fontSize: "13px" }}>Full name</label>
                         <input
-                            className={`form-control form-control-solid h-auto py-3 px-6 ${errors.fullname && "is-invalid"
+                            className={`form-control form-control-solid h-auto py-3 px-6 ${errors.fullName && "is-invalid"
                                 }`}
                             style={{ borderRadius: "8px", border: "2px solid #e6e8ea", background: "#fff", letterSpacing: "0.03em" }}
                             type="text"
-                            name="fullname"
+                            name="fullName"
                             autoComplete="off"
                             placeholder="Enter full name"
-                            {...register("fullname", {
+                            {...register("fullName", {
                                 required: true
                             })}
                         />

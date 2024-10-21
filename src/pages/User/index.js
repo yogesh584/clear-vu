@@ -401,6 +401,23 @@ const Index = () => {
     //     );
     // });
 
+    const refreshThePage = () => {
+        const { role, status, location } = getValues();
+        let finalSortField = getSortingField(currentSort.sortBy);
+        let querySearchString = "";
+        if (role) {
+            querySearchString += `&role=${role}`
+        }
+        if (status) {
+            querySearchString += `&status=${status}`
+        }
+        if (location) {
+            querySearchString += `&floorId=${location}`
+        }
+        setExtraQueryString(querySearchString)
+        getUserList(page,perPage, finalSortField, currentSort.order, `${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
+    }
+
     return <div
         className="content  d-flex flex-column flex-column-fluid"
         id="kt_content"
@@ -689,7 +706,7 @@ const Index = () => {
             </div>
         </div>
         <ViewPermissionModal show={isShowPermissionsModal} onHide={closePermissionsModal} data={modalContent} userRolePermissionsList={userRolePermissionsList}/>
-        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} roles={userRoles} locationList={locationList}/>
+        <AddNewUserModal show={isShowAddNewUserModal} onHide={closeAddNewUserModal} roles={userRoles} locationList={locationList} listRefresh={refreshThePage} />
         <EditUserModal show={isShowEditUserModal} onHide={closeEditUserModal} data={editModalContent} roles={userRoles} locationList={locationList}/>
         <DeleteModal show={isShowDeleteUserModal} onHide={closeDeleteUserModal} headingText="Deactivate User" bodyText={`Are you sure you want to deactivate this user ?`} onClickFunc={userStatusUpdate}/>
     </div>
