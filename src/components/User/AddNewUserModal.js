@@ -27,11 +27,10 @@ const AddNewUserModal = ({ show, onHide, roles,locationList, listRefresh}) => {
     const {request: addUserReq, response: addUserResp} = useRequest()
 
     const onSubmit = (data) => {
-        data.locationId = data.location.value;
         data.userRole = [data.userRole.value]
         data.facilityId = floorDetails.facilityId;
         data.userId = userId;
-        data.floorId = [1]
+        data.floorId = data.location.map(d => d.value)
 
         delete data.location;
         addUserReq("POST", "api/admin/adduser", data)
@@ -169,6 +168,7 @@ const AddNewUserModal = ({ show, onHide, roles,locationList, listRefresh}) => {
                             render={({ field }) => (
                                 <Select
                                     {...field}
+                                    isMulti
                                     placeholder="Location"
                                     inputId="location"
                                     options={locationList.map(location => {

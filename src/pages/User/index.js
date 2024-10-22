@@ -668,7 +668,7 @@ const Index = () => {
                                                     },
                                                     {
                                                         isLink: false,
-                                                        name: "Delete",
+                                                        name: "NotShowDelete",
                                                         click: (v, data) => deleteHandler(data),
                                                         key: ["10_5"],
                                                     },
