@@ -70,12 +70,13 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         sortBy: "",
         order: "",
     });
-    const [searchKey, setSearchKey] = useState(null);
+    const [searchKey, setSearchKey] = useState("");
     const [isFilteredApplied, setIsFiltersApplied] = useState(false);
     const [locationList, setLocationList] = useState([]);
     const [productList, setProductList] = useState([]);
     const [lastUpdatedAt, setLastUpdatedAt] = useState([]);
     const [extraQueryString, setExtraQueryString] = useState("")
+    const [timer, setTimer] = useState(null);
 
     let { records_per_page } = useSelector((state) => state.setting);
     let { userId, floorDetails } = useSelector((state) => state.auth);
@@ -170,13 +171,15 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
-        getData(0,perPage, finalSortField,currentSort.order, querySearchString);
+        getData(0,perPage, finalSortField,currentSort.order, `${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
         setPage(0);
         setIsFiltersApplied(true)
     };
 
     const onResetHandler = (e) => {
         e.preventDefault();
+        setSearchKey("");
+        setTimer(null);
         let finalSortField = getSortingField(currentSort.sortBy);
         resetField("productName");
         resetField("location");
@@ -198,10 +201,10 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         let finalSortField = getSortingField(sortBy);
         if (currentSort.sortBy == sortBy) {
             const newOrder = currentSort.order === "asc" ? "desc" : "asc";
-            getData(0,perPage, finalSortField,newOrder,querySearchString);
+            getData(0,perPage, finalSortField,newOrder,`${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
             setCurrentSort({ sortBy, order: newOrder });
         } else {
-            getData(0,perPage, finalSortField,currentSort.order,querySearchString);
+            getData(0,perPage, finalSortField,currentSort.order,`${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
             setCurrentSort({ sortBy, order: "desc" });
         }
     };
@@ -218,7 +221,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
-        getData(selected,perPage, finalSortField,currentSort.order,querySearchString);
+        getData(selected,perPage, finalSortField,currentSort.order,`${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
     };
 
 
@@ -235,7 +238,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
             querySearchString += `&floorId=${location}`
         }
         setExtraQueryString(querySearchString)
-        getData(0,event.target.value, finalSortField,currentSort.order);
+        getData(0,event.target.value, finalSortField,currentSort.order, `${querySearchString}${(searchKey.length > 2) ? `&searchKey=${searchKey}` : ""}`);
     };
 
     const InputFields = [
@@ -264,13 +267,49 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
         },
     ];
 
-    const filteredTableData = tableData?.filter((item) => {
-        return (
-            item.location.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
-            item.productName.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
-            item.sku.toLowerCase().includes(searchKey?.toLowerCase() || "")
-        );
-    });
+    // const filteredTableData = tableData?.filter((item) => {
+    //     return (
+    //         item.location.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+    //         item.productName.toLowerCase().includes(searchKey?.toLowerCase() || "") ||
+    //         item.sku.toLowerCase().includes(searchKey?.toLowerCase() || "")
+    //     );
+    // });
+
+    useEffect(()=>{
+        const { productName, location } = getValues();
+        let finalSortField = getSortingField(currentSort.sortBy);
+        let querySearchString = "";
+        if (productName) {
+            querySearchString += `&productId=${productName}`
+        }
+        if (location) {
+            querySearchString += `&floorId=${location}`
+        }
+
+        if (timer && searchKey.length == "0") {
+            getData(0,perPage, finalSortField,currentSort.order, querySearchString);
+            setPage(0)
+            return;
+        }
+
+        if (searchKey.length < 3) {
+            return;
+        }
+
+        if (timer) {
+            clearTimeout(timer);
+        }
+
+        const newTimer = setTimeout(() => {
+            getData(0,perPage, finalSortField,currentSort.order, `${querySearchString}&searchKey=${searchKey}`);
+            setPage(0)
+            // getUserList(0, perPage, currentSort.sortBy, currentSort.order, `&searchKey=${searchKey}`)
+        }, 2000);
+
+        setTimer(newTimer);
+
+        return () => clearTimeout(newTimer);
+    },[searchKey])
 
     return <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{ display: activeTab == "linens" ? "block" : "none" }}>
         {/*         CARDS        */}
@@ -367,6 +406,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                             paddingLeft: "40px",
                                             outline: "none"
                                         }}
+                                            value={searchKey}
                                             onChange={(e) => setSearchKey(e.target.value)}
                                         />
                                     </div>
@@ -434,7 +474,7 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                     <Table
                                         currentSort={currentSort}
                                         sortingHandler={sortingHandler}
-                                        mainData={filteredTableData}
+                                        mainData={tableData}
                                         tableHeading={Object.keys(OBJ_TABLE)}
                                         tableData={Object.values(OBJ_TABLE)}
                                         renderAs={{

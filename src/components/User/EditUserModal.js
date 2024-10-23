@@ -3,13 +3,14 @@ import Modal from "react-bootstrap/Modal";
 
 import { useForm, Controller } from "react-hook-form";
 import Select from 'react-select';
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 import useRequest from '../../hooks/useRequest';
+import notification from "../../util/toastifyNotifications"
 
 
-const EditUserModal = ({ show, onHide, data, roles, locationList }) => {
-    let { userId } = useSelector((state) => state.auth);
+const EditUserModal = ({ show, onHide, data: userData, roles, locationList }) => {
+    // let { userId } = useSelector((state) => state.auth);
     
     const {request: requestEditUser, response:responseEditUser} = useRequest()
 
@@ -29,25 +30,25 @@ const EditUserModal = ({ show, onHide, data, roles, locationList }) => {
 
         requestEditUser("put","api/admin/edit-userdetail", {
             roleId: data.userRole,
-            editUserId: userId
+            editUserId: userData.userId.replace("#", "")
         })
     }
 
     useEffect(()=>{
         if(responseEditUser){
-            console.log("responseEditUser",responseEditUser);            
+            onHide()            
+            notification.success("Update Sucessfully.", "User has been updated successfully.")
+            window.location.reload();
         }
     },[responseEditUser])
 
     useEffect(() => {
-        setValue("fullname", data.userName);
-        setValue("email", data.emailId);
-    }, [data])
+        setValue("fullname", userData.userName);
+        setValue("email", userData.emailId);
+    }, [userData])
 
-    const currentRole = roles.find(role => role.roleName == data.role);
-    const currentLocationId = data.locationId;
-
-    console.log("currentRole", currentRole);
+    const currentRole = roles.find(role => role.roleName == userData.role);
+    const currentLocationId = userData.locationId;
 
 
     return (
@@ -102,7 +103,6 @@ const EditUserModal = ({ show, onHide, data, roles, locationList }) => {
 
                     <div className="d-flex flex-column">
                         <label htmlFor='userRole' style={{ fontSize: "13px" }}>User Role</label>
-                        {console.log("roles.find(role => role.roleName == data.role)", roles.find(role => role.roleName == data.role))}
                         <Controller
                             name={"userRole"}
                             id="userRole"
