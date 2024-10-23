@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "apexcharts": "^3.54.1",
     "array-move": "^4.0.0",
     "axios": "^0.24.0",
     "bootstrap": "4.6",
@@ -11,6 +12,7 @@
     "npm": "^9.8.1",
     "popper.js": "^1.16.1",
     "react": "^17.0.2",
+    "react-apexcharts": "^1.4.1",
     "react-bootstrap": "^2.10.5",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.22.5",

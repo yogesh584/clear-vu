@@ -77,6 +77,7 @@ const App = () => {
                 <div
                   className="d-flex flex-column flex-row-fluid wrapper"
                   id="kt_wrapper"
+                  style={{minHeight: "100vh", position: "relative"}}
                 >
                   <Header setToggleSidebar={setToggleSidebar} />
                   <Switch>
@@ -90,16 +91,19 @@ const App = () => {
                     ))}
                     <Redirect to="/" />
                   </Switch>
-                  <Footer />
+                  <Footer posType="relative"/>
                 </div>
               </>
             ) : (
-              <Switch>
-                {notPrivateRoutes.map((route, index) => (
-                  <Route key={index} exact {...route} />
-                ))}
-                <Redirect to="/login" />
-              </Switch>
+              <div className="d-flex flex-column flex-column-fluid page">
+                <Switch>
+                  {notPrivateRoutes.map((route, index) => (
+                    <Route key={index} exact {...route} />
+                  ))}
+                  <Redirect to="/login" />
+                </Switch>
+                <Footer posType="sticky"/>
+              </div>
             )}
             <ToastContainer />
           </>
