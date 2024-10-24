@@ -30,7 +30,7 @@ export const menu = [
       {
         name: "Requests",
         path: "/inventory-requests",
-        highlight: ["/inventory-requests/add"],
+        highlight: ["/inventory-requests/add", "/inventory-requests/request"],
         subHighlight: ["/inventory-requests/view", "/inventory-requests/edit"],
         key: ["1_1"],
       },

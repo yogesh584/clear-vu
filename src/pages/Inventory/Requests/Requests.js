@@ -17,6 +17,12 @@ const Requests = () => {
     const handleShowTransferLinensModal = () => setShowTransferLinensModal(true)
     const handleCloseTransferLinensModal = () => setShowTransferLinensModal(false)
 
+    const [activeTab, setActiveTab] = useState("linens");
+
+    const handleTabClick = (tabName) => {
+        setActiveTab(tabName);
+    };
+
     useEffect(() => {
         document.title = "Inventory Managment - Clear vu";
     }, []);
@@ -28,9 +34,57 @@ const Requests = () => {
                 id="kt_content"
                 style={{ background: "#fafafa" }}
             >
+
+                <div className="d-flex align-items-center flex-wrap mr-1 justify-content-between w-100 mt-3 mb-4 p-4">
+                    <div className="d-flex align-items-baseline flex-wrap mr-5">
+                        <h4 className="text-dark font-weight-bold my-1 mr-5">
+                            Order management
+                        </h4>
+                    </div>
+                    <div
+                        className="p-1 d-flex"
+                        style={{ border: "1px solid #c6c9ce", borderRadius: "8px" }}
+                    >
+                        <button
+                            style={{
+                                background: activeTab === "linens" ? "#39D9A7" : "transparent",
+                                color: activeTab === "linens" ? "#fff" : "#000",
+                                borderRadius: "8px", cursor: "pointer"
+                            }}
+                            className="px-4 py-2 mr-2 border-0"
+                            onClick={() => handleTabClick("linens")}
+                        >
+                            Linens
+                        </button>
+                        <button
+                            style={{
+                                background: activeTab === "garments" ? "#39D9A7" : "transparent",
+                                color: activeTab === "garments" ? "#fff" : "#000",
+                                borderRadius: "8px", cursor: "pointer"
+                            }}
+                            className="px-4 py-2 mr-2 border-0"
+
+                            onClick={() => handleTabClick("garments")}
+                        >
+                            Garments
+                        </button>
+                        <button
+                            style={{
+                                background: activeTab === "curtains" ? "#39D9A7" : "transparent",
+                                color: activeTab === "curtains" ? "#fff" : "#000",
+                                borderRadius: "8px", cursor: "pointer"
+                            }}
+                            className="px-4 py-2 mr-2 border-0"
+                            onClick={() => handleTabClick("curtains")}
+                        >
+                            Curtains
+                        </button>
+                    </div>
+                </div>
+
                 <div>
                     <div
-                        className="subheader py-4 py-lg-4 subheader-solid "
+                        className="subheader py-4 py-lg-4 subheader-solid"
                         id="kt_subheader"
                         style={{ position: "relative", top: "0px", left: "0px" }}
                     >
@@ -56,9 +110,10 @@ const Requests = () => {
                                     >
                                         <SwapIcon />{" "}Transfer linens
                                     </button>
+                                    
 
                                     <Link
-                                        to="/inventory-requests/request-lineans"
+                                        to={`/inventory-requests/request/${(activeTab == "linens") ? "1" : (activeTab == "garments") ? "2" : "3"}`}
                                         style={{
                                             background: "#39D9A7",
                                             color: "#fff",
@@ -212,7 +267,7 @@ const Requests = () => {
                     </div>
                 </div>
 
-                <div>
+                {/* <div>
                     <div
                         className="subheader py-4 py-lg-4 subheader-solid "
                         id="kt_subheader"
@@ -258,7 +313,6 @@ const Requests = () => {
                     </div>
                     <div className="tab-content">
                         <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{ display: "block" }}>
-                            {/*         CARDS        */}
                             <div id="cards_parent swiper" className="mt-4">
                                 <Swiper
                                     modules={[SwiperPagination]}
@@ -394,9 +448,9 @@ const Requests = () => {
                         </div>
 
                     </div>
-                </div>
+                </div> */}
 
-                <div>
+                {/* <div>
                     <div
                         className="subheader py-4 py-lg-4 subheader-solid "
                         id="kt_subheader"
@@ -442,7 +496,6 @@ const Requests = () => {
                     </div>
                     <div className="tab-content">
                         <div id="linens" role="tabpanel" aria-labelledby="linens-tab" style={{ display: "block" }}>
-                            {/*         CARDS        */}
                             <div id="cards_parent swiper" className="mt-4">
                                 <Swiper
                                     modules={[SwiperPagination]}
@@ -574,7 +627,7 @@ const Requests = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
             <TransferLinensModel show={showTransferLinensModal} onHide={handleCloseTransferLinensModal} />
         </>

@@ -1,21 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { ChangeRoomIcon, InfoIcon } from "../../../util/Svg";
 import Select from 'react-select';
 
 import { useFieldArray, useForm } from "react-hook-form";
+import useRequest from "../../../hooks/useRequest";
+import { useParams, useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import notificationObj from "../../../util/toastifyNotifications";
 
 const RequestLineans = () => {
+    
+    const history = useHistory();
+    const { categoryId } = useParams();
+    let { floorDetails } = useSelector((state) => state.auth);
 
-    const { control } = useForm({
+    const { control, getValues, register, setValue } = useForm({
         defaultValues: {
-            lineans: [
+            orders: [
                 {
-                    name: "",
+                    id: 0,
+                    productId: "",
                     inUse: 0,
                     parLevel: 0,
-                    orderQty: 0,
+                    orderQuantity: 0,
                     suggested: 0
                 }
             ]
@@ -23,8 +32,80 @@ const RequestLineans = () => {
     });
     const { fields, append, remove } = useFieldArray({
         control,
-        name: "lineans"
+        name: "orders"
     })
+
+    const { request: productListReq, response: productListResp } = useRequest();
+
+    const { request: getProductDataReq, response: getProductDataResp } = useRequest();
+
+    const { request: orderPlaceReq, response: getOrderPlaceResp } = useRequest();
+
+    useEffect(() => {
+        productListReq("get", `api/product?categoryId=${categoryId}`)
+    }, [categoryId])
+
+    const [orderPlacedStatus, setOrderPlacedStatus] = useState(null)
+
+    const [productList, setProductList] = useState([])
+
+    const [selectedProd, setSelectedProd] = useState(null)
+
+    const [selectedProductId, setSelectedProduct] = useState([])
+
+    useEffect(() => {
+        if(productListResp) {
+            setProductList(productListResp.data)
+        }
+    }, [productListResp])
+
+    const setSelctedProductId = (idx, val) => {
+        selectedProductId[idx] = val;
+        setSelectedProduct(selectedProductId)
+    }
+
+    const changeData = (idx, data) => {
+        setSelectedProd(idx)
+        getProductDataReq("GET", `api/inventory/finance/request/orders-details?floorId=1&categoryId=${categoryId}&productId=${data}`)
+    }
+
+    useEffect(() => {
+        if(getProductDataResp) {
+            setValue(`orders.${selectedProd}.inUse`, getProductDataResp.data.countInUse);
+            setValue(`orders.${selectedProd}.parLevel`, getProductDataResp.data.parLevel);
+            setValue(`orders.${selectedProd}.suggested`, getProductDataResp.data.expectedQuantity);
+        }
+    }, [getProductDataResp])
+
+    const onsubmit = (status) => {
+        setOrderPlacedStatus(status)
+        const data = getValues();
+
+        let payload = data.orders.filter((d) => Number(d.orderQuantity) > 0).map(d =>  {
+            return {
+                "facilityId": floorDetails.facilityId,
+                "floorId": 1,
+                "categoryId": categoryId,
+                "productId": d.productId,
+                "orderQuantity": d.orderQuantity,
+                "status": status
+            }
+        })
+
+        orderPlaceReq("POST", "api/inventory/finance/place-order", payload)
+    }
+
+    useEffect(() => {
+        if(getOrderPlaceResp) {
+            if(orderPlacedStatus == "1") {
+                notificationObj.success("Order Placed", "Your order placed request successfully generate.")
+            } else {
+                notificationObj.success("Order Saved Successfully", "Your order request saved in draft.")
+            }
+            
+            history.push("/inventory-requests")
+        }
+    }, [getOrderPlaceResp])
 
     return <div
         className="content  d-flex flex-column flex-column-fluid"
@@ -84,12 +165,18 @@ const RequestLineans = () => {
                                                                             <Select
                                                                                 placeholder="Select item name"
                                                                                 inputId="userRole"
-                                                                                options={[
-                                                                                    { label: "Option 1", value: "1" },
-                                                                                    { label: "Option 2", value: "2" },
-                                                                                    { label: "Option 3", value: "3" },
-                                                                                    { label: "Option 4", value: "4" },
-                                                                                ]}
+                                                                                onChange={(e) => {
+                                                                                    setSelctedProductId(data.id, e.value)
+                                                                                    changeData(index, e.value)
+                                                                                    setValue(`orders.${index}.productId`, e.value)
+                                                                                }}
+                                                                                options={
+                                                                                    productList.filter((d) => !selectedProductId.includes(d.productId)).map(d => 
+                                                                                    {
+                                                                                        return { label: d.productName, value: d.productId }
+                                                                                    }
+                                                                                    )
+                                                                                }
                                                                                 components={{
                                                                                     IndicatorSeparator: () => null,
                                                                                 }}
@@ -132,29 +219,80 @@ const RequestLineans = () => {
                                                                 <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
                                                                     <div className="d-flex align-items-center">
                                                                         <div className="text-dark-75 mb-1  font-size-lg">
-                                                                            {data.inUse}
+                                                                            <input 
+                                                                                style={{background: "none", border: "none", outline: "none"}}
+                                                                                readOnly
+                                                                                {...register(`orders.${index}.inUse`, {
+                                                                                    required: {
+                                                                                        value: true,
+                                                                                        message: "This field is required.",
+                                                                                    },
+                                                                                    min: {
+                                                                                        value: 1,
+                                                                                        message: "Invalid Qty"
+                                                                                    }
+                                                                                })}
+                                                                             />
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                                 <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
                                                                     <div className="d-flex align-items-center">
                                                                         <div className="text-dark-75 mb-1  font-size-lg">
-                                                                            {data.parLevel}
+                                                                            <input 
+                                                                                style={{background: "none", border: "none", outline: "none"}}
+                                                                                readOnly
+                                                                                {...register(`orders.${index}.parLevel`, {
+                                                                                    required: {
+                                                                                        value: true,
+                                                                                        message: "This field is required.",
+                                                                                    },
+                                                                                    min: {
+                                                                                        value: 1,
+                                                                                        message: "Invalid Qty"
+                                                                                    }
+                                                                                })}
+                                                                             />
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                                 <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
                                                                     <div className="d-flex align-items-center">
                                                                         <div className="text-dark-75 mb-1  font-size-lg">
-                                                                            {data.orderQty}
+                                                                            <input 
+                                                                                style={{background: "none", border: "none", outline: "none"}}
+                                                                                {...register(`orders.${index}.orderQuantity`, {
+                                                                                    required: {
+                                                                                        value: true,
+                                                                                        message: "This field is required.",
+                                                                                    },
+                                                                                    min: {
+                                                                                        value: 1,
+                                                                                        message: "Invalid Qty"
+                                                                                    }
+                                                                                })}
+                                                                             />
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                                 <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
                                                                     <div className="d-flex align-items-center">
                                                                         <div className="text-dark-75 mb-1  font-size-lg d-flex align-items-center" style={{ gap: "9px" }}>
-                                                                            <div className="py-2 px-5" style={{ borderRadius: "12px", border: "1px solid #39D9A7", color: "#39D9A7" }}>
-                                                                                {data.suggested}
+                                                                            <div className="py-2 px-2" style={{ borderRadius: "12px", border: "1px solid #39D9A7", color: "#39D9A7" }}>
+                                                                                <input 
+                                                                                    style={{background: "none", border: "none", outline: "none", width: "50px"}}
+                                                                                    readOnly
+                                                                                    {...register(`orders.${index}.suggested`, {
+                                                                                        required: {
+                                                                                            value: true,
+                                                                                            message: "This field is required.",
+                                                                                        },
+                                                                                        min: {
+                                                                                            value: 1,
+                                                                                            message: "Invalid Qty"
+                                                                                        }
+                                                                                    })}
+                                                                                />
                                                                             </div>
                                                                             <button className="border-0 bg-transparent" onClick={() => { remove(index) }}>
                                                                                 <ChangeRoomIcon pathStyle={{ stroke: "#17397F" }} />
@@ -182,10 +320,11 @@ const RequestLineans = () => {
                                                                             background: "transparent",
                                                                         }}
                                                                         onClick={() => append({
-                                                                            name: "",
+                                                                            id: fields[fields.length - 1].id + 1,
+                                                                            productId: "",
                                                                             inUse: 0,
                                                                             parLevel: 0,
-                                                                            orderQty: 0,
+                                                                            orderQuantity: 0,
                                                                             suggested: 0
                                                                         })}
                                                                     >
@@ -213,6 +352,7 @@ const RequestLineans = () => {
                                                             background: "transparent",
                                                             minWidth: "100px"
                                                         }}
+                                                        onClick={() => onsubmit(0)}
                                                     >
                                                         Save
                                                     </button>
@@ -230,6 +370,7 @@ const RequestLineans = () => {
                                                             background: "#39D9A7",
                                                             minWidth: "100px"
                                                         }}
+                                                        onClick={() => onsubmit(1)}
                                                     >
                                                         Save & Next
                                                     </button>

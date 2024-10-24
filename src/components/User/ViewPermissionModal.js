@@ -26,6 +26,15 @@ const ViewPermissionModal = ({ show, onHide, data, userRolePermissionsList }) =>
                                 <span style={{ fontWeight: 600 }} className='text-capitalize'>
                                     {permisson.menuName == "*" ? "All" : permisson.menuName}
                                 </span>
+                                {
+                                    (permisson.subMenuMapping && permisson.subMenuMapping.length > 0) && 
+
+                                    <ul>
+                                        {
+                                            permisson.subMenuMapping.map((d, i) => (<li key={i}>{d.menuName}</li>))   
+                                        }
+                                    </ul>
+                                }
                             </div>
                             <div className='d-flex'>
                                 {/* <button className="position-relative btn btn-primary  mr-2 d-flex "
