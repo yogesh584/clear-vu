@@ -92,7 +92,12 @@ const RequestLineans = () => {
             }
         })
 
-        orderPlaceReq("POST", "api/inventory/finance/place-order", payload)
+        if (payload.length > 0) {
+            
+            orderPlaceReq("POST", "api/inventory/finance/place-order", payload)
+        } else {
+            notificationObj.error("Invalid Quantity", "Please select valid quantity to purchase")
+        }
     }
 
     useEffect(() => {
