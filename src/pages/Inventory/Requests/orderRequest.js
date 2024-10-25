@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { ChangeRoomIcon, InfoIcon } from "../../../util/Svg";
+import { Delete, InfoIcon } from "../../../util/Svg";
 import Select from 'react-select';
 
 import { useFieldArray, useForm } from "react-hook-form";
@@ -264,8 +264,23 @@ const RequestLineans = () => {
                                                                 <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
                                                                     <div className="d-flex align-items-center">
                                                                         <div className="text-dark-75 mb-1  font-size-lg">
-                                                                            <input 
-                                                                                style={{background: "none", border: "none", outline: "none"}}
+                                                                            <div className="py-2 px-2" style={{ borderRadius: "12px", border: "1px solid #39D9A7", color: "#39D9A7" }}>
+                                                                                    <input 
+                                                                                        style={{background: "none", border: "none", outline: "none", width: "50px"}}
+                                                                                        {...register(`orders.${index}.orderQuantity`, {
+                                                                                            required: {
+                                                                                                value: true,
+                                                                                                message: "This field is required.",
+                                                                                            },
+                                                                                            min: {
+                                                                                                value: 1,
+                                                                                                message: "Invalid Qty"
+                                                                                            }
+                                                                                        })}
+                                                                                />
+                                                                            </div>
+                                                                            {/* <input 
+                                                                                style={{background: "none", border: "none", borderBottom: "1px solid black", outline: "none"}}
                                                                                 {...register(`orders.${index}.orderQuantity`, {
                                                                                     required: {
                                                                                         value: true,
@@ -276,14 +291,14 @@ const RequestLineans = () => {
                                                                                         message: "Invalid Qty"
                                                                                     }
                                                                                 })}
-                                                                             />
+                                                                             /> */}
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                                 <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
                                                                     <div className="d-flex align-items-center">
                                                                         <div className="text-dark-75 mb-1  font-size-lg d-flex align-items-center" style={{ gap: "9px" }}>
-                                                                            <div className="py-2 px-2" style={{ borderRadius: "12px", border: "1px solid #39D9A7", color: "#39D9A7" }}>
+                                                                            {/* <div className="py-2 px-2" style={{ borderRadius: "12px", border: "1px solid #39D9A7", color: "#39D9A7" }}> */}
                                                                                 <input 
                                                                                     style={{background: "none", border: "none", outline: "none", width: "50px"}}
                                                                                     readOnly
@@ -298,10 +313,13 @@ const RequestLineans = () => {
                                                                                         }
                                                                                     })}
                                                                                 />
-                                                                            </div>
-                                                                            <button className="border-0 bg-transparent" onClick={() => { remove(index) }}>
-                                                                                <ChangeRoomIcon pathStyle={{ stroke: "#17397F" }} />
-                                                                            </button>
+                                                                            {/* </div> */}
+                                                                            {
+                                                                                (index > 0) &&
+                                                                                <button className="border-0 bg-transparent" onClick={() => { remove(index) }}>
+                                                                                    <Delete pathStyle={{ stroke: "#880808" }} />
+                                                                                </button>
+                                                                            }
                                                                         </div>
                                                                     </div>
                                                                 </td>

@@ -108,7 +108,7 @@ const Requests = () => {
                                         className="px-4 py-2 mr-2 border-0"
                                         onClick={handleShowTransferLinensModal}
                                     >
-                                        <SwapIcon />{" "}Transfer linens
+                                        <SwapIcon />{" "}Transfer {(activeTab == "linens") ? "Linens" : (activeTab == "garments") ? "Garments" : "Curtains"}
                                     </button>
                                     
 
@@ -121,7 +121,7 @@ const Requests = () => {
                                         }}
                                         className="px-4 py-2 mr-2 border-0"
                                     >
-                                        Order linens
+                                        Order {(activeTab == "linens") ? "Linens" : (activeTab == "garments") ? "Garments" : "Curtains"}
                                     </Link>
                                 </div>
                             </div>
