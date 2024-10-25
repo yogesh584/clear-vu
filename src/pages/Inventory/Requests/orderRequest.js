@@ -157,7 +157,7 @@ const RequestLineans = () => {
                                                             <th className="py-4">In use</th>
                                                             <th className="py-4">Par level</th>
                                                             <th className="py-4">Order QTY</th>
-                                                            <th className="py-4">Suggested (AI Predicted)</th>
+                                                            {/* <th className="py-4">Suggested (AI Predicted)</th> */}
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -263,7 +263,7 @@ const RequestLineans = () => {
                                                                 </td>
                                                                 <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
                                                                     <div className="d-flex align-items-center">
-                                                                        <div className="text-dark-75 mb-1  font-size-lg">
+                                                                        <div className="text-dark-75 mb-1  font-size-lg d-flex">
                                                                             <div className="py-2 px-2" style={{ borderRadius: "12px", border: "1px solid #39D9A7", color: "#39D9A7" }}>
                                                                                     <input 
                                                                                         style={{background: "none", border: "none", outline: "none", width: "50px"}}
@@ -279,6 +279,12 @@ const RequestLineans = () => {
                                                                                         })}
                                                                                 />
                                                                             </div>
+                                                                            {
+                                                                                (index > 0) &&
+                                                                                <button className="border-0 bg-transparent" onClick={() => { remove(index) }}>
+                                                                                    <Delete pathStyle={{ stroke: "#880808" }} />
+                                                                                </button>
+                                                                            }
                                                                             {/* <input 
                                                                                 style={{background: "none", border: "none", borderBottom: "1px solid black", outline: "none"}}
                                                                                 {...register(`orders.${index}.orderQuantity`, {
@@ -295,11 +301,11 @@ const RequestLineans = () => {
                                                                         </div>
                                                                     </div>
                                                                 </td>
-                                                                <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
+                                                                {/* <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
                                                                     <div className="d-flex align-items-center">
                                                                         <div className="text-dark-75 mb-1  font-size-lg d-flex align-items-center" style={{ gap: "9px" }}>
                                                                             {/* <div className="py-2 px-2" style={{ borderRadius: "12px", border: "1px solid #39D9A7", color: "#39D9A7" }}> */}
-                                                                                <input 
+                                                                                {/* <input 
                                                                                     style={{background: "none", border: "none", outline: "none", width: "50px"}}
                                                                                     readOnly
                                                                                     {...register(`orders.${index}.suggested`, {
@@ -312,9 +318,9 @@ const RequestLineans = () => {
                                                                                             message: "Invalid Qty"
                                                                                         }
                                                                                     })}
-                                                                                />
+                                                                                /> */}
                                                                             {/* </div> */}
-                                                                            {
+                                                                            {/* {
                                                                                 (index > 0) &&
                                                                                 <button className="border-0 bg-transparent" onClick={() => { remove(index) }}>
                                                                                     <Delete pathStyle={{ stroke: "#880808" }} />
@@ -322,7 +328,7 @@ const RequestLineans = () => {
                                                                             }
                                                                         </div>
                                                                     </div>
-                                                                </td>
+                                                                </td> */}
                                                             </tr>
                                                         })}
 
