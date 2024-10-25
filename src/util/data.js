@@ -2,7 +2,7 @@ import {
   Dashboard,
   Inventory,
   UserSideBar,
-  Report
+  // Report
 } from "./Svg";
 
 export const menu = [

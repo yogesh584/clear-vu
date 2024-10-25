@@ -59,7 +59,7 @@ const RequestLineans = () => {
                     setSelectedProduct(selectedProductId);
                     return {
                         id: i,
-                        productId: d.productId,
+                        productId: {label: d.productName, value: d.productId},
                         inUse: d.countInUse,
                         parLevel: d.parLevel,
                         orderQuantity: d.orderQuantity,
@@ -119,7 +119,7 @@ const RequestLineans = () => {
                 "facilityId": floorDetails.facilityId,
                 "floorId": 1,
                 "categoryId": categoryId,
-                "productId": d.productId,
+                "productId": d.productId.value,
                 "orderQuantity": d.orderQuantity,
                 "status": status
             }
@@ -144,6 +144,10 @@ const RequestLineans = () => {
             history.push("/inventory-requests")
         }
     }, [getOrderPlaceResp])
+
+    const handleRemove = (idx) => {
+        remove(idx)
+    }
 
     return <div
         className="content  d-flex flex-column flex-column-fluid"
@@ -196,6 +200,7 @@ const RequestLineans = () => {
                                                     </thead>
                                                     <tbody>
                                                         {fields.map((data, index) => {
+                                                            console.log("data :", data)
                                                             return <tr key={index + "__"}>
                                                                 <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
                                                                     <div className="d-flex align-items-center">
@@ -203,14 +208,11 @@ const RequestLineans = () => {
                                                                             <Select
                                                                                 placeholder="Select item name"
                                                                                 inputId="userRole"
-                                                                                defaultValue={productList.find(d => d.productId == data.productId) 
-                                                                                    ? { label: productList.find(d => d.productId == data.productId).productName, value: data.productId }
-                                                                                    : null
-                                                                                }
+                                                                                defaultValue={data.productId}
                                                                                 onChange={(e) => {
                                                                                     setSelctedProductId(data.id, e.value)
                                                                                     changeData(index, e.value)
-                                                                                    setValue(`orders.${index}.productId`, e.value)
+                                                                                    setValue(`orders.${index}.productId`, JSON.stringify(e))
                                                                                 }}
                                                                                 options={
                                                                                     productList.filter((d) => !selectedProductId.includes(d.productId)).map(d => 
@@ -337,7 +339,7 @@ const RequestLineans = () => {
                                                                     {
                                                                         (index > 0) &&
                                                                         <button className="border-0 bg-transparent ml-auto" onClick={() => { 
-                                                                            remove(index);  
+                                                                            handleRemove(index);  
                                                                             selectedProductId[index] = null;
                                                                             setSelectedProduct(selectedProductId)
                                                                         }}>
