@@ -32,8 +32,11 @@ const Login2FA = () => {
     }
   }, [token])
 
-  const handleKeyDown = (index) => {
-    tabChange(index);
+  const handleKeyDown = (e,index) => {
+    if(e.key != "Shift") {
+
+      tabChange(index);
+    }
   };
 
   let tabChange = function (val) {
@@ -190,12 +193,12 @@ const Login2FA = () => {
                   Enter Code
                 </div>
                 <div className="form-group d-flex otp_verification">
-                  <input type="text" onKeyUp={() => { handleKeyDown(0) }} name="otp1" {...register("otp1", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp1 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                  <input type="text" onKeyUp={() => { handleKeyDown(1) }} name="otp2" {...register("otp2", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp2 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                  <input type="text" onKeyUp={() => { handleKeyDown(2) }} name="otp3" {...register("otp3", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp3 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                  <input type="text" onKeyUp={() => { handleKeyDown(3) }} name="otp4" {...register("otp4", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp4 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                  <input type="text" onKeyUp={() => { handleKeyDown(4) }} name="otp5" {...register("otp5", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp5 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
-                  <input type="text" onKeyUp={() => { handleKeyDown(5) }} name="otp6" {...register("otp6", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp6 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={(e) => { handleKeyDown(e, 0) }} name="otp1" {...register("otp1", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp1 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={(e) => { handleKeyDown(e, 1) }} name="otp2" {...register("otp2", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp2 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={(e) => { handleKeyDown(e, 2) }} name="otp3" {...register("otp3", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp3 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={(e) => { handleKeyDown(e, 3) }} name="otp4" {...register("otp4", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp4 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={(e) => { handleKeyDown(e, 4) }} name="otp5" {...register("otp5", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp5 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
+                  <input type="text" onKeyUp={(e) => { handleKeyDown(e, 5) }} name="otp6" {...register("otp6", { required: true })} className={`border-left-0 border-top-0 border-right-0 bg-transparent mr-3`} style={{ width: "30px", borderBottom: errors.otp6 ? "2px solid red" : "2px solid #c6c9ce", outline: "0", textAlign: "center", fontSize: "19px" }} maxLength={1} />
 
                 </div>
                 <ResendTimer />
