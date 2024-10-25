@@ -502,15 +502,10 @@ const LinensComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) => {
                                         dontShowSort={["SKU"]}
                                         toolTips={
                                             {
-                                                "SKU": "Fill rate = Requested - In use - Clean stock",
-                                                "Fill rate": "Fill rate = Requested - In use - Clean stock",
-                                                "Location": "Fill rate = Requested - In use - Clean stock",
-                                                "Product name": "Fill rate = Requested - In use - Clean stock",
-                                                "In use": "Fill rate = Requested - In use - Clean stock",
-                                                "Clean stock": "Fill rate = Requested - In use - Clean stock",
-                                                "Par level": "Fill rate = Requested - In use - Clean stock",
-                                                "Dirty return": "Fill rate = Requested - In use - Clean stock",
-                                                "Del. qty": "Fill rate = Requested - In use - Clean stock",
+                                                "In use": "Product in rooms or use with patients",
+                                                "Clean stock": "Product in clean linen storage area",
+                                                "Par level": "Quantity of linens required to meet operational needs",
+                                                "Dirty return": "Soiled or used linens that are collected for return to laundry",
                                             }
                                         }
                                     />

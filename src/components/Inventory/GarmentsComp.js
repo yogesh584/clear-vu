@@ -485,14 +485,14 @@ const GarmentsComp = ({ activeTab, isDataAlreadyFetched, changeLinenStatus }) =>
                                         dontShowSort={["SKU"]}
                                         toolTips={
                                             {
-                                                SKU: "Fill rate = Requested - In use - Clean stock",
-                                                Location: "Fill rate = Requested - In use - Clean stock",
-                                                "Product name": "Fill rate = Requested - In use - Clean stock",
-                                                "In use": "Fill rate = Requested - In use - Clean stock",
-                                                "Last Washed": "Fill rate = Requested - In use - Clean stock",
-                                                "Total Washed": "Fill rate = Requested - In use - Clean stock",
-                                                "Next Wash cycle": "Fill rate = Requested - In use - Clean stock",
-                                                "Status": "Fill rate = Requested - In use - Clean stock",
+                                                // SKU: "Fill rate = Requested - In use - Clean stock",
+                                                // Location: "Fill rate = Requested - In use - Clean stock",
+                                                // "Product name": "Fill rate = Requested - In use - Clean stock",
+                                                // "In use": "Fill rate = Requested - In use - Clean stock",
+                                                // "Last Washed": "Fill rate = Requested - In use - Clean stock",
+                                                // "Total Washed": "Fill rate = Requested - In use - Clean stock",
+                                                // "Next Wash cycle": "Fill rate = Requested - In use - Clean stock",
+                                                // "Status": "Fill rate = Requested - In use - Clean stock",
                                             }
                                         }
                                     />

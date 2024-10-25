@@ -62,13 +62,13 @@ export const menu = [
     subHighlight: ["/user-management"],
     key: ["2"],
   },
-  {
-    name: "Reports",
-    path: "/reports",
-    Svg: Report,
-    subMenu: [],
-    highlight: [],
-    subHighlight: [],
-    key: ["3"],
-  },
+  // {
+  //   name: "Reports",
+  //   path: "/reports",
+  //   Svg: Report,
+  //   subMenu: [],
+  //   highlight: [],
+  //   subHighlight: [],
+  //   key: ["3"],
+  // },
 ];
