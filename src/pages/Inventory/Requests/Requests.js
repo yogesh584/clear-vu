@@ -113,7 +113,7 @@ const Requests = () => {
                                     
 
                                     <Link
-                                        to={`/inventory-requests/request/${(activeTab == "linens") ? "1" : (activeTab == "garments") ? "2" : "3"}`}
+                                        to={`/inventory-requests/request/${(activeTab == "linens") ? "1" : (activeTab == "garments") ? "2" : "3"}?category=${activeTab}`}
                                         style={{
                                             background: "#39D9A7",
                                             color: "#fff",

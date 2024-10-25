@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
-import { Delete, InfoIcon } from "../../../util/Svg";
+import { InfoIcon, TrashIcon } from "../../../util/Svg";
 import Select from 'react-select';
 
 import { useFieldArray, useForm } from "react-hook-form";
@@ -14,22 +14,10 @@ const RequestLineans = () => {
     
     const history = useHistory();
     const { categoryId } = useParams();
+    const category = new URLSearchParams(history.location.search).get("category");
     let { floorDetails } = useSelector((state) => state.auth);
 
-    const { control, getValues, register, setValue } = useForm({
-        defaultValues: {
-            orders: [
-                {
-                    id: 0,
-                    productId: "",
-                    inUse: 0,
-                    parLevel: 0,
-                    orderQuantity: 0,
-                    suggested: 0
-                }
-            ]
-        }
-    });
+    const { control, getValues, register, setValue } = useForm();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "orders"
@@ -37,12 +25,16 @@ const RequestLineans = () => {
 
     const { request: productListReq, response: productListResp } = useRequest();
 
+    const { request: getSavedReq, response: getSavedResp } = useRequest();
+
     const { request: getProductDataReq, response: getProductDataResp } = useRequest();
 
     const { request: orderPlaceReq, response: getOrderPlaceResp } = useRequest();
 
     useEffect(() => {
         productListReq("get", `api/product?categoryId=${categoryId}`)
+
+        getSavedReq("get", `api/inventory/finance/request/orders-details?floorId=1&categoryId=${categoryId}`)
     }, [categoryId])
 
     const [orderPlacedStatus, setOrderPlacedStatus] = useState(null)
@@ -58,6 +50,39 @@ const RequestLineans = () => {
             setProductList(productListResp.data)
         }
     }, [productListResp])
+    
+    useEffect(() => {
+        if (getSavedResp) {
+            if (getSavedResp.data && getSavedResp.data.length > 0) {
+                let oreders = getSavedResp.data.map((d,i) => {
+                    selectedProductId[i] = d.productId;
+                    setSelectedProduct(selectedProductId);
+                    return {
+                        id: i,
+                        productId: d.productId,
+                        inUse: d.countInUse,
+                        parLevel: d.parLevel,
+                        orderQuantity: d.orderQuantity,
+                        suggested: d.expectedQuantity
+                    }
+                })
+
+                setValue("orders", oreders)
+            } else {
+                let orders =  [
+                    {
+                        id: 0,
+                        productId: "",
+                        inUse: 0,
+                        parLevel: 0,
+                        orderQuantity: 0,
+                        suggested: 0
+                    }
+                ]
+                setValue("orders", orders)
+            }
+        }
+    }, [getSavedResp])
 
     const setSelctedProductId = (idx, val) => {
         selectedProductId[idx] = val;
@@ -71,9 +96,17 @@ const RequestLineans = () => {
 
     useEffect(() => {
         if(getProductDataResp) {
-            setValue(`orders.${selectedProd}.inUse`, getProductDataResp.data.countInUse);
-            setValue(`orders.${selectedProd}.parLevel`, getProductDataResp.data.parLevel);
-            setValue(`orders.${selectedProd}.suggested`, getProductDataResp.data.expectedQuantity);
+            if (Object.entries(getProductDataResp.data).length > 0) {
+                setValue(`orders.${selectedProd}.inUse`, getProductDataResp.data.countInUse);
+                setValue(`orders.${selectedProd}.parLevel`, getProductDataResp.data.parLevel);
+                setValue(`orders.${selectedProd}.suggested`, getProductDataResp.data.expectedQuantity);
+                setValue(`orders.${selectedProd}.orderQuantity`, 0);
+            } else {
+                setValue(`orders.${selectedProd}.inUse`, 0);
+                setValue(`orders.${selectedProd}.parLevel`, 0);
+                setValue(`orders.${selectedProd}.suggested`, 0);
+                setValue(`orders.${selectedProd}.orderQuantity`, 0);
+            }
         }
     }, [getProductDataResp])
 
@@ -128,7 +161,7 @@ const RequestLineans = () => {
                                 <div className="card card-custom card-stretch card-shadowless">
                                     <div className="card-header align-items-center" style={{ borderBottom: "0" }}>
                                         <div className="card-title d-flex flex-row justify-content-start align-items-start" style={{ gap: "9px" }}>
-                                            <h4 style={{ fontWeight: "700" }}>Request linens</h4>
+                                            <h4 style={{ fontWeight: "700" }}>Request {(category == "linens") ? "Linens" : (category == "garments") ? "Garments" : "Curtains"}</h4>
                                             <OverlayTrigger
                                                 delay={{ hide: 450, show: 300 }}
                                                 overlay={(props) => (
@@ -157,12 +190,12 @@ const RequestLineans = () => {
                                                             <th className="py-4">In use</th>
                                                             <th className="py-4">Par level</th>
                                                             <th className="py-4">Order QTY</th>
+                                                            <th></th>
                                                             {/* <th className="py-4">Suggested (AI Predicted)</th> */}
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {fields.map((data, index) => {
-                                                            console.log("data : ", data)
                                                             return <tr key={index + "__"}>
                                                                 <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
                                                                     <div className="d-flex align-items-center">
@@ -170,6 +203,10 @@ const RequestLineans = () => {
                                                                             <Select
                                                                                 placeholder="Select item name"
                                                                                 inputId="userRole"
+                                                                                defaultValue={productList.find(d => d.productId == data.productId) 
+                                                                                    ? { label: productList.find(d => d.productId == data.productId).productName, value: data.productId }
+                                                                                    : null
+                                                                                }
                                                                                 onChange={(e) => {
                                                                                     setSelctedProductId(data.id, e.value)
                                                                                     changeData(index, e.value)
@@ -279,12 +316,7 @@ const RequestLineans = () => {
                                                                                         })}
                                                                                 />
                                                                             </div>
-                                                                            {
-                                                                                (index > 0) &&
-                                                                                <button className="border-0 bg-transparent" onClick={() => { remove(index) }}>
-                                                                                    <Delete pathStyle={{ stroke: "#880808" }} />
-                                                                                </button>
-                                                                            }
+                                                                            
                                                                             {/* <input 
                                                                                 style={{background: "none", border: "none", borderBottom: "1px solid black", outline: "none"}}
                                                                                 {...register(`orders.${index}.orderQuantity`, {
@@ -300,6 +332,18 @@ const RequestLineans = () => {
                                                                              /> */}
                                                                         </div>
                                                                     </div>
+                                                                </td>
+                                                                <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
+                                                                    {
+                                                                        (index > 0) &&
+                                                                        <button className="border-0 bg-transparent ml-auto" onClick={() => { 
+                                                                            remove(index);  
+                                                                            selectedProductId[index] = null;
+                                                                            setSelectedProduct(selectedProductId)
+                                                                        }}>
+                                                                            <TrashIcon />
+                                                                        </button>
+                                                                    }
                                                                 </td>
                                                                 {/* <td className={`py-2 ${index == 0 ? "pt-4" : ""} border-0`}>
                                                                     <div className="d-flex align-items-center">
